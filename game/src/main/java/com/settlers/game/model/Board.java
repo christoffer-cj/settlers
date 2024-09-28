@@ -32,7 +32,6 @@ public record Board(Map<Coordinate, Tile> tiles) {
         assert position != null;
         assert mapper != null;
 
-        // todo i hate this
         List<Coordinate> vertexCoordinates = coordinate.getCoordinatesForVertex(position);
         List<Position> vertexPositions = position.getPositionsForVertex(position);
         assert vertexCoordinates.size() == vertexPositions.size();
@@ -55,7 +54,6 @@ public record Board(Map<Coordinate, Tile> tiles) {
         assert position != null;
         assert mapper != null;
 
-        // todo i hate this
         List<Coordinate> edgeCoordinates = coordinate.getCoordinatesForEdge(position);
         List<Position> edgePositions = position.getPositionsForEdge(position);
         assert edgeCoordinates.size() == edgePositions.size();
