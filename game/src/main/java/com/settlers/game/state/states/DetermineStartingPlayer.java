@@ -34,7 +34,7 @@ public class DetermineStartingPlayer extends BaseState {
         while (!game.getCurrentPlayer().equals(winner.get())) {
             game.nextPlayer();
         }
-        game.setState(new SetupPhase(game));
+        game.setState(new SetupPhaseOne(game));
 
         return true;
     }

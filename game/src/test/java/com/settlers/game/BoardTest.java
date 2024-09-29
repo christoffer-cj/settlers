@@ -221,7 +221,7 @@ public class BoardTest {
     }
 
     @Test
-    public void whenTileWithNoRoad_ThenAddRoadReturnsTrue() {
+    public void whenTileWithNoRoad_ThenAddRoadReturnsFalse() {
         Coordinate coordinate = Coordinate.of(2, 4);
         Direction direction = Direction.FIVE;
         Tile tile = Tile.builder().build(Resource.ORE, 5);
@@ -234,7 +234,7 @@ public class BoardTest {
 
         boolean roadAdded = uut.addRoad(Position.of(coordinate, direction), roadToAdd);
 
-        Assert.assertTrue(roadAdded);
+        Assert.assertFalse(roadAdded);
     }
 
     @Test
@@ -279,5 +279,175 @@ public class BoardTest {
         boolean roadAdded = uut.addRoad(Position.of(adjacentCoordinate, adjacentDirection), roadToAdd);
 
         Assert.assertFalse(roadAdded);
+    }
+
+    @Test
+    public void whenSetupPhase_ThenAddSettlementNotNextToRoadReturnTrue() {
+        Coordinate coordinate = Coordinate.of(0, 0);
+        Direction direction = Direction.ONE;
+        Tile tile = Tile.builder().build(Resource.ORE, 12);
+        Building settlement = Building.builder().build(Color.RED, Building.Type.SETTLEMENT);
+
+        Board uut = Board.builder()
+                .addTile(coordinate, tile)
+                .build();
+
+
+        boolean settlementAdded = uut.addBuilding(Position.of(coordinate, direction), settlement, true);
+
+        Assert.assertTrue(settlementAdded);
+    }
+
+    @Test
+    public void whenNotSetupPhase_ThenAddSettlementNotNextToRoadReturnFalse() {
+        Coordinate coordinate = Coordinate.of(0, 0);
+        Direction direction = Direction.ONE;
+        Tile tile = Tile.builder().build(Resource.ORE, 12);
+        Building settlement = Building.builder().build(Color.RED, Building.Type.SETTLEMENT);
+
+        Board uut = Board.builder()
+                .addTile(coordinate, tile)
+                .build();
+
+
+        boolean settlementAdded = uut.addBuilding(Position.of(coordinate, direction), settlement, false);
+
+        Assert.assertFalse(settlementAdded);
+    }
+
+    @Test
+    public void whenAddBuildingNextToRoad_ThenReturnTrue() {
+        Coordinate coordinate = Coordinate.of(0, 0);
+        Direction direction = Direction.ONE;
+        Tile tile = Tile.builder()
+                .addRoad(direction, Road.builder().build(Color.RED))
+                .build(Resource.ORE, 12);
+        Building settlement = Building.builder().build(Color.RED, Building.Type.SETTLEMENT);
+
+        Board uut = Board.builder()
+                .addTile(coordinate, tile)
+                .build();
+
+
+        boolean settlementAdded = uut.addBuilding(Position.of(coordinate, direction), settlement);
+
+        Assert.assertTrue(settlementAdded);
+    }
+
+    @Test
+    public void whenAddBuildingNextToRoadOfWrongColor_ThenReturnFalse() {
+        Coordinate coordinate = Coordinate.of(0, 0);
+        Direction direction = Direction.ONE;
+        Tile tile = Tile.builder()
+                .addRoad(direction, Road.builder().build(Color.BLUE))
+                .build(Resource.ORE, 12);
+        Building settlement = Building.builder().build(Color.RED, Building.Type.SETTLEMENT);
+
+        Board uut = Board.builder()
+                .addTile(coordinate, tile)
+                .build();
+
+
+        boolean settlementAdded = uut.addBuilding(Position.of(coordinate, direction), settlement);
+
+        Assert.assertFalse(settlementAdded);
+    }
+
+    @Test
+    public void whenAddBuildingWithAdjacentBuilding_ThenReturnFalse() {
+        Coordinate coordinate = Coordinate.of(0, 0);
+        Direction direction = Direction.ONE;
+        Direction adjacentDirection = Direction.TWO;
+        Tile tile = Tile.builder()
+                .addBuilding(direction, Building.builder().build(Color.ORANGE, Building.Type.SETTLEMENT))
+                .build(Resource.ORE, 12);
+        Building settlement = Building.builder().build(Color.RED, Building.Type.SETTLEMENT);
+
+        Board uut = Board.builder()
+                .addTile(coordinate, tile)
+                .build();
+
+
+        boolean settlementAdded = uut.addBuilding(Position.of(coordinate, adjacentDirection), settlement);
+
+        Assert.assertFalse(settlementAdded);
+    }
+
+    @Test
+    public void whenAddCityWithNoSettlement_ThenReturnFalse() {
+        Coordinate coordinate = Coordinate.of(0, 0);
+        Direction direction = Direction.ONE;
+        Tile tile = Tile.builder()
+                .addRoad(direction, Road.builder().build(Color.RED))
+                .build(Resource.ORE, 12);
+        Building settlement = Building.builder().build(Color.RED, Building.Type.CITY);
+
+        Board uut = Board.builder()
+                .addTile(coordinate, tile)
+                .build();
+
+
+        boolean settlementAdded = uut.addBuilding(Position.of(coordinate, direction), settlement);
+
+        Assert.assertFalse(settlementAdded);
+    }
+
+    @Test
+    public void whenAddCityWithSettlement_ThenReturnTrue() {
+        Coordinate coordinate = Coordinate.of(0, 0);
+        Direction direction = Direction.ONE;
+        Tile tile = Tile.builder()
+                .addRoad(direction, Road.builder().build(Color.RED))
+                .addBuilding(direction, Building.builder().build(Color.RED, Building.Type.SETTLEMENT))
+                .build(Resource.ORE, 12);
+        Building settlement = Building.builder().build(Color.RED, Building.Type.CITY);
+
+        Board uut = Board.builder()
+                .addTile(coordinate, tile)
+                .build();
+
+
+        boolean settlementAdded = uut.addBuilding(Position.of(coordinate, direction), settlement);
+
+        Assert.assertTrue(settlementAdded);
+    }
+
+    @Test
+    public void whenAddCityWithSettlementOfWrongColor_ThenReturnFalse() {
+        Coordinate coordinate = Coordinate.of(0, 0);
+        Direction direction = Direction.ONE;
+        Tile tile = Tile.builder()
+                .addRoad(direction, Road.builder().build(Color.RED))
+                .addBuilding(direction, Building.builder().build(Color.BLUE, Building.Type.SETTLEMENT))
+                .build(Resource.ORE, 12);
+        Building settlement = Building.builder().build(Color.RED, Building.Type.CITY);
+
+        Board uut = Board.builder()
+                .addTile(coordinate, tile)
+                .build();
+
+
+        boolean settlementAdded = uut.addBuilding(Position.of(coordinate, direction), settlement);
+
+        Assert.assertFalse(settlementAdded);
+    }
+
+    @Test
+    public void whenAddRoadNextToRoad_ThenReturnTrue() {
+        Coordinate coordinate = Coordinate.of(0, 0);
+        Direction direction = Direction.ONE;
+        Direction adjacentDirection = Direction.TWO;
+        Tile tile = Tile.builder()
+                .addRoad(direction, Road.builder().build(Color.WHITE))
+                .build(Resource.LUMBER, 4);
+        Road adjacentRoad = Road.builder().build(Color.WHITE);
+
+        Board uut = Board.builder()
+                .addTile(coordinate, tile)
+                .build();
+
+        boolean roadAdded = uut.addRoad(Position.of(coordinate, adjacentDirection), adjacentRoad);
+
+        Assert.assertTrue(roadAdded);
     }
 }

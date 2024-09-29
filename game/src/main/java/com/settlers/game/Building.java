@@ -11,8 +11,18 @@ public record Building(Color color, Type type) {
     }
 
     public enum Type {
-        CITY,
-        SETTLEMENT
+        SETTLEMENT(1),
+        CITY(2);
+        
+        private final int resources;
+        
+        Type(int resources) {
+            this.resources = resources;
+        }
+        
+        public int resources() {
+            return resources;
+        }
     }
 
     public static final class Builder {

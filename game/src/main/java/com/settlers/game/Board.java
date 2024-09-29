@@ -18,10 +18,24 @@ public class Board {
         return getEdge(position, Tile::roads);
     }
 
-    public boolean addRoad(Position position, Road road) {
+    public boolean addRoad(Position position, Road road) { // todo setup phase logic for placing road next to last placed settlement
         assert position != null;
         assert road != null;
         if (getRoad(position).isPresent()) return false;
+
+        boolean hasAdjacentBuilding = position.getAdjacentVerticesForEdge()
+                .stream()
+                .map(this::getBuilding)
+                .flatMap(Optional::stream)
+                .anyMatch(building -> building.color() == road.color());
+
+        boolean hasAdjacentRoad = position.getAdjacentEdgesForEdge()
+                .stream()
+                .map(this::getRoad)
+                .flatMap(Optional::stream)
+                .anyMatch(adjacentRoad -> adjacentRoad.color() == road.color());
+
+        if (!hasAdjacentRoad && !hasAdjacentRoad) return false;
 
         Tile tile = tiles.get(position.coordinate());
         tile.roads().put(position.direction(), road);
@@ -34,6 +48,10 @@ public class Board {
     }
 
     public boolean addBuilding(Position position, Building building) {
+        return addBuilding(position, building, false);
+    }
+
+    public boolean addBuilding(Position position, Building building, boolean isSetupPhase) {
         assert position != null;
         assert building != null;
 
@@ -43,13 +61,25 @@ public class Board {
         }
 
         if (building.type() == Building.Type.CITY &&
-                (presentBuilding.isEmpty() ||
-                 presentBuilding.get().color() != building.color() ||
-                 presentBuilding.get().type() != Building.Type.SETTLEMENT)) {
+           (presentBuilding.isEmpty() ||
+            presentBuilding.get().color() != building.color() ||
+            presentBuilding.get().type() != Building.Type.SETTLEMENT)) {
             return false;
         }
-        // check distance rule
-        // check building is next to a road unless in setup phase
+        boolean hasAdjacentBuilding = position.getAdjacentVerticesForVertex()
+                .stream()
+                .map(this::getBuilding)
+                .anyMatch(Optional::isPresent);
+        if (hasAdjacentBuilding) return false;
+
+        if (!isSetupPhase) {
+            boolean hasAdjacentRoad = position.getAdjacentEdgesForVertex()
+                    .stream()
+                    .map(this::getRoad)
+                    .flatMap(Optional::stream)
+                    .anyMatch(road -> road.color() == building.color());
+            if (!hasAdjacentRoad) return false;
+        }
 
         Tile tile = tiles.get(position.coordinate());
         tile.buildings().put(position.direction(), building);
@@ -59,6 +89,34 @@ public class Board {
 
     public Optional<Harbor> getHarbor(Position position) {
         return getVertex(position, Tile::harbors);
+    }
+
+    public Collection<Coordinate> getCoordinates(int number) {
+        return tiles.entrySet()
+                .stream()
+                .filter(entry -> entry.getValue().number() == number)
+                .map(Map.Entry::getKey)
+                .toList();
+    }
+
+    public Collection<Building> getBuildings(Coordinate coordinate, Color color) {
+        assert coordinate != null;
+        assert color != null;
+
+        if (tiles.get(coordinate) == null) {
+            return Collections.emptyList();
+        }
+
+        return tiles.get(coordinate)
+                .buildings()
+                .values()
+                .stream()
+                .filter(building -> building.color() == color)
+                .toList();
+    }
+
+    public Optional<Tile> getTile(Coordinate coordinate) {
+        return Optional.ofNullable(tiles.get(coordinate));
     }
 
     private <T> Optional<T> getVertex(Position position, Function<Tile, Map<Direction, T>> mapper) {

@@ -41,4 +41,8 @@ public class Game {
     public void nextPlayer() {
         currentPlayer = (currentPlayer + 1) % players.size();
     }
+
+    public void previousPlayer() {
+        currentPlayer = (currentPlayer - 1) % players.size();
+    }
 }
