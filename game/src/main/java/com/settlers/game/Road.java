@@ -1,4 +1,4 @@
-package com.settlers.game.model;
+package com.settlers.game;
 
 public record Road(Color color) {
     public Road {

@@ -1,4 +1,4 @@
-package com.settlers.game.model;
+package com.settlers.game;
 
 public record Building(Color color, Type type) {
     public Building {

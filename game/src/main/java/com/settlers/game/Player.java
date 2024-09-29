@@ -1,4 +1,4 @@
-package com.settlers.game.model;
+package com.settlers.game;
 
 public record Player(Color color, Inventory inventory) {
     public Player {
