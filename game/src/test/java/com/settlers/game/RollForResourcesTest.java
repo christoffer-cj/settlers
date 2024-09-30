@@ -27,7 +27,7 @@ public class RollForResourcesTest {
 
         RollForResources uut = new RollForResources(game);
         game.setState(uut);
-        uut.rollDice();
+        uut.rollDice(player);
 
         Assert.assertEquals(1, (int) player.inventory().resources().get(Resource.ORE));
     }
@@ -49,7 +49,7 @@ public class RollForResourcesTest {
 
         RollForResources uut = new RollForResources(game);
         game.setState(uut);
-        uut.rollDice();
+        uut.rollDice(player);
 
         Assert.assertEquals(2, (int) player.inventory().resources().get(Resource.ORE));
     }
@@ -74,7 +74,7 @@ public class RollForResourcesTest {
 
         RollForResources uut = new RollForResources(game);
         game.setState(uut);
-        uut.rollDice();
+        uut.rollDice(player);
 
         Assert.assertEquals(3, (int) player.inventory().resources().get(Resource.ORE));
     }
@@ -96,7 +96,7 @@ public class RollForResourcesTest {
 
         RollForResources uut = new RollForResources(game);
         game.setState(uut);
-        uut.rollDice();
+        uut.rollDice(player);
 
         Assert.assertEquals(0, (int) player.inventory().resources().get(Resource.ORE));
     }
@@ -121,7 +121,7 @@ public class RollForResourcesTest {
 
         RollForResources uut = new RollForResources(game);
         game.setState(uut);
-        uut.rollDice();
+        uut.rollDice(player);
 
         Assert.assertEquals(1, (int) player.inventory().resources().get(Resource.ORE));
         Assert.assertEquals(1, (int) player.inventory().resources().get(Resource.LUMBER));
@@ -147,7 +147,7 @@ public class RollForResourcesTest {
 
         RollForResources uut = new RollForResources(game);
         game.setState(uut);
-        uut.rollDice();
+        uut.rollDice(player);
 
         Assert.assertEquals(0, (int) player.inventory().resources().get(Resource.ORE));
         Assert.assertEquals(1, (int) player.inventory().resources().get(Resource.LUMBER));
@@ -162,7 +162,7 @@ public class RollForResourcesTest {
 
         RollForResources uut = new RollForResources(game);
         game.setState(uut);
-        uut.rollDice();
+        uut.rollDice(player);
 
         Assert.assertTrue(game.getState() instanceof MoveRobber);
     }
@@ -188,9 +188,24 @@ public class RollForResourcesTest {
 
         RollForResources uut = new RollForResources(game);
         game.setState(uut);
-        uut.rollDice();
+        uut.rollDice(whitePlayer);
 
         Assert.assertEquals(1, (int) whitePlayer.inventory().resources().get(Resource.ORE));
         Assert.assertEquals(1, (int) redPlayer.inventory().resources().get(Resource.ORE));
+    }
+
+    @Test
+    public void whenRedRollForResources_ThenWhiteCanNotRoll() {
+        Board board = Board.builder().build();
+        Dice dice = new TestingDice(List.of(6));
+        Player whitePlayer = Player.create(Color.WHITE);
+        Player redPlayer = Player.create(Color.RED);
+        Game game = new Game(board, List.of(redPlayer, whitePlayer), dice);
+
+        RollForResources uut = new RollForResources(game);
+        game.setState(uut);
+        boolean diceRolled = uut.rollDice(whitePlayer);
+
+        Assert.assertFalse(diceRolled);
     }
 }

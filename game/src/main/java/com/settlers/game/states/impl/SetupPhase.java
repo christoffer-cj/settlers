@@ -21,7 +21,11 @@ public class SetupPhase extends BaseState {
     }
 
     @Override
-    public boolean addBuilding(Position position, Building building) {
+    public boolean addBuilding(Player player, Position position, Building building) {
+        if (!game.getCurrentPlayer().equals(player)) return false;
+
+        if (!player.color().equals(building.color())) return false;
+
         if (settlementPositions.get(game.getCurrentPlayer()) != null) return false;
 
         if (building.type() != Building.Type.SETTLEMENT) return false;
@@ -34,7 +38,11 @@ public class SetupPhase extends BaseState {
     }
 
     @Override
-    public boolean addRoad(Position position, Road road) {
+    public boolean addRoad(Player player, Position position, Road road) {
+        if (!game.getCurrentPlayer().equals(player)) return false;
+
+        if (!player.color().equals(road.color())) return false;
+
         if (settlementPositions.get(game.getCurrentPlayer()) == null) return false;
 
         Position settlementPosition = settlementPositions.get(game.getCurrentPlayer());

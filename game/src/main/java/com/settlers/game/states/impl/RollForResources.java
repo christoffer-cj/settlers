@@ -12,7 +12,9 @@ public class RollForResources extends BaseState {
     }
 
     @Override
-    public boolean rollDice() {
+    public boolean rollDice(Player player) {
+        if (!game.getCurrentPlayer().equals(player)) return false;
+
         int roll = game.getDice().roll();
 
         if (roll == 7) {
@@ -21,11 +23,11 @@ public class RollForResources extends BaseState {
         }
 
         Collection<Coordinate> coordinatesForRoll = game.getBoard().getCoordinates(roll);
-        for (Player player : game.getPlayers()) {
+        for (Player p : game.getPlayers()) {
             Map<Resource, Integer> newResources = new HashMap<>();
             for (Coordinate coordinate : coordinatesForRoll) {
                 Resource resource = game.getBoard().getTile(coordinate).orElseThrow().resource();
-                Collection<Building> buildings = game.getBoard().getBuildings(coordinate, player.color());
+                Collection<Building> buildings = game.getBoard().getBuildings(coordinate, p.color());
                 int amount = buildings.stream()
                         .map(Building::type)
                         .map(Building.Type::resources)
@@ -33,7 +35,7 @@ public class RollForResources extends BaseState {
                 newResources.put(resource, amount);
             }
             for (Map.Entry<Resource, Integer> entry : newResources.entrySet()) {
-                player.inventory().resources().merge(entry.getKey(), entry.getValue(), Integer::sum);
+                p.inventory().resources().merge(entry.getKey(), entry.getValue(), Integer::sum);
             }
         }
 

@@ -15,7 +15,8 @@ public class DetermineStartingPlayer extends BaseState {
     }
 
     @Override
-    public boolean rollDice() {
+    public boolean rollDice(Player player) {
+        if (!game.getCurrentPlayer().equals(player)) return false;
         int roll = game.getDice().roll();
         playerRolls.put(game.getCurrentPlayer(), roll);
 

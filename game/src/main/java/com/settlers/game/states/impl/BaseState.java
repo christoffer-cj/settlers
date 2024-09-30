@@ -1,11 +1,9 @@
 package com.settlers.game.states.impl;
 
-import com.settlers.game.Building;
-import com.settlers.game.Game;
-import com.settlers.game.Position;
-import com.settlers.game.Road;
+import com.settlers.game.*;
 import com.settlers.game.states.State;
 
+import java.util.Map;
 import java.util.Objects;
 
 public abstract class BaseState implements State {
@@ -16,17 +14,22 @@ public abstract class BaseState implements State {
     }
 
     @Override
-    public boolean rollDice() {
+    public boolean rollDice(Player player) {
         return false;
     }
 
     @Override
-    public boolean addBuilding(Position position, Building building) {
+    public boolean addBuilding(Player player, Position position, Building building) {
         return false;
     }
 
     @Override
-    public boolean addRoad(Position position, Road road) {
+    public boolean addRoad(Player player, Position position, Road road) {
+        return false;
+    }
+
+    @Override
+    public boolean discardResources(Player player, Map<Resource, Integer> resources) {
         return false;
     }
 }

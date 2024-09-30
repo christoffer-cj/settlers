@@ -1,13 +1,15 @@
 package com.settlers.game.states;
 
-import com.settlers.game.Building;
-import com.settlers.game.Position;
-import com.settlers.game.Road;
+import com.settlers.game.*;
+
+import java.util.Map;
 
 public interface State {
-    boolean rollDice();
+    boolean rollDice(Player player);
 
-    boolean addBuilding(Position position, Building building);
+    boolean addBuilding(Player player, Position position, Building building);
 
-    boolean addRoad(Position position, Road road);
+    boolean addRoad(Player player, Position position, Road road);
+
+    boolean discardResources(Player player, Map<Resource, Integer> resources);
 }

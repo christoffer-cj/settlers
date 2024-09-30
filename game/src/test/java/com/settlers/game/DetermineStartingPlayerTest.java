@@ -21,8 +21,8 @@ public class DetermineStartingPlayerTest {
 
         DetermineStartingPlayer uut = new DetermineStartingPlayer(game);
         game.setState(uut);
-        uut.rollDice();
-        uut.rollDice();
+        uut.rollDice(redPlayer);
+        uut.rollDice(whitePlayer);
 
         Assert.assertTrue(game.getState() instanceof SetupPhase);
         Assert.assertSame(game.getCurrentPlayer(), whitePlayer);
@@ -39,8 +39,8 @@ public class DetermineStartingPlayerTest {
 
         DetermineStartingPlayer uut = new DetermineStartingPlayer(game);
         game.setState(uut);
-        uut.rollDice();
-        uut.rollDice();
+        uut.rollDice(redPlayer);
+        uut.rollDice(whitePlayer);
 
         Assert.assertTrue(game.getState() instanceof DetermineStartingPlayer);
         Assert.assertSame(game.getCurrentPlayer(), redPlayer);
@@ -57,12 +57,28 @@ public class DetermineStartingPlayerTest {
         Game game = new Game(board, players, dice);
         DetermineStartingPlayer uut = new DetermineStartingPlayer(game);
         game.setState(uut);
-        uut.rollDice();
-        uut.rollDice();
-        uut.rollDice();
-        uut.rollDice();
+        uut.rollDice(redPlayer);
+        uut.rollDice(whitePlayer);
+        uut.rollDice(redPlayer);
+        uut.rollDice(whitePlayer);
 
         Assert.assertTrue(game.getState() instanceof SetupPhase);
         Assert.assertSame(game.getCurrentPlayer(), whitePlayer);
+    }
+
+    @Test
+    public void testWhenRedStarts_ThenWhiteCanNotRollFirst() {
+        Board board = Board.builder().build();
+        Player redPlayer = Player.create(Color.RED);
+        Player whitePlayer = Player.create(Color.WHITE);
+        List<Player> players = List.of(redPlayer, whitePlayer);
+        Dice dice = new TestingDice(List.of(2));
+
+        Game game = new Game(board, players, dice);
+        DetermineStartingPlayer uut = new DetermineStartingPlayer(game);
+        game.setState(uut);
+        boolean diceRolled = uut.rollDice(whitePlayer);
+
+        Assert.assertFalse(diceRolled);
     }
 }

@@ -21,4 +21,8 @@ public record Inventory(Map<Resource, Integer> resources,
         }
         return new Inventory(resources, developmentCards);
     }
+
+    public int amountOfResources() {
+        return resources.values().stream().reduce(0, Integer::sum);
+    }
 }
