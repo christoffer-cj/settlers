@@ -1,6 +1,8 @@
 package com.settlers.game;
 
-import com.settlers.game.state.State;
+import com.settlers.game.dice.Dice;
+import com.settlers.game.states.State;
+import com.settlers.game.states.impl.DetermineStartingPlayer;
 
 import java.util.List;
 import java.util.Objects;
@@ -8,14 +10,17 @@ import java.util.Objects;
 public class Game {
     private final Board board;
     private final List<Player> players;
+    private final Dice dice;
     private int currentPlayer = 0;
     private State state;
 
-    public Game(Board board, List<Player> players) {
+    public Game(Board board,
+                List<Player> players,
+                Dice dice) {
         this.board = Objects.requireNonNull(board);
-        Objects.requireNonNull(players);
-        this.players = List.copyOf(players);
-        assert players.size() >= 2;
+        this.players = List.copyOf(Objects.requireNonNull(players));
+        this.dice = Objects.requireNonNull(dice);
+        this.state = new DetermineStartingPlayer(this);
     }
 
     public State getState() {
@@ -43,6 +48,14 @@ public class Game {
     }
 
     public void previousPlayer() {
-        currentPlayer = (currentPlayer - 1) % players.size();
+        if (currentPlayer == 0) {
+            currentPlayer = players.size() - 1;
+        } else {
+            currentPlayer--;
+        }
+    }
+
+    public Dice getDice() {
+        return dice;
     }
 }

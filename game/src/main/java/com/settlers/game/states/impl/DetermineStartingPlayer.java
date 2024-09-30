@@ -1,6 +1,5 @@
-package com.settlers.game.state.states;
+package com.settlers.game.states.impl;
 
-import com.settlers.game.Dice;
 import com.settlers.game.Game;
 import com.settlers.game.Player;
 
@@ -17,7 +16,7 @@ public class DetermineStartingPlayer extends BaseState {
 
     @Override
     public boolean rollDice() {
-        int roll = Dice.roll();
+        int roll = game.getDice().roll();
         playerRolls.put(game.getCurrentPlayer(), roll);
 
         if (playerRolls.size() != game.getPlayers().size()) {
@@ -34,7 +33,7 @@ public class DetermineStartingPlayer extends BaseState {
         while (!game.getCurrentPlayer().equals(winner.get())) {
             game.nextPlayer();
         }
-        game.setState(new SetupPhaseOne(game));
+        game.setState(new SetupPhase(game, true));
 
         return true;
     }

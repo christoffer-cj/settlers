@@ -5,4 +5,8 @@ public record Player(Color color, Inventory inventory) {
         assert color != null;
         assert inventory != null;
     }
+
+    public static Player create(Color color) {
+        return new Player(color, Inventory.create());
+    }
 }

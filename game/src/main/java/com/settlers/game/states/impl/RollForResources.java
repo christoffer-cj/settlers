@@ -1,4 +1,4 @@
-package com.settlers.game.state.states;
+package com.settlers.game.states.impl;
 
 import com.settlers.game.*;
 
@@ -13,7 +13,7 @@ public class RollForResources extends BaseState {
 
     @Override
     public boolean rollDice() {
-        int roll = Dice.roll();
+        int roll = game.getDice().roll();
 
         if (roll == 7) {
             game.setState(new MoveRobber(game));

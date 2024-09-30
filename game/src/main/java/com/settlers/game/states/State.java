@@ -1,10 +1,10 @@
-package com.settlers.game.state;
+package com.settlers.game.states;
 
 import com.settlers.game.Building;
 import com.settlers.game.Position;
 import com.settlers.game.Road;
 
-public interface State { // todo use dependency injection to make state classes more testable
+public interface State {
     boolean rollDice();
 
     boolean addBuilding(Position position, Building building);

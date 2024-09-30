@@ -18,7 +18,7 @@ public class Board {
         return getEdge(position, Tile::roads);
     }
 
-    public boolean addRoad(Position position, Road road) { // todo setup phase logic for placing road next to last placed settlement
+    public boolean addRoad(Position position, Road road) {
         assert position != null;
         assert road != null;
         if (getRoad(position).isPresent()) return false;
@@ -35,7 +35,7 @@ public class Board {
                 .flatMap(Optional::stream)
                 .anyMatch(adjacentRoad -> adjacentRoad.color() == road.color());
 
-        if (!hasAdjacentRoad && !hasAdjacentRoad) return false;
+        if (!hasAdjacentBuilding && !hasAdjacentRoad) return false;
 
         Tile tile = tiles.get(position.coordinate());
         tile.roads().put(position.direction(), road);
@@ -107,12 +107,12 @@ public class Board {
             return Collections.emptyList();
         }
 
-        return tiles.get(coordinate)
-                .buildings()
-                .values()
-                .stream()
-                .filter(building -> building.color() == color)
-                .toList();
+        Set<Building> buildings = new HashSet<>();
+        for (Direction direction : Direction.values()) {
+            getBuilding(Position.of(coordinate, direction)).filter(building -> building.color() == color).ifPresent(buildings::add);
+        }
+
+        return Collections.unmodifiableCollection(buildings);
     }
 
     public Optional<Tile> getTile(Coordinate coordinate) {

@@ -1,10 +1,10 @@
-package com.settlers.game.state.states;
+package com.settlers.game.states.impl;
 
 import com.settlers.game.Building;
 import com.settlers.game.Game;
 import com.settlers.game.Position;
 import com.settlers.game.Road;
-import com.settlers.game.state.State;
+import com.settlers.game.states.State;
 
 import java.util.Objects;
 
