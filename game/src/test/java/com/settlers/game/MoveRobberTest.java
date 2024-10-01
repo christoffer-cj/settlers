@@ -1,7 +1,7 @@
 package com.settlers.game;
 
 import com.settlers.game.dice.Dice;
-import com.settlers.game.dice.impl.RandomDice;
+import com.settlers.game.dice.RandomDice;
 import com.settlers.game.states.MoveRobber;
 import com.settlers.game.states.TradingPhase;
 import org.junit.Assert;

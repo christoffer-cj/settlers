@@ -14,6 +14,10 @@ public record Trade(Player offeringPlayer,
         assert receive != null;
     }
 
+    public static Builder builder() {
+        return new Builder();
+    }
+
     public static final class Builder {
         private final Map<Resource, Integer> offer;
         private final Map<Resource, Integer> receive;

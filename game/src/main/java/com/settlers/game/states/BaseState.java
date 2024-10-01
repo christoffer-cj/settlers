@@ -41,4 +41,14 @@ public abstract class BaseState implements State {
     public boolean offerTrade(Player player, Trade trade) {
         return false;
     }
+
+    @Override
+    public boolean acceptTrade(Player player) {
+        return false;
+    }
+
+    @Override
+    public boolean declineTrade(Player player) {
+        return false;
+    }
 }

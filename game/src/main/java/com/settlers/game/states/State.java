@@ -16,4 +16,8 @@ public interface State {
     boolean moveRobber(Player player, Coordinate coordinate);
 
     boolean offerTrade(Player player, Trade trade);
+
+    boolean acceptTrade(Player player);
+
+    boolean declineTrade(Player player);
 }

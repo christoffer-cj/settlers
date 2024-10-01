@@ -1,7 +1,7 @@
 package com.settlers.game;
 
 import com.settlers.game.dice.Dice;
-import com.settlers.game.dice.impl.TestingDice;
+import com.settlers.game.dice.TestingDice;
 import com.settlers.game.states.MoveRobber;
 import com.settlers.game.states.RollForResources;
 import org.junit.Assert;

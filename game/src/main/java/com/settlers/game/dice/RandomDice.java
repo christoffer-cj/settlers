@@ -1,6 +1,4 @@
-package com.settlers.game.dice.impl;
-
-import com.settlers.game.dice.Dice;
+package com.settlers.game.dice;
 
 import java.util.Random;
 
