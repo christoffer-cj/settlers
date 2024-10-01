@@ -2,8 +2,8 @@ package com.settlers.game;
 
 import com.settlers.game.dice.Dice;
 import com.settlers.game.dice.impl.TestingDice;
-import com.settlers.game.states.impl.MoveRobber;
-import com.settlers.game.states.impl.RollForResources;
+import com.settlers.game.states.MoveRobber;
+import com.settlers.game.states.RollForResources;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -207,5 +207,28 @@ public class RollForResourcesTest {
         boolean diceRolled = uut.rollDice(whitePlayer);
 
         Assert.assertFalse(diceRolled);
+    }
+
+    @Test
+    public void testWhenRollForResourceWithRobberOn_ThenNoResourcesReceived() {
+        Coordinate coordinate = Coordinate.of(1, 2);
+        Direction direction = Direction.THREE;
+        Building settlement = Building.builder().build(Color.WHITE, Building.Type.SETTLEMENT);
+        Tile tile = Tile.builder()
+                .addBuilding(direction, settlement)
+                .build(Resource.ORE, 6);
+        Board board = Board.builder()
+                .addTile(coordinate, tile)
+                .setRobber(coordinate)
+                .build();
+        Dice dice = new TestingDice(List.of(6));
+        Player player = Player.create(Color.WHITE);
+        Game game = new Game(board, List.of(player), dice);
+
+        RollForResources uut = new RollForResources(game);
+        game.setState(uut);
+        uut.rollDice(player);
+
+        Assert.assertEquals(0, (int) player.inventory().resources().get(Resource.ORE));
     }
 }

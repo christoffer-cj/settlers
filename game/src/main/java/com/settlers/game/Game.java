@@ -1,8 +1,8 @@
 package com.settlers.game;
 
 import com.settlers.game.dice.Dice;
+import com.settlers.game.states.DetermineStartingPlayer;
 import com.settlers.game.states.State;
-import com.settlers.game.states.impl.DetermineStartingPlayer;
 
 import java.util.List;
 import java.util.Objects;
@@ -37,6 +37,10 @@ public class Game {
 
     public Player getCurrentPlayer() {
         return players.get(currentPlayer);
+    }
+
+    public Player getPlayer(Color color) {
+        return players.stream().filter(player -> player.color() == color).findFirst().orElseThrow();
     }
 
     public List<Player> getPlayers() {

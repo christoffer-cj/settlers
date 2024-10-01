@@ -8,8 +8,12 @@ public record Player(Color color, Inventory inventory) {
         assert inventory != null;
     }
 
+    public static Player of(Color color, Inventory inventory) {
+        return new Player(color, inventory);
+    }
+
     public static Player create(Color color) {
-        return new Player(color, Inventory.create());
+        return new Player(color, Inventory.empty());
     }
 
     @Override

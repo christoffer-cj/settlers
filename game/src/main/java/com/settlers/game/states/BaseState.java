@@ -1,7 +1,6 @@
-package com.settlers.game.states.impl;
+package com.settlers.game.states;
 
 import com.settlers.game.*;
-import com.settlers.game.states.State;
 
 import java.util.Map;
 import java.util.Objects;
@@ -30,6 +29,16 @@ public abstract class BaseState implements State {
 
     @Override
     public boolean discardResources(Player player, Map<Resource, Integer> resources) {
+        return false;
+    }
+
+    @Override
+    public boolean moveRobber(Player player, Coordinate coordinate) {
+        return false;
+    }
+
+    @Override
+    public boolean offerTrade(Player player, Trade trade) {
         return false;
     }
 }

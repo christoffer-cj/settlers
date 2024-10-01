@@ -1,7 +1,8 @@
-package com.settlers.game.states.impl;
+package com.settlers.game.states;
 
 import com.settlers.game.*;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
@@ -22,7 +23,8 @@ public class RollForResources extends BaseState {
             return true;
         }
 
-        Collection<Coordinate> coordinatesForRoll = game.getBoard().getCoordinates(roll);
+        Collection<Coordinate> coordinatesForRoll = new ArrayList<>(game.getBoard().getCoordinates(roll));
+        coordinatesForRoll.removeIf(coordinate -> coordinate.equals(game.getBoard().getRobber()));
         for (Player p : game.getPlayers()) {
             Map<Resource, Integer> newResources = new HashMap<>();
             for (Coordinate coordinate : coordinatesForRoll) {
@@ -38,9 +40,8 @@ public class RollForResources extends BaseState {
                 p.inventory().resources().merge(entry.getKey(), entry.getValue(), Integer::sum);
             }
         }
+        game.setState(new TradingPhase(game));
 
-
-        // todo change game state
         return true;
     }
 }

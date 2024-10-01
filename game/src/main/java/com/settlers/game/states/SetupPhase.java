@@ -1,4 +1,4 @@
-package com.settlers.game.states.impl;
+package com.settlers.game.states;
 
 import com.settlers.game.*;
 

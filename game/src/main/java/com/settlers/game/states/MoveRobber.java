@@ -1,8 +1,6 @@
-package com.settlers.game.states.impl;
+package com.settlers.game.states;
 
-import com.settlers.game.Game;
-import com.settlers.game.Player;
-import com.settlers.game.Resource;
+import com.settlers.game.*;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -38,7 +36,30 @@ public class MoveRobber extends BaseState {
                                 .reduce(0, Integer::sum));
         if (!isCorrectAmountToDiscard) return false;
 
-        // todo get player from game, and check if player has sufficient resources to discard
-        return false;
+        Inventory playerInventory = game.getPlayer(player.color()).inventory();
+        // check player has sufficient resources
+        for (Map.Entry<Resource, Integer> entry : resources.entrySet()) {
+            if (playerInventory.resources().get(entry.getKey()) < entry.getValue()) return false;
+        }
+
+        // discard player resources
+        for (Map.Entry<Resource, Integer> entry : resources.entrySet()) {
+            playerInventory.resources().merge(entry.getKey(), entry.getValue(), (a, b) -> a - b);
+        }
+
+        return true;
+    }
+
+    @Override
+    public boolean moveRobber(Player player, Coordinate coordinate) {
+        if (!game.getCurrentPlayer().equals(player)) return false;
+
+        if (!hasDiscarded.values().stream().allMatch(x -> x)) return false;
+
+        if (!game.getBoard().setRobber(coordinate)) return false;
+
+
+        game.setState(new TradingPhase(game));
+        return true;
     }
 }

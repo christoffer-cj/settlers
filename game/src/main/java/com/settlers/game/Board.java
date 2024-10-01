@@ -5,9 +5,11 @@ import java.util.function.Function;
 
 public class Board {
     private final Map<Coordinate, Tile> tiles;
+    private Coordinate robber;
 
-    private Board(Map<Coordinate, Tile> tiles) {
+    private Board(Map<Coordinate, Tile> tiles, Coordinate robber) {
         this.tiles = Objects.requireNonNull(tiles);
+        this.robber = robber;
     }
 
     public static Builder builder() {
@@ -119,6 +121,19 @@ public class Board {
         return Optional.ofNullable(tiles.get(coordinate));
     }
 
+    public Coordinate getRobber() {
+        return robber;
+    }
+
+    public boolean setRobber(Coordinate coordinate) {
+        assert coordinate != null;
+        if (!tiles.containsKey(coordinate)) return false;
+        if (coordinate.equals(robber)) return false;
+
+        robber = coordinate;
+        return true;
+    }
+
     private <T> Optional<T> getVertex(Position position, Function<Tile, Map<Direction, T>> mapper) {
         assert position != null;
         assert mapper != null;
@@ -159,11 +174,12 @@ public class Board {
 
     public static final class Builder {
         private final Map<Coordinate, Tile> tiles = new HashMap<>();
+        private Coordinate robber;
 
         private Builder() {}
 
         public Board build() {
-            return new Board(tiles);
+            return new Board(tiles, robber);
         }
 
         public Builder addTile(Coordinate coordinate, Tile tile) {
@@ -172,6 +188,12 @@ public class Board {
             assert tile != null;
 
             tiles.put(coordinate, tile);
+            return this;
+        }
+
+        public Builder setRobber(Coordinate coordinate) {
+            assert tiles.containsKey(coordinate);
+            robber = coordinate;
             return this;
         }
     }

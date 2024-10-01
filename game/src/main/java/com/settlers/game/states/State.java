@@ -12,4 +12,8 @@ public interface State {
     boolean addRoad(Player player, Position position, Road road);
 
     boolean discardResources(Player player, Map<Resource, Integer> resources);
+
+    boolean moveRobber(Player player, Coordinate coordinate);
+
+    boolean offerTrade(Player player, Trade trade);
 }

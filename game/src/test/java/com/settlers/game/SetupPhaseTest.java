@@ -2,9 +2,9 @@ package com.settlers.game;
 
 import com.settlers.game.dice.Dice;
 import com.settlers.game.dice.impl.RandomDice;
+import com.settlers.game.states.RollForResources;
+import com.settlers.game.states.SetupPhase;
 import com.settlers.game.states.State;
-import com.settlers.game.states.impl.RollForResources;
-import com.settlers.game.states.impl.SetupPhase;
 import org.junit.Assert;
 import org.junit.Test;
 

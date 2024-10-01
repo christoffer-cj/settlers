@@ -2,8 +2,8 @@ package com.settlers.game;
 
 import com.settlers.game.dice.Dice;
 import com.settlers.game.dice.impl.TestingDice;
-import com.settlers.game.states.impl.DetermineStartingPlayer;
-import com.settlers.game.states.impl.SetupPhase;
+import com.settlers.game.states.DetermineStartingPlayer;
+import com.settlers.game.states.SetupPhase;
 import org.junit.Assert;
 import org.junit.Test;
 
