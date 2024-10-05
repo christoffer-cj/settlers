@@ -11,6 +11,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.CompletableFuture;
 
 public class MoveRobberTest {
     @Test
@@ -205,5 +206,95 @@ public class MoveRobberTest {
         Assert.assertTrue(resourcesDiscarded);
         Assert.assertEquals(3, (int) player.inventory().resources().get(Resource.BRICK));
         Assert.assertEquals(2, (int) player.inventory().resources().get(Resource.LUMBER));
+    }
+
+    @Test
+    public void testWhenRobberMovedToTileWithNoAdjacentBuildings_ThenNoOneToStealFrom() {
+        Player player = Player.create(Color.RED);
+        Dice dice = new RandomDice();
+        Coordinate coordinate = Coordinate.of(10, 10);
+        Tile tile = Tile.builder().build(Resource.ORE, 4);
+        Board board = Board.builder()
+                .addTile(coordinate, tile)
+                .build();
+        Game game = new Game(board, List.of(player), dice);
+        MoveRobber uut = new MoveRobber(game);
+        game.setState(uut);
+        uut.moveRobber(player, coordinate);
+
+        Assert.assertTrue(game.getState() instanceof TradingPhase);
+    }
+
+    @Test
+    public void testWhenRobberMovedToTileWithAdjacentBuildings_ThenPeopleToStealFrom() {
+        Player redPlayer = Player.create(Color.RED);
+        Player bluePlayer = Player.create(Color.BLUE);
+        Dice dice = new RandomDice();
+        Coordinate coordinate = Coordinate.of(10, 10);
+        Tile tile = Tile.builder()
+                .addBuilding(Direction.ONE, Building.builder().build(Color.BLUE, Building.Type.SETTLEMENT))
+                .build(Resource.ORE, 4);
+        Board board = Board.builder()
+                .addTile(coordinate, tile)
+                .build();
+        Game game = new Game(board, List.of(redPlayer, bluePlayer), dice);
+        MoveRobber uut = new MoveRobber(game);
+        game.setState(uut);
+        uut.moveRobber(redPlayer, coordinate);
+
+        Assert.assertFalse(game.getState() instanceof TradingPhase);
+    }
+
+    @Test
+    public void testWhenStealingFromPlayerWithNoResources_ThenNoInventoryUpdated() {
+        Player redPlayer = Player.create(Color.RED);
+        Player bluePlayer = Player.create(Color.BLUE);
+        Dice dice = new RandomDice();
+        Coordinate coordinate = Coordinate.of(10, 10);
+        Tile tile = Tile.builder()
+                .addBuilding(Direction.ONE, Building.builder().build(Color.BLUE, Building.Type.SETTLEMENT))
+                .build(Resource.ORE, 4);
+        Board board = Board.builder()
+                .addTile(coordinate, tile)
+                .build();
+        Game game = new Game(board, List.of(redPlayer, bluePlayer), dice);
+        MoveRobber uut = new MoveRobber(game);
+        game.setState(uut);
+        uut.moveRobber(redPlayer, coordinate);
+        boolean resourceStolen = uut.stealResource(redPlayer, bluePlayer);
+
+        Assert.assertTrue(resourceStolen);
+        for (Integer value : redPlayer.inventory().resources().values()) {
+            Assert.assertEquals(0, (int) value);
+        }
+        for (Integer value : bluePlayer.inventory().resources().values()) {
+            Assert.assertEquals(0, (int) value);
+        }
+    }
+
+    @Test
+    public void whenStealingFromPlayerWithResources_ThenInventoriesUpdatedCorrectly() {
+        Player redPlayer = Player.create(Color.RED);
+        Inventory blueInventory = Inventory.builder()
+                .addBrick(3)
+                .build();
+        Player bluePlayer = Player.of(Color.BLUE, blueInventory);
+        Dice dice = new RandomDice();
+        Coordinate coordinate = Coordinate.of(10, 10);
+        Tile tile = Tile.builder()
+                .addBuilding(Direction.ONE, Building.builder().build(Color.BLUE, Building.Type.SETTLEMENT))
+                .build(Resource.ORE, 4);
+        Board board = Board.builder()
+                .addTile(coordinate, tile)
+                .build();
+        Game game = new Game(board, List.of(redPlayer, bluePlayer), dice);
+        MoveRobber uut = new MoveRobber(game);
+        game.setState(uut);
+        uut.moveRobber(redPlayer, coordinate);
+        boolean resourceStolen = uut.stealResource(redPlayer, bluePlayer);
+
+        Assert.assertTrue(resourceStolen);
+        Assert.assertEquals(1, (int) redPlayer.inventory().resources().get(Resource.BRICK));
+        Assert.assertEquals(2, (int) bluePlayer.inventory().resources().get(Resource.BRICK));
     }
 }

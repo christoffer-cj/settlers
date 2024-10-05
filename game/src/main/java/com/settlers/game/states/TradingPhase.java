@@ -67,4 +67,14 @@ public class TradingPhase extends BaseState {
 
         return true;
     }
+
+    @Override
+    public boolean endTradingPhase(Player player) {
+        if (!game.getCurrentPlayer().equals(player)) return false;
+
+        if (tradeInProgress != null) return false;
+        game.setState(new BuildingPhase(game));
+
+        return true;
+    }
 }

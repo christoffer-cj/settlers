@@ -184,4 +184,33 @@ public record Position(Coordinate coordinate, Direction direction) {
                             Position.of(coordinate.q(), coordinate.r()-1, Direction.FOUR));
         };
     }
+
+    public Collection<Coordinate> getAdjacentCoordinatesForVertex() {
+        return switch (direction) {
+            case ONE ->
+                    List.of(coordinate,
+                            Coordinate.of(coordinate.q(), coordinate.r()-1),
+                            Coordinate.of(coordinate.q()+1, coordinate.r()-1));
+            case TWO ->
+                    List.of(coordinate,
+                            Coordinate.of(coordinate.q()+1, coordinate.r()-1),
+                            Coordinate.of(coordinate.q()+1, coordinate.r()));
+            case THREE ->
+                    List.of(coordinate,
+                            Coordinate.of(coordinate.q()+1, coordinate.r()),
+                            Coordinate.of(coordinate.q(), coordinate.r()+1));
+            case FOUR ->
+                    List.of(coordinate,
+                            Coordinate.of(coordinate.q(), coordinate.r()+1),
+                            Coordinate.of(coordinate.q()-1, coordinate.r()+1));
+            case FIVE ->
+                    List.of(coordinate,
+                            Coordinate.of(coordinate.q()-1, coordinate.r()+1),
+                            Coordinate.of(coordinate.q()-1, coordinate.r()));
+            case SIX ->
+                    List.of(coordinate,
+                            Coordinate.of(coordinate.q()-1, coordinate.r()),
+                            Coordinate.of(coordinate.q(), coordinate.r()-1));
+        };
+    }
 }

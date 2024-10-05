@@ -345,4 +345,54 @@ public class TradingPhaseTest {
         Assert.assertTrue(tradeDeclined);
         Assert.assertTrue(secondTradeOffered);
     }
+
+    @Test
+    public void testWhenTradeInProgress_TradingPhaseCanNotBeEnded() {
+        Dice dice = new RandomDice();
+        Board board = Board.builder().build();
+        Inventory redInventory = Inventory.builder()
+                .addBrick(1)
+                .build();
+        Player redPlayer = Player.of(Color.RED, redInventory);
+        Inventory blueInventory = Inventory.builder()
+                .addLumber(4)
+                .build();
+        Player bluePlayer = Player.of(Color.BLUE, blueInventory);
+        Player orangePlayer = Player.create(Color.ORANGE);
+        Game game = new Game(board, List.of(redPlayer, bluePlayer, orangePlayer), dice);
+
+        TradingPhase uut = new TradingPhase(game);
+        game.setState(uut);
+        Trade trade = Trade.builder()
+                .offerBrick(1)
+                .receiveLumber(4)
+                .build(redPlayer, bluePlayer);
+        boolean firstTradeOffered = uut.offerTrade(redPlayer, trade);
+        boolean tradingPhaseEnded = uut.endTradingPhase(redPlayer);
+
+        Assert.assertTrue(firstTradeOffered);
+        Assert.assertFalse(tradingPhaseEnded);
+    }
+
+    @Test
+    public void testWhenTradeNotInProgress_ThenTradingPhaseCanBeEnded() {
+        Dice dice = new RandomDice();
+        Board board = Board.builder().build();
+        Inventory redInventory = Inventory.builder()
+                .addBrick(1)
+                .build();
+        Player redPlayer = Player.of(Color.RED, redInventory);
+        Inventory blueInventory = Inventory.builder()
+                .addLumber(4)
+                .build();
+        Player bluePlayer = Player.of(Color.BLUE, blueInventory);
+        Player orangePlayer = Player.create(Color.ORANGE);
+        Game game = new Game(board, List.of(redPlayer, bluePlayer, orangePlayer), dice);
+
+        TradingPhase uut = new TradingPhase(game);
+        game.setState(uut);
+        boolean tradingPhaseEnded = uut.endTradingPhase(redPlayer);
+
+        Assert.assertTrue(tradingPhaseEnded);
+    }
 }

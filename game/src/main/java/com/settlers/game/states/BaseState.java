@@ -51,4 +51,14 @@ public abstract class BaseState implements State {
     public boolean declineTrade(Player player) {
         return false;
     }
+
+    @Override
+    public boolean stealResource(Player player, Player playerToStealFrom) {
+        return false;
+    }
+
+    @Override
+    public boolean endTradingPhase(Player player) {
+        return false;
+    }
 }

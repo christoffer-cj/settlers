@@ -214,4 +214,35 @@ public class SetupPhaseTest {
         Assert.assertFalse(buildingAdded);
         Assert.assertFalse(roadAdded);
     }
+
+    @Test
+    public void testWhenPlayersFinishedSetup_ThenStartingResourcesAllocated() {
+        Player player = Player.create(Color.BLUE);
+        Dice dice = new RandomDice();
+        Coordinate lumberCoordinate = Coordinate.of(0,0);
+        Tile lumberTile = Tile.builder().build(Resource.LUMBER, 2);
+
+        Coordinate oreCoordinate = Coordinate.of(0,-1);
+        Tile oreTile = Tile.builder().build(Resource.ORE, 4);
+
+        Coordinate brickCoordinate = Coordinate.of(1,-1);
+        Tile brickTile = Tile.builder().build(Resource.BRICK, 6);
+
+        Board board = Board.builder()
+                .addTile(oreCoordinate, oreTile)
+                .addTile(lumberCoordinate, lumberTile)
+                .addTile(brickCoordinate, brickTile)
+                .build();
+
+        Game game = new Game(board, List.of(player), dice);
+
+        SetupPhase uut = new SetupPhase(game, false);
+        game.setState(uut);
+        uut.addBuilding(player, Position.of(lumberCoordinate, Direction.ONE), Building.builder().build(Color.BLUE, Building.Type.SETTLEMENT));
+        uut.addRoad(player, Position.of(lumberCoordinate, Direction.ONE), Road.builder().build(Color.BLUE));
+
+        Assert.assertEquals(1, (int) player.inventory().resources().get(Resource.LUMBER));
+        Assert.assertEquals(1, (int) player.inventory().resources().get(Resource.ORE));
+        Assert.assertEquals(1, (int) player.inventory().resources().get(Resource.BRICK));
+    }
 }

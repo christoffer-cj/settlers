@@ -2,9 +2,7 @@ package com.settlers.game.states;
 
 import com.settlers.game.*;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 
 public class SetupPhase extends BaseState {
     private final Map<Player, Position> settlementPositions;
@@ -62,9 +60,29 @@ public class SetupPhase extends BaseState {
         if (isFirstRound) {
             game.setState(new SetupPhase(game, false));
         } else {
+            givePlayersStartingResources();
             game.setState(new RollForResources(game));
         }
 
         return true;
+    }
+
+    private void givePlayersStartingResources() {
+        for (Map.Entry<Player, Position> entry : settlementPositions.entrySet()) {
+            Collection<Resource> startingResources = entry.getValue()
+                    .getAdjacentCoordinatesForVertex()
+                    .stream()
+                    .map(coordinate -> game.getBoard().getTile(coordinate))
+                    .flatMap(Optional::stream)
+                    .map(Tile::resource)
+                    .filter(resource -> resource != Resource.NOTHING)
+                    .toList();
+            for (Resource startingResource : startingResources) {
+                game.getPlayer(entry.getKey().color())
+                        .inventory()
+                        .resources()
+                        .merge(startingResource, 1, Integer::sum);
+            }
+        }
     }
 }
