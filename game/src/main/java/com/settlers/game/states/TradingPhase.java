@@ -69,7 +69,7 @@ public class TradingPhase extends BaseState {
     }
 
     @Override
-    public boolean endTradingPhase(Player player) {
+    public boolean endTrading(Player player) {
         if (!game.getCurrentPlayer().equals(player)) return false;
 
         if (tradeInProgress != null) return false;

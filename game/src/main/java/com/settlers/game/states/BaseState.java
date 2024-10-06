@@ -58,12 +58,22 @@ public abstract class BaseState implements State {
     }
 
     @Override
-    public boolean endTradingPhase(Player player) {
+    public boolean endTrading(Player player) {
         return false;
     }
 
     @Override
     public boolean endTurn(Player player) {
+        return false;
+    }
+
+    @Override
+    public boolean yearOfPlenty(Player player, Resource firstResource, Resource secondResource) {
+        return false;
+    }
+
+    @Override
+    public boolean monopoly(Player player, Resource resource) {
         return false;
     }
 }

@@ -368,7 +368,7 @@ public class TradingPhaseTest {
                 .receiveLumber(4)
                 .build(redPlayer, bluePlayer);
         boolean firstTradeOffered = uut.offerTrade(redPlayer, trade);
-        boolean tradingPhaseEnded = uut.endTradingPhase(redPlayer);
+        boolean tradingPhaseEnded = uut.endTrading(redPlayer);
 
         Assert.assertTrue(firstTradeOffered);
         Assert.assertFalse(tradingPhaseEnded);
@@ -391,7 +391,7 @@ public class TradingPhaseTest {
 
         TradingPhase uut = new TradingPhase(game);
         game.setState(uut);
-        boolean tradingPhaseEnded = uut.endTradingPhase(redPlayer);
+        boolean tradingPhaseEnded = uut.endTrading(redPlayer);
 
         Assert.assertTrue(tradingPhaseEnded);
     }

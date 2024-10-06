@@ -23,7 +23,11 @@ public interface State {
 
     boolean declineTrade(Player player);
 
-    boolean endTradingPhase(Player player);
+    boolean endTrading(Player player);
 
     boolean endTurn(Player player);
+
+    boolean yearOfPlenty(Player player, Resource firstResource, Resource secondResource);
+
+    boolean monopoly(Player player, Resource resource);
 }
