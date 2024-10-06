@@ -24,4 +24,6 @@ public interface State {
     boolean declineTrade(Player player);
 
     boolean endTradingPhase(Player player);
+
+    boolean endTurn(Player player);
 }
