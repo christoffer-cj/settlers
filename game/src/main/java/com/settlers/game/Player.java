@@ -53,6 +53,22 @@ public record Player(Color color, Inventory inventory) {
         return true;
     }
 
+    public boolean canAffordDevelopmentCard() {
+        return inventory.getResource(Resource.WOOL) >= 1 &&
+                inventory.getResource(Resource.GRAIN) >= 1 &&
+                inventory.getResource(Resource.ORE) >= 1;
+    }
+
+    public boolean buyDevelopmentCard() {
+        if (!canAffordDevelopmentCard()) return false;
+
+        inventory.putResource(Resource.WOOL, -1);
+        inventory.putResource(Resource.GRAIN, -1);
+        inventory.putResource(Resource.ORE, -1);
+
+        return true;
+    }
+
     public static Player of(Color color, Inventory inventory) {
         return new Player(color, inventory);
     }

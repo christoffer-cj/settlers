@@ -80,8 +80,7 @@ public class SetupPhase extends BaseState {
             for (Resource startingResource : startingResources) {
                 game.getPlayer(entry.getKey().color())
                         .inventory()
-                        .resources()
-                        .merge(startingResource, 1, Integer::sum);
+                        .putResource(startingResource, 1);
             }
         }
     }

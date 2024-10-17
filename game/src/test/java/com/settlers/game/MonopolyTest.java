@@ -39,7 +39,7 @@ public class MonopolyTest {
         boolean monopolyUsed = uut.monopoly(whitePlayer, Resource.WOOL);
 
         Assert.assertTrue(monopolyUsed);
-        Assert.assertEquals(0, (int) whitePlayer.inventory().resources().get(Resource.WOOL));
+        Assert.assertEquals(0, whitePlayer.inventory().getResource(Resource.WOOL));
         Assert.assertTrue(game.getState() instanceof BuildingPhase);
     }
 
@@ -73,7 +73,7 @@ public class MonopolyTest {
         boolean monopolyUsed = uut.monopoly(whitePlayer, Resource.BRICK);
 
         Assert.assertTrue(monopolyUsed);
-        Assert.assertEquals(9, (int) whitePlayer.inventory().resources().get(Resource.BRICK));
+        Assert.assertEquals(9, whitePlayer.inventory().getResource(Resource.BRICK));
         Assert.assertTrue(game.getState() instanceof BuildingPhase);
     }
 }

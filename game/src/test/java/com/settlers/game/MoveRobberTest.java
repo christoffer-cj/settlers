@@ -2,6 +2,7 @@ package com.settlers.game;
 
 import com.settlers.game.dice.Dice;
 import com.settlers.game.dice.RandomDice;
+import com.settlers.game.states.DiscardResources;
 import com.settlers.game.states.MoveRobber;
 import com.settlers.game.states.TradingPhase;
 import org.junit.Assert;
@@ -11,7 +12,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.CompletableFuture;
 
 public class MoveRobberTest {
     @Test
@@ -43,7 +43,7 @@ public class MoveRobberTest {
         Player player = Player.of(Color.RED, superflousInventory);
         Game game = new Game(board, List.of(player), dice);
 
-        MoveRobber uut = new MoveRobber(game);
+        DiscardResources uut = new DiscardResources(game);
         game.setState(uut);
         boolean robberMoved = uut.moveRobber(player, coordinate);
 
@@ -196,7 +196,7 @@ public class MoveRobberTest {
         Player player = Player.of(Color.RED, superflousInventory);
         Game game = new Game(board, List.of(player), dice);
 
-        MoveRobber uut = new MoveRobber(game);
+        DiscardResources uut = new DiscardResources(game);
         game.setState(uut);
         Map<Resource, Integer> resourcesToDiscard = new HashMap<>();
         resourcesToDiscard.put(Resource.LUMBER, 2);
@@ -204,8 +204,8 @@ public class MoveRobberTest {
         boolean resourcesDiscarded = uut.discardResources(player, resourcesToDiscard);
 
         Assert.assertTrue(resourcesDiscarded);
-        Assert.assertEquals(3, (int) player.inventory().resources().get(Resource.BRICK));
-        Assert.assertEquals(2, (int) player.inventory().resources().get(Resource.LUMBER));
+        Assert.assertEquals(3, player.inventory().getResource(Resource.BRICK));
+        Assert.assertEquals(2, player.inventory().getResource(Resource.LUMBER));
     }
 
     @Test
@@ -264,11 +264,13 @@ public class MoveRobberTest {
         boolean resourceStolen = uut.stealResource(redPlayer, bluePlayer);
 
         Assert.assertTrue(resourceStolen);
-        for (Integer value : redPlayer.inventory().resources().values()) {
-            Assert.assertEquals(0, (int) value);
+        for (Resource resource : Resource.values()) {
+            if (resource == Resource.NOTHING) continue;
+            Assert.assertEquals(0, redPlayer.inventory().getResource(resource));
         }
-        for (Integer value : bluePlayer.inventory().resources().values()) {
-            Assert.assertEquals(0, (int) value);
+        for (Resource resource : Resource.values()) {
+            if (resource == Resource.NOTHING) continue;
+            Assert.assertEquals(0, bluePlayer.inventory().getResource(resource));
         }
     }
 
@@ -294,7 +296,7 @@ public class MoveRobberTest {
         boolean resourceStolen = uut.stealResource(redPlayer, bluePlayer);
 
         Assert.assertTrue(resourceStolen);
-        Assert.assertEquals(1, (int) redPlayer.inventory().resources().get(Resource.BRICK));
-        Assert.assertEquals(2, (int) bluePlayer.inventory().resources().get(Resource.BRICK));
+        Assert.assertEquals(1, redPlayer.inventory().getResource(Resource.BRICK));
+        Assert.assertEquals(2, bluePlayer.inventory().getResource(Resource.BRICK));
     }
 }

@@ -23,8 +23,8 @@ public class YearOfPlentyTest {
         boolean yearOfPlentyUsed = uut.yearOfPlenty(player, Resource.BRICK, Resource.ORE);
 
         Assert.assertTrue(yearOfPlentyUsed);
-        Assert.assertEquals(1, (int) player.inventory().resources().get(Resource.BRICK));
-        Assert.assertEquals(1, (int) player.inventory().resources().get(Resource.ORE));
+        Assert.assertEquals(1, player.inventory().getResource(Resource.BRICK));
+        Assert.assertEquals(1, player.inventory().getResource(Resource.ORE));
         Assert.assertTrue(game.getState() instanceof BuildingPhase);
     }
 }

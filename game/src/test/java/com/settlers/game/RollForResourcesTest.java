@@ -2,7 +2,7 @@ package com.settlers.game;
 
 import com.settlers.game.dice.Dice;
 import com.settlers.game.dice.TestingDice;
-import com.settlers.game.states.MoveRobber;
+import com.settlers.game.states.DiscardResources;
 import com.settlers.game.states.RollForResources;
 import org.junit.Assert;
 import org.junit.Test;
@@ -29,7 +29,7 @@ public class RollForResourcesTest {
         game.setState(uut);
         uut.rollDice(player);
 
-        Assert.assertEquals(1, (int) player.inventory().resources().get(Resource.ORE));
+        Assert.assertEquals(1, player.inventory().getResource(Resource.ORE));
     }
 
     @Test
@@ -51,7 +51,7 @@ public class RollForResourcesTest {
         game.setState(uut);
         uut.rollDice(player);
 
-        Assert.assertEquals(2, (int) player.inventory().resources().get(Resource.ORE));
+        Assert.assertEquals(2, player.inventory().getResource(Resource.ORE));
     }
 
     @Test
@@ -76,7 +76,7 @@ public class RollForResourcesTest {
         game.setState(uut);
         uut.rollDice(player);
 
-        Assert.assertEquals(3, (int) player.inventory().resources().get(Resource.ORE));
+        Assert.assertEquals(3, player.inventory().getResource(Resource.ORE));
     }
 
     @Test
@@ -98,7 +98,7 @@ public class RollForResourcesTest {
         game.setState(uut);
         uut.rollDice(player);
 
-        Assert.assertEquals(0, (int) player.inventory().resources().get(Resource.ORE));
+        Assert.assertEquals(0, player.inventory().getResource(Resource.ORE));
     }
 
     @Test
@@ -123,8 +123,8 @@ public class RollForResourcesTest {
         game.setState(uut);
         uut.rollDice(player);
 
-        Assert.assertEquals(1, (int) player.inventory().resources().get(Resource.ORE));
-        Assert.assertEquals(1, (int) player.inventory().resources().get(Resource.LUMBER));
+        Assert.assertEquals(1, player.inventory().getResource(Resource.ORE));
+        Assert.assertEquals(1, player.inventory().getResource(Resource.LUMBER));
     }
 
     @Test
@@ -149,12 +149,12 @@ public class RollForResourcesTest {
         game.setState(uut);
         uut.rollDice(player);
 
-        Assert.assertEquals(0, (int) player.inventory().resources().get(Resource.ORE));
-        Assert.assertEquals(1, (int) player.inventory().resources().get(Resource.LUMBER));
+        Assert.assertEquals(0, player.inventory().getResource(Resource.ORE));
+        Assert.assertEquals(1, player.inventory().getResource(Resource.LUMBER));
     }
 
     @Test
-    public void testWhenRollSeven_ThenMoveRobberState() {
+    public void testWhenRollSeven_ThenDiscardResourcesState() {
         Board board = Board.builder().build();
         Player player = Player.create(Color.ORANGE);
         Dice dice = new TestingDice(List.of(7));
@@ -164,7 +164,7 @@ public class RollForResourcesTest {
         game.setState(uut);
         uut.rollDice(player);
 
-        Assert.assertTrue(game.getState() instanceof MoveRobber);
+        Assert.assertTrue(game.getState() instanceof DiscardResources);
     }
 
     @Test
@@ -190,8 +190,8 @@ public class RollForResourcesTest {
         game.setState(uut);
         uut.rollDice(whitePlayer);
 
-        Assert.assertEquals(1, (int) whitePlayer.inventory().resources().get(Resource.ORE));
-        Assert.assertEquals(1, (int) redPlayer.inventory().resources().get(Resource.ORE));
+        Assert.assertEquals(1, whitePlayer.inventory().getResource(Resource.ORE));
+        Assert.assertEquals(1, redPlayer.inventory().getResource(Resource.ORE));
     }
 
     @Test
@@ -229,6 +229,6 @@ public class RollForResourcesTest {
         game.setState(uut);
         uut.rollDice(player);
 
-        Assert.assertEquals(0, (int) player.inventory().resources().get(Resource.ORE));
+        Assert.assertEquals(0, player.inventory().getResource(Resource.ORE));
     }
 }

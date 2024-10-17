@@ -19,7 +19,7 @@ public class RollForResources extends BaseState {
         int roll = game.getDice().roll();
 
         if (roll == 7) {
-            game.setState(new MoveRobber(game));
+            game.setState(new DiscardResources(game));
             return true;
         }
 
@@ -37,7 +37,7 @@ public class RollForResources extends BaseState {
                 newResources.put(resource, amount);
             }
             for (Map.Entry<Resource, Integer> entry : newResources.entrySet()) {
-                p.inventory().resources().merge(entry.getKey(), entry.getValue(), Integer::sum);
+                p.inventory().putResource(entry.getKey(), entry.getValue());
             }
         }
         game.setState(new TradingPhase(game));

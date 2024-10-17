@@ -2,7 +2,6 @@ package com.settlers.game.states;
 
 import com.settlers.game.*;
 
-import java.util.List;
 import java.util.Map;
 
 public class TradingPhase extends BaseState {
@@ -28,11 +27,11 @@ public class TradingPhase extends BaseState {
 
         Inventory offeringPlayerInventory = game.getPlayer(trade.offeringPlayer().color()).inventory();
         for (Map.Entry<Resource, Integer> entry : trade.offer().entrySet()) {
-            if (offeringPlayerInventory.resources().get(entry.getKey()) < entry.getValue()) return false;
+            if (offeringPlayerInventory.getResource(entry.getKey()) < entry.getValue()) return false;
         }
         Inventory receivingPlayerInventory = game.getPlayer(trade.receivingPlayer().color()).inventory();
         for (Map.Entry<Resource, Integer> entry : trade.receive().entrySet()) {
-            if (receivingPlayerInventory.resources().get(entry.getKey()) < entry.getValue()) return false;
+            if (receivingPlayerInventory.getResource(entry.getKey()) < entry.getValue()) return false;
         }
         tradeInProgress = trade;
 
@@ -47,12 +46,12 @@ public class TradingPhase extends BaseState {
         Inventory offeringPlayerInventory = game.getPlayer(tradeInProgress.offeringPlayer().color()).inventory();
         Inventory receivingPlayerInventory = game.getPlayer(tradeInProgress.receivingPlayer().color()).inventory();
         for (Map.Entry<Resource, Integer> offerEntry : tradeInProgress.offer().entrySet()) {
-            offeringPlayerInventory.resources().merge(offerEntry.getKey(), offerEntry.getValue(), (a, b) -> a - b);
-            receivingPlayerInventory.resources().merge(offerEntry.getKey(), offerEntry.getValue(), Integer::sum);
+            offeringPlayerInventory.putResource(offerEntry.getKey(), offerEntry.getValue() * -1);
+            receivingPlayerInventory.putResource(offerEntry.getKey(), offerEntry.getValue());
         }
         for (Map.Entry<Resource, Integer> receiveEntry : tradeInProgress.receive().entrySet()) {
-            receivingPlayerInventory.resources().merge(receiveEntry.getKey(), receiveEntry.getValue(), (a, b) -> a - b);
-            offeringPlayerInventory.resources().merge(receiveEntry.getKey(), receiveEntry.getValue(), Integer::sum);
+            receivingPlayerInventory.putResource(receiveEntry.getKey(), receiveEntry.getValue() * -1);
+            offeringPlayerInventory.putResource(receiveEntry.getKey(), receiveEntry.getValue());
         }
 
         tradeInProgress = null;
@@ -84,13 +83,11 @@ public class TradingPhase extends BaseState {
     public boolean useDevelopmentCard(Player player, DevelopmentCard developmentCard) {
         if (!game.getCurrentPlayer().equals(player)) return false;
 
+        if (tradeInProgress != null) return false;
+
         if (hasUsedDevelopmentCard) return false;
 
-        if ((game.getPlayer(player.color()).inventory().developmentCards().get(developmentCard) == 0)) return false;
-
-        if (!List.of(DevelopmentCard.MONOPOLY, DevelopmentCard.KNIGHT,  DevelopmentCard.ROAD_BUILDING, DevelopmentCard.YEAR_OF_PLENTY).contains(developmentCard)) return false;
-
-        game.getPlayer(player.color()).inventory().developmentCards().merge(developmentCard, -1, Integer::sum);
+        if (!game.getPlayer(player.color()).inventory().useDevelopmentCard(developmentCard)) return false;
 
         switch (developmentCard) {
             case MONOPOLY -> game.setState(new Monopoly(game, this));
@@ -118,10 +115,10 @@ public class TradingPhase extends BaseState {
        };
        if (game.getBoard().hasHarbor(player, resourceHarbor)) amountNeeded = 2;
 
-       if (!(game.getPlayer(player.color()).inventory().resources().get(offer) >= amountNeeded)) return false;
+       if (!(game.getPlayer(player.color()).inventory().getResource(offer) >= amountNeeded)) return false;
 
-       game.getPlayer(player.color()).inventory().resources().merge(receive, 1, Integer::sum);
-       game.getPlayer(player.color()).inventory().resources().merge(offer, amountNeeded * -1, Integer::sum);
+       game.getPlayer(player.color()).inventory().putResource(receive, 1);
+       game.getPlayer(player.color()).inventory().putResource(offer, amountNeeded * -1);
 
        return true;
     }

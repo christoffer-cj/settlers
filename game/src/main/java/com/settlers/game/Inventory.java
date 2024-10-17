@@ -3,6 +3,7 @@ package com.settlers.game;
 import java.util.EnumMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Random;
 
 public class Inventory {
     private final Map<Resource, Integer> resources;
@@ -28,6 +29,26 @@ public class Inventory {
 
         resources.merge(resource, amount, Integer::sum);
         return true;
+    }
+
+    public void clearResource(Resource resource) {
+        resources.put(resource, 0);
+    }
+
+    public Resource stealResource() {
+        Random rng = new Random();
+        int resourceNoToSteal = rng.nextInt(1, totalResources() + 1);
+        for (Map.Entry<Resource, Integer> entry : resources.entrySet()) {
+            if (resourceNoToSteal <= entry.getValue()) {
+                Resource stolenResource = entry.getKey();
+                putResource(stolenResource, -1);
+                return stolenResource;
+            } else {
+                resourceNoToSteal -= entry.getValue();
+            }
+        }
+
+        throw new IllegalStateException("No resource stolen");
     }
 
     public boolean useDevelopmentCard(DevelopmentCard developmentCard) {

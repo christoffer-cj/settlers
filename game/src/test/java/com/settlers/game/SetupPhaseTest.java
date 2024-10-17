@@ -241,8 +241,8 @@ public class SetupPhaseTest {
         uut.addBuilding(player, Position.of(lumberCoordinate, Direction.ONE), Building.builder().build(Color.BLUE, Building.Type.SETTLEMENT));
         uut.addRoad(player, Position.of(lumberCoordinate, Direction.ONE), Road.builder().build(Color.BLUE));
 
-        Assert.assertEquals(1, (int) player.inventory().resources().get(Resource.LUMBER));
-        Assert.assertEquals(1, (int) player.inventory().resources().get(Resource.ORE));
-        Assert.assertEquals(1, (int) player.inventory().resources().get(Resource.BRICK));
+        Assert.assertEquals(1, player.inventory().getResource(Resource.LUMBER));
+        Assert.assertEquals(1, player.inventory().getResource(Resource.ORE));
+        Assert.assertEquals(1, player.inventory().getResource(Resource.BRICK));
     }
 }

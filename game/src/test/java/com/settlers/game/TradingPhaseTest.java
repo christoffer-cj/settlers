@@ -188,8 +188,8 @@ public class TradingPhaseTest {
 
         Assert.assertTrue(tradeOffered);
         Assert.assertTrue(tradeAccepted);
-        Assert.assertEquals(4, (int) redInventory.resources().get(Resource.LUMBER));
-        Assert.assertEquals(1, (int) blueInventory.resources().get(Resource.BRICK));
+        Assert.assertEquals(4, redInventory.getResource(Resource.LUMBER));
+        Assert.assertEquals(1, blueInventory.getResource(Resource.BRICK));
     }
 
     @Test
@@ -218,8 +218,8 @@ public class TradingPhaseTest {
 
         Assert.assertTrue(tradeOffered);
         Assert.assertTrue(tradeAccepted);
-        Assert.assertEquals(4, (int) blueInventory.resources().get(Resource.LUMBER));
-        Assert.assertEquals(1, (int) redInventory.resources().get(Resource.BRICK));
+        Assert.assertEquals(4, blueInventory.getResource(Resource.LUMBER));
+        Assert.assertEquals(1, redInventory.getResource(Resource.BRICK));
     }
 
     @Test

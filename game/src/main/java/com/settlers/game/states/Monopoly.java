@@ -21,12 +21,13 @@ public class Monopoly extends BaseState {
         int resourcesToGet = 0;
         for (Player otherPlayer : game.getPlayers()) {
             if (otherPlayer.equals(player)) continue;
-            resourcesToGet += otherPlayer.inventory().resources().get(resource);
-            otherPlayer.inventory().resources().put(resource, 0);
+            resourcesToGet += otherPlayer.inventory().getResource(resource);
+            otherPlayer.inventory().clearResource(resource);
         }
-        game.getPlayer(player.color()).inventory().resources().merge(resource, resourcesToGet, Integer::sum);
+        game.getPlayer(player.color()).inventory().putResource(resource, resourcesToGet);
 
         game.setState(previousState);
+
         return true;
     }
 }

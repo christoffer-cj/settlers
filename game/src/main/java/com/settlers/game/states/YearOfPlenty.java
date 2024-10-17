@@ -18,8 +18,8 @@ public class YearOfPlenty extends BaseState {
     public boolean yearOfPlenty(Player player, Resource firstResource, Resource secondResource) {
         if (!game.getCurrentPlayer().equals(player)) return false;
 
-        game.getPlayer(player.color()).inventory().resources().merge(firstResource, 1, Integer::sum);
-        game.getPlayer(player.color()).inventory().resources().merge(secondResource, 1, Integer::sum);
+        game.getPlayer(player.color()).inventory().putResource(firstResource, 1);
+        game.getPlayer(player.color()).inventory().putResource(secondResource, 1);
         game.setState(previousState);
 
         return true;
