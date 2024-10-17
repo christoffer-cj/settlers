@@ -22,7 +22,7 @@ public class BuildingPhaseTest {
                 .build();
         Game game = new Game(board, List.of(redPlayer, bluePlayer), dice);
 
-        BuildingPhase uut = new BuildingPhase(game);
+        BuildingPhase uut = new BuildingPhase(game, false);
         game.setState(uut);
 
         boolean buildingPlaced = uut.addBuilding(bluePlayer, Position.of(coordinate, Direction.FIVE), Building.builder().build(Color.BLUE, Building.Type.SETTLEMENT));
@@ -42,7 +42,7 @@ public class BuildingPhaseTest {
                 .build();
         Game game = new Game(board, List.of(redPlayer, bluePlayer), dice);
 
-        BuildingPhase uut = new BuildingPhase(game);
+        BuildingPhase uut = new BuildingPhase(game, false);
         game.setState(uut);
 
         boolean buildingPlaced = uut.addBuilding(redPlayer, Position.of(coordinate, Direction.FIVE), Building.builder().build(Color.BLUE, Building.Type.SETTLEMENT));
@@ -62,7 +62,7 @@ public class BuildingPhaseTest {
                 .build();
         Game game = new Game(board, List.of(redPlayer, bluePlayer), dice);
 
-        BuildingPhase uut = new BuildingPhase(game);
+        BuildingPhase uut = new BuildingPhase(game, false);
         game.setState(uut);
 
         boolean buildingPlaced = uut.addBuilding(redPlayer, Position.of(coordinate, Direction.FIVE), Building.builder().build(Color.RED, Building.Type.CITY));
@@ -89,7 +89,7 @@ public class BuildingPhaseTest {
                 .build();
         Game game = new Game(board, List.of(redPlayer, bluePlayer), dice);
 
-        BuildingPhase uut = new BuildingPhase(game);
+        BuildingPhase uut = new BuildingPhase(game, false);
         game.setState(uut);
 
         boolean buildingPlaced = uut.addBuilding(redPlayer, Position.of(coordinate, Direction.FIVE), Building.builder().build(Color.RED, Building.Type.CITY));
@@ -115,7 +115,7 @@ public class BuildingPhaseTest {
                 .build();
         Game game = new Game(board, List.of(redPlayer, bluePlayer), dice);
 
-        BuildingPhase uut = new BuildingPhase(game);
+        BuildingPhase uut = new BuildingPhase(game, false);
         game.setState(uut);
         boolean buildingPlaced = uut.addBuilding(redPlayer, Position.of(coordinate, Direction.FIVE), Building.builder().build(Color.RED, Building.Type.SETTLEMENT));
 
@@ -142,7 +142,7 @@ public class BuildingPhaseTest {
                 .build();
         Game game = new Game(board, List.of(redPlayer, bluePlayer), dice);
 
-        BuildingPhase uut = new BuildingPhase(game);
+        BuildingPhase uut = new BuildingPhase(game, false);
         game.setState(uut);
         boolean buildingPlaced = uut.addBuilding(redPlayer, Position.of(coordinate, Direction.FIVE), Building.builder().build(Color.RED, Building.Type.SETTLEMENT));
 
@@ -161,7 +161,7 @@ public class BuildingPhaseTest {
                 .build();
         Game game = new Game(board, List.of(redPlayer, bluePlayer), dice);
 
-        BuildingPhase uut = new BuildingPhase(game);
+        BuildingPhase uut = new BuildingPhase(game, false);
         game.setState(uut);
 
         boolean buildingPlaced = uut.addRoad(bluePlayer, Position.of(coordinate, Direction.FIVE), Road.builder().build(Color.BLUE));
@@ -181,7 +181,7 @@ public class BuildingPhaseTest {
                 .build();
         Game game = new Game(board, List.of(redPlayer, bluePlayer), dice);
 
-        BuildingPhase uut = new BuildingPhase(game);
+        BuildingPhase uut = new BuildingPhase(game, false);
         game.setState(uut);
 
         boolean buildingPlaced = uut.addRoad(redPlayer, Position.of(coordinate, Direction.FIVE), Road.builder().build(Color.BLUE));
@@ -197,7 +197,7 @@ public class BuildingPhaseTest {
         Board board = Board.builder().build();
         Game game = new Game(board, List.of(redPlayer, bluePlayer), dice);
 
-        BuildingPhase uut = new BuildingPhase(game);
+        BuildingPhase uut = new BuildingPhase(game, false);
         game.setState(uut);
         uut.endTurn(redPlayer);
 
@@ -213,7 +213,7 @@ public class BuildingPhaseTest {
         Board board = Board.builder().build();
         Game game = new Game(board, List.of(redPlayer, bluePlayer), dice);
 
-        BuildingPhase uut = new BuildingPhase(game);
+        BuildingPhase uut = new BuildingPhase(game, false);
         game.setState(uut);
         boolean turnEnded = uut.endTurn(bluePlayer);
 

@@ -30,4 +30,8 @@ public interface State {
     boolean yearOfPlenty(Player player, Resource firstResource, Resource secondResource);
 
     boolean monopoly(Player player, Resource resource);
+
+    boolean useDevelopmentCard(Player player, DevelopmentCard developmentCard);
+
+    boolean exchange(Player player, Resource offer, Resource receive);
 }

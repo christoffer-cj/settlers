@@ -17,8 +17,8 @@ public class MoveRobber extends BaseState {
         Map<Player, Integer> discardAmounts = new HashMap<>();
         Map<Player, Boolean> hasDiscarded = new HashMap<>();
         for (Player player : game.getPlayers()) {
-            if (player.inventory().amountOfResources() <= 7) continue;
-            int amountToDiscard = player.inventory().amountOfResources() / 2;
+            if (player.inventory().totalResources() <= 7) continue;
+            int amountToDiscard = player.inventory().totalResources() / 2;
             discardAmounts.put(player, amountToDiscard);
             hasDiscarded.put(player, false);
         }
@@ -88,7 +88,7 @@ public class MoveRobber extends BaseState {
 
         int totalResources = game.getPlayer(playerToStealFrom.color())
                 .inventory()
-                .amountOfResources();
+                .totalResources();
 
         if (totalResources == 0) {
             game.setState(new TradingPhase(game));

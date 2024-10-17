@@ -76,4 +76,14 @@ public abstract class BaseState implements State {
     public boolean monopoly(Player player, Resource resource) {
         return false;
     }
+
+    @Override
+    public boolean useDevelopmentCard(Player player, DevelopmentCard developmentCard) {
+       return false;
+    }
+
+    @Override
+    public boolean exchange(Player player, Resource offer, Resource receive) {
+        return false;
+    }
 }

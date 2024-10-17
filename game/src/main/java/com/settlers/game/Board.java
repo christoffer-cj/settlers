@@ -134,6 +134,23 @@ public class Board {
         return true;
     }
 
+    public boolean hasHarbor(Player player, Harbor harbor) {
+        assert player != null;
+        assert harbor != null;
+        for (Map.Entry<Coordinate, Tile> entry : tiles.entrySet()) {
+            for (Map.Entry<Direction, Harbor> harborEntry : entry.getValue().harbors().entrySet()) {
+                if (!harbor.equals(harborEntry.getValue())) continue;
+                Optional<Building> building = getBuilding(Position.of(entry.getKey(), harborEntry.getKey()));
+                if (building.isEmpty()) continue;
+                if (!building.get().color().equals(player.color())) continue;
+
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     private <T> Optional<T> getVertex(Position position, Function<Tile, Map<Direction, T>> mapper) {
         assert position != null;
         assert mapper != null;

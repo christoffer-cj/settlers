@@ -2,10 +2,12 @@ package com.settlers.game.states;
 
 import com.settlers.game.*;
 
+import java.util.List;
 import java.util.Map;
 
 public class TradingPhase extends BaseState {
     private Trade tradeInProgress;
+    private boolean hasUsedDevelopmentCard;
 
     public TradingPhase(Game game) {
         super(game);
@@ -73,8 +75,54 @@ public class TradingPhase extends BaseState {
         if (!game.getCurrentPlayer().equals(player)) return false;
 
         if (tradeInProgress != null) return false;
-        game.setState(new BuildingPhase(game));
+        game.setState(new BuildingPhase(game, hasUsedDevelopmentCard));
 
         return true;
+    }
+
+    @Override
+    public boolean useDevelopmentCard(Player player, DevelopmentCard developmentCard) {
+        if (!game.getCurrentPlayer().equals(player)) return false;
+
+        if (hasUsedDevelopmentCard) return false;
+
+        if ((game.getPlayer(player.color()).inventory().developmentCards().get(developmentCard) == 0)) return false;
+
+        if (!List.of(DevelopmentCard.MONOPOLY, DevelopmentCard.KNIGHT,  DevelopmentCard.ROAD_BUILDING, DevelopmentCard.YEAR_OF_PLENTY).contains(developmentCard)) return false;
+
+        game.getPlayer(player.color()).inventory().developmentCards().merge(developmentCard, -1, Integer::sum);
+
+        switch (developmentCard) {
+            case MONOPOLY -> game.setState(new Monopoly(game, this));
+            case ROAD_BUILDING -> game.setState(new RoadBuilding(game, this));
+            case YEAR_OF_PLENTY -> game.setState(new YearOfPlenty(game, this));
+        }
+
+        return true;
+    }
+
+    @Override
+    public boolean exchange(Player player, Resource offer, Resource receive) {
+        if (!game.getCurrentPlayer().equals(player)) return false;
+        if (offer == Resource.NOTHING || receive == Resource.NOTHING) return false;
+
+        int amountNeeded = 4;
+        if (game.getBoard().hasHarbor(player, Harbor.ANY)) amountNeeded = 3;
+        Harbor resourceHarbor = switch (offer) {
+           case BRICK ->  Harbor.BRICK;
+           case LUMBER ->  Harbor.LUMBER;
+           case ORE ->  Harbor.ORE;
+           case GRAIN ->  Harbor.GRAIN;
+           case WOOL ->  Harbor.WOOL;
+           default ->  Harbor.ANY; // dummy case to make compiler happy
+       };
+       if (game.getBoard().hasHarbor(player, resourceHarbor)) amountNeeded = 2;
+
+       if (!(game.getPlayer(player.color()).inventory().resources().get(offer) >= amountNeeded)) return false;
+
+       game.getPlayer(player.color()).inventory().resources().merge(receive, 1, Integer::sum);
+       game.getPlayer(player.color()).inventory().resources().merge(offer, amountNeeded * -1, Integer::sum);
+
+       return true;
     }
 }

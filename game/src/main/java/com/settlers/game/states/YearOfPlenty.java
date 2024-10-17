@@ -1,10 +1,8 @@
-package com.settlers.game.states.developmentcards;
+package com.settlers.game.states;
 
 import com.settlers.game.Game;
 import com.settlers.game.Player;
 import com.settlers.game.Resource;
-import com.settlers.game.states.BaseState;
-import com.settlers.game.states.State;
 
 import java.util.Objects;
 
@@ -22,6 +20,7 @@ public class YearOfPlenty extends BaseState {
 
         game.getPlayer(player.color()).inventory().resources().merge(firstResource, 1, Integer::sum);
         game.getPlayer(player.color()).inventory().resources().merge(secondResource, 1, Integer::sum);
+        game.setState(previousState);
 
         return true;
     }

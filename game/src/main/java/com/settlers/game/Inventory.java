@@ -2,12 +2,45 @@ package com.settlers.game;
 
 import java.util.EnumMap;
 import java.util.Map;
+import java.util.Objects;
 
-public record Inventory(Map<Resource, Integer> resources,
-                        Map<DevelopmentCard, Integer> developmentCards) {
-    public Inventory {
-        assert resources != null;
-        assert developmentCards != null;
+public class Inventory {
+    private final Map<Resource, Integer> resources;
+    private final Map<DevelopmentCard, Integer> developmentCards;
+    public Inventory(Map<Resource, Integer> resources,
+                     Map<DevelopmentCard, Integer> developmentCards) {
+        this.resources = Objects.requireNonNull(resources);
+        this.developmentCards = Objects.requireNonNull(developmentCards);
+    }
+
+    public int totalResources() {
+        return resources.values().stream().reduce(0, Integer::sum);
+    }
+
+    public int getResource(Resource resource) {
+        return resources.get(resource);
+    }
+
+    public boolean putResource(Resource resource, int amount) {
+        assert resource != null;
+        assert resource != Resource.NOTHING;
+        if (amount < 0 && resources.get(resource) < amount * -1) return false;
+
+        resources.merge(resource, amount, Integer::sum);
+        return true;
+    }
+
+    public boolean useDevelopmentCard(DevelopmentCard developmentCard) {
+        assert developmentCard != null;
+        if (developmentCard == DevelopmentCard.VICTORY_POINT) return false;
+        if (!(developmentCards.get(developmentCard) >= 1)) return false;
+
+        developmentCards.merge(developmentCard, -1, Integer::sum);
+        return true;
+    }
+
+    public void addDevelopmentCard(DevelopmentCard developmentCard) {
+        developmentCards.merge(developmentCard, 1, Integer::sum);
     }
 
     public static Builder builder() {
@@ -27,11 +60,8 @@ public record Inventory(Map<Resource, Integer> resources,
         return new Inventory(resources, developmentCards);
     }
 
-    public int amountOfResources() {
-        return resources.values().stream().reduce(0, Integer::sum);
-    }
-
     public static final class Builder {
+
         private final Map<Resource, Integer> resources;
         private final Map<DevelopmentCard, Integer> developmentCards;
         private Builder() {
