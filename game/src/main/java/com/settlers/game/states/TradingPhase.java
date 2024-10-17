@@ -93,6 +93,7 @@ public class TradingPhase extends BaseState {
             case MONOPOLY -> game.setState(new Monopoly(game, this));
             case ROAD_BUILDING -> game.setState(new RoadBuilding(game, this));
             case YEAR_OF_PLENTY -> game.setState(new YearOfPlenty(game, this));
+            case KNIGHT -> game.setState(new MoveRobber(game, this));
         }
 
         return true;

@@ -2,19 +2,22 @@ package com.settlers.game.states;
 
 import com.settlers.game.*;
 
-import java.util.HashSet;
-import java.util.Optional;
-import java.util.Random;
-import java.util.Set;
+import java.util.*;
 
 public class MoveRobber extends BaseState {
     private boolean robberMoved = false;
     private final Set<Player> playersEligibleToStealFrom = new HashSet<>();
     private final Random rng = new Random();
+    private State previousState = null;
 
 
     public MoveRobber(Game game) {
         super(game);
+    }
+
+    public MoveRobber(Game game, State previousState) {
+        super(game);
+        this.previousState = Objects.requireNonNull(previousState);
     }
 
     @Override
@@ -60,7 +63,11 @@ public class MoveRobber extends BaseState {
         Resource stolenResource = game.getPlayer(playerToStealFrom.color()).inventory().stealResource();
         game.getPlayer(player.color()).inventory().putResource(stolenResource, 1);
 
-        game.setState(new TradingPhase(game));
+        if (previousState != null) {
+            game.setState(previousState);
+        } else {
+            game.setState(new TradingPhase(game));
+        }
 
         return true;
     }
