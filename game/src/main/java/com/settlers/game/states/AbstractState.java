@@ -5,10 +5,10 @@ import com.settlers.game.*;
 import java.util.Map;
 import java.util.Objects;
 
-public abstract class BaseState implements State {
+public abstract class AbstractState implements State {
     protected final Game game;
 
-    public BaseState(Game game) {
+    public AbstractState(Game game) {
         this.game = Objects.requireNonNull(game);
     }
 
@@ -56,12 +56,6 @@ public abstract class BaseState implements State {
     public boolean stealResource(Player player, Player playerToStealFrom) {
         return false;
     }
-
-    @Override
-    public boolean endTrading(Player player) {
-        return false;
-    }
-
     @Override
     public boolean endTurn(Player player) {
         return false;
@@ -74,6 +68,11 @@ public abstract class BaseState implements State {
 
     @Override
     public boolean monopoly(Player player, Resource resource) {
+        return false;
+    }
+
+    @Override
+    public boolean buyDevelopmentCard(Player player) {
         return false;
     }
 

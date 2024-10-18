@@ -4,7 +4,7 @@ import com.settlers.game.*;
 
 import java.util.*;
 
-public class SetupPhase extends BaseState {
+public class SetupPhase extends AbstractState {
     private final Map<Player, Position> settlementPositions;
     private final boolean isFirstRound;
 
@@ -29,6 +29,7 @@ public class SetupPhase extends BaseState {
         if (building.type() != Building.Type.SETTLEMENT) return false;
 
         if (!game.getBoard().addBuilding(position, building, true)) return false;
+        game.getPlayer(player.color()).inventory().useBuilding(building.type());
 
         settlementPositions.put(game.getCurrentPlayer(), position);
 
@@ -47,6 +48,7 @@ public class SetupPhase extends BaseState {
         if (!settlementPosition.getAdjacentEdgesForVertex().contains(position)) return false;
 
         if (!game.getBoard().addRoad(position, road)) return false;
+        game.getPlayer(player.color()).inventory().useRoad();
 
         if (!settlementPositions.values().stream().allMatch(Objects::nonNull)) {
             if (isFirstRound) {

@@ -2,7 +2,7 @@ package com.settlers.game;
 
 import com.settlers.game.dice.Dice;
 import com.settlers.game.dice.RandomDice;
-import com.settlers.game.states.BuildingPhase;
+import com.settlers.game.states.ActionPhase;
 import com.settlers.game.states.YearOfPlenty;
 import org.junit.Assert;
 import org.junit.Test;
@@ -17,7 +17,7 @@ public class YearOfPlentyTest {
         Dice dice = new RandomDice();
         Game game = new Game(board, List.of(player), dice);
 
-        YearOfPlenty uut = new YearOfPlenty(game, new BuildingPhase(game, true));
+        YearOfPlenty uut = new YearOfPlenty(game, new ActionPhase(game));
         game.setState(uut);
 
         boolean yearOfPlentyUsed = uut.yearOfPlenty(player, Resource.BRICK, Resource.ORE);
@@ -25,6 +25,6 @@ public class YearOfPlentyTest {
         Assert.assertTrue(yearOfPlentyUsed);
         Assert.assertEquals(1, player.inventory().getResource(Resource.BRICK));
         Assert.assertEquals(1, player.inventory().getResource(Resource.ORE));
-        Assert.assertTrue(game.getState() instanceof BuildingPhase);
+        Assert.assertTrue(game.getState() instanceof ActionPhase);
     }
 }

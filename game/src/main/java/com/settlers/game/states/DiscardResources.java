@@ -8,7 +8,7 @@ import com.settlers.game.Resource;
 import java.util.HashMap;
 import java.util.Map;
 
-public class DiscardResources extends BaseState {
+public class DiscardResources extends AbstractState {
     private final Map<Player, Integer> discardAmounts;
     private final Map<Player, Boolean> hasDiscarded;
 

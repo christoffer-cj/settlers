@@ -7,7 +7,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
-public class DetermineStartingPlayer extends BaseState {
+public class DetermineStartingPlayer extends AbstractState {
     private final Map<Player, Integer> playerRolls = new HashMap<>();
 
     public DetermineStartingPlayer(Game game) {

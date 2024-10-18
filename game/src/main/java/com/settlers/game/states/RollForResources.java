@@ -7,7 +7,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
-public class RollForResources extends BaseState {
+public class RollForResources extends AbstractState {
     public RollForResources(Game game) {
         super(game);
     }
@@ -40,7 +40,7 @@ public class RollForResources extends BaseState {
                 p.inventory().putResource(entry.getKey(), entry.getValue());
             }
         }
-        game.setState(new TradingPhase(game));
+        game.setState(new ActionPhase(game));
 
         return true;
     }

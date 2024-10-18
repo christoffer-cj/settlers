@@ -4,7 +4,7 @@ import com.settlers.game.*;
 
 import java.util.*;
 
-public class MoveRobber extends BaseState {
+public class MoveRobber extends AbstractState {
     private boolean robberMoved = false;
     private final Set<Player> playersEligibleToStealFrom = new HashSet<>();
     private final Random rng = new Random();
@@ -36,7 +36,7 @@ public class MoveRobber extends BaseState {
         }
 
         if (playersEligibleToStealFrom.isEmpty()) {
-            game.setState(new TradingPhase(game));
+            game.setState(new ActionPhase(game));
         }
         robberMoved = true;
 
@@ -56,7 +56,7 @@ public class MoveRobber extends BaseState {
                 .totalResources();
 
         if (totalResources == 0) {
-            game.setState(new TradingPhase(game));
+            game.setState(new ActionPhase(game));
             return true;
         }
 
@@ -66,7 +66,7 @@ public class MoveRobber extends BaseState {
         if (previousState != null) {
             game.setState(previousState);
         } else {
-            game.setState(new TradingPhase(game));
+            game.setState(new ActionPhase(game));
         }
 
         return true;

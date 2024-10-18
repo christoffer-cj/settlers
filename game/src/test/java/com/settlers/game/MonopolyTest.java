@@ -2,7 +2,7 @@ package com.settlers.game;
 
 import com.settlers.game.dice.Dice;
 import com.settlers.game.dice.RandomDice;
-import com.settlers.game.states.BuildingPhase;
+import com.settlers.game.states.ActionPhase;
 import com.settlers.game.states.Monopoly;
 import org.junit.Assert;
 import org.junit.Test;
@@ -33,14 +33,14 @@ public class MonopolyTest {
         Dice dice = new RandomDice();
         Game game = new Game(board, List.of(whitePlayer, redPlayer, bluePlayer, orangePlayer), dice);
 
-        Monopoly uut = new Monopoly(game, new BuildingPhase(game, true));
+        Monopoly uut = new Monopoly(game, new ActionPhase(game));
         game.setState(uut);
 
         boolean monopolyUsed = uut.monopoly(whitePlayer, Resource.WOOL);
 
         Assert.assertTrue(monopolyUsed);
         Assert.assertEquals(0, whitePlayer.inventory().getResource(Resource.WOOL));
-        Assert.assertTrue(game.getState() instanceof BuildingPhase);
+        Assert.assertTrue(game.getState() instanceof ActionPhase);
     }
 
     @Test
@@ -67,13 +67,13 @@ public class MonopolyTest {
         Dice dice = new RandomDice();
         Game game = new Game(board, List.of(whitePlayer, redPlayer, bluePlayer, orangePlayer), dice);
 
-        Monopoly uut = new Monopoly(game, new BuildingPhase(game, true));
+        Monopoly uut = new Monopoly(game, new ActionPhase(game));
         game.setState(uut);
 
         boolean monopolyUsed = uut.monopoly(whitePlayer, Resource.BRICK);
 
         Assert.assertTrue(monopolyUsed);
         Assert.assertEquals(9, whitePlayer.inventory().getResource(Resource.BRICK));
-        Assert.assertTrue(game.getState() instanceof BuildingPhase);
+        Assert.assertTrue(game.getState() instanceof ActionPhase);
     }
 }

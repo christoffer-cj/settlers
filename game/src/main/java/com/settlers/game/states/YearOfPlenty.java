@@ -6,7 +6,7 @@ import com.settlers.game.Resource;
 
 import java.util.Objects;
 
-public class YearOfPlenty extends BaseState {
+public class YearOfPlenty extends AbstractState {
     private final State previousState;
 
     public YearOfPlenty(Game game, State previousState) {

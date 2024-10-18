@@ -8,10 +8,22 @@ import java.util.Random;
 public class Inventory {
     private final Map<Resource, Integer> resources;
     private final Map<DevelopmentCard, Integer> developmentCards;
+    private int settlements;
+    private int cities;
+    private int roads;
     public Inventory(Map<Resource, Integer> resources,
-                     Map<DevelopmentCard, Integer> developmentCards) {
+                     Map<DevelopmentCard, Integer> developmentCards,
+                     int settlements,
+                     int cities,
+                     int roads) {
+        assert settlements >= 0;
+        assert cities >= 0;
+        assert roads >= 0;
         this.resources = Objects.requireNonNull(resources);
         this.developmentCards = Objects.requireNonNull(developmentCards);
+        this.settlements = settlements;
+        this.cities = cities;
+        this.roads = roads;
     }
 
     public int totalResources() {
@@ -64,6 +76,46 @@ public class Inventory {
         developmentCards.merge(developmentCard, 1, Integer::sum);
     }
 
+    public int getBuilding(Building.Type type) {
+        return switch (type) {
+            case SETTLEMENT -> settlements;
+            case CITY -> cities;
+        };
+    }
+
+    public boolean hasBuilding(Building.Type type) {
+        return getBuilding(type) > 0;
+    }
+
+    public boolean useBuilding(Building.Type type) {
+        if (!hasBuilding(type)) return false;
+        switch (type) {
+            case SETTLEMENT -> {
+                settlements -= 1;
+            }
+            case CITY -> {
+                cities -= 1;
+                settlements += 1;
+            }
+        };
+
+        return true;
+    }
+
+    public int getRoads() {
+        return roads;
+    }
+
+    public boolean hasRoad() {
+        return getRoads() > 0;
+    }
+
+    public boolean useRoad() {
+        if (!hasRoad()) return false;
+        roads -= 1;
+        return true;
+    }
+
     public static Builder builder() {
         return new Builder();
     }
@@ -78,13 +130,15 @@ public class Inventory {
         for (DevelopmentCard developmentCard : DevelopmentCard.values()) {
             developmentCards.put(developmentCard, 0);
         }
-        return new Inventory(resources, developmentCards);
+        return new Inventory(resources, developmentCards, 5, 4,15);
     }
 
     public static final class Builder {
-
         private final Map<Resource, Integer> resources;
         private final Map<DevelopmentCard, Integer> developmentCards;
+        private int settlements = 5;
+        private int cities = 4;
+        private int roads = 15;
         private Builder() {
             Map<Resource, Integer> resources = new EnumMap<>(Resource.class);
             for (Resource resource : Resource.values()) {
@@ -100,7 +154,12 @@ public class Inventory {
         }
 
         public Inventory build() {
-            return new Inventory(resources, developmentCards);
+            return new Inventory(
+                    resources,
+                    developmentCards,
+                    settlements,
+                    cities,
+                    roads);
         }
 
         public Builder addBrick(int amount) {
@@ -130,6 +189,24 @@ public class Inventory {
         public Builder addWool(int amount) {
             assert amount >= 0;
             resources.merge(Resource.WOOL, amount, Integer::sum);
+            return this;
+        }
+
+        public Builder setSettlements(int amount) {
+            assert amount >= 0;
+            settlements = amount;
+            return this;
+        }
+
+        public Builder setCities(int amount) {
+            assert amount >= 0;
+            cities = amount;
+            return this;
+        }
+
+        public Builder setRoads(int amount) {
+            assert amount >= 0;
+            roads = amount;
             return this;
         }
     }

@@ -23,7 +23,9 @@ public record Player(Color color, Inventory inventory) {
 
     public boolean buyBuilding(Building.Type type) {
         if (!canAffordBuilding(type)) return false;
+        if (!inventory.hasBuilding(type)) return false;
 
+        inventory.useBuilding(type);
         switch (type) {
             case SETTLEMENT -> {
                 inventory.putResource(Resource.BRICK, -1);
@@ -46,7 +48,9 @@ public record Player(Color color, Inventory inventory) {
 
     public boolean buyRoad() {
         if (!canAffordRoad()) return false;
+        if (!inventory.hasRoad()) return false;
 
+        inventory.useRoad();
         inventory.putResource(Resource.LUMBER, -1);
         inventory.putResource(Resource.BRICK, -1);
 

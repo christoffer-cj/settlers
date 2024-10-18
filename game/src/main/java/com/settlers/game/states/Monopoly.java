@@ -6,7 +6,7 @@ import com.settlers.game.Resource;
 
 import java.util.Objects;
 
-public class Monopoly extends BaseState {
+public class Monopoly extends AbstractState {
     private final State previousState;
 
     public Monopoly(Game game, State previousState) {
