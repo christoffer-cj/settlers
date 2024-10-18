@@ -11,6 +11,8 @@ public class Inventory {
     private int settlements;
     private int cities;
     private int roads;
+    private int usedKnights;
+
     public Inventory(Map<Resource, Integer> resources,
                      Map<DevelopmentCard, Integer> developmentCards,
                      int settlements,
@@ -24,6 +26,7 @@ public class Inventory {
         this.settlements = settlements;
         this.cities = cities;
         this.roads = roads;
+        this.usedKnights = 0;
     }
 
     public int totalResources() {
@@ -68,6 +71,7 @@ public class Inventory {
         if (developmentCard == DevelopmentCard.VICTORY_POINT) return false;
         if (!(developmentCards.get(developmentCard) >= 1)) return false;
 
+        if (developmentCard == DevelopmentCard.KNIGHT) usedKnights++;
         developmentCards.merge(developmentCard, -1, Integer::sum);
         return true;
     }
@@ -76,19 +80,19 @@ public class Inventory {
         developmentCards.merge(developmentCard, 1, Integer::sum);
     }
 
-    public int getBuilding(Building.Type type) {
+    public int building(Building.Type type) {
         return switch (type) {
             case SETTLEMENT -> settlements;
             case CITY -> cities;
         };
     }
 
-    public boolean hasBuilding(Building.Type type) {
-        return getBuilding(type) > 0;
+    public boolean hasBuildings(Building.Type type) {
+        return building(type) > 0;
     }
 
     public boolean useBuilding(Building.Type type) {
-        if (!hasBuilding(type)) return false;
+        if (!hasBuildings(type)) return false;
         switch (type) {
             case SETTLEMENT -> {
                 settlements -= 1;
@@ -102,18 +106,22 @@ public class Inventory {
         return true;
     }
 
-    public int getRoads() {
+    public int roads() {
         return roads;
     }
 
-    public boolean hasRoad() {
-        return getRoads() > 0;
+    public boolean hasRoads() {
+        return roads() > 0;
     }
 
     public boolean useRoad() {
-        if (!hasRoad()) return false;
+        if (!hasRoads()) return false;
         roads -= 1;
         return true;
+    }
+
+    public int usedKnights() {
+        return usedKnights;
     }
 
     public static Builder builder() {

@@ -14,7 +14,7 @@ public class RoadBuilding extends AbstractState {
     public RoadBuilding(Game game, State previousState) {
         super(game);
         this.previousState = Objects.requireNonNull(previousState);
-        if (!game.getCurrentPlayer().inventory().hasRoad()) {
+        if (!game.getCurrentPlayer().inventory().hasRoads()) {
             game.setState(previousState);
         }
     }
@@ -32,7 +32,7 @@ public class RoadBuilding extends AbstractState {
             game.setState(previousState);
             return true;
         } else {
-            if (!game.getPlayer(player.color()).inventory().hasRoad()) {
+            if (!game.getPlayer(player.color()).inventory().hasRoads()) {
                 game.setState(previousState);
             }
             firstRoadAdded = true;

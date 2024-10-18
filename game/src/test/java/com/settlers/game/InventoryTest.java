@@ -25,7 +25,7 @@ public class InventoryTest {
         Inventory uut = Inventory.builder().setCities(0).build();
         boolean used = uut.useBuilding(Building.Type.CITY);
         Assert.assertFalse(used);
-        Assert.assertEquals(0, uut.getBuilding(Building.Type.CITY));
+        Assert.assertEquals(0, uut.building(Building.Type.CITY));
     }
 
     @Test
@@ -33,7 +33,7 @@ public class InventoryTest {
         Inventory uut = Inventory.builder().setSettlements(2).build();
         boolean used = uut.useBuilding(Building.Type.SETTLEMENT);
         Assert.assertTrue(used);
-        Assert.assertEquals(1, uut.getBuilding(Building.Type.SETTLEMENT));
+        Assert.assertEquals(1, uut.building(Building.Type.SETTLEMENT));
     }
 
     @Test

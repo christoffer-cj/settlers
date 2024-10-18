@@ -22,7 +22,7 @@ public class ActionPhase extends AbstractState {
 
         if (!game.getPlayer(player.color()).canAffordBuilding(building.type())) return false;
 
-        if (!game.getPlayer(player.color()).inventory().hasBuilding(building.type())) return false;
+        if (!game.getPlayer(player.color()).inventory().hasBuildings(building.type())) return false;
 
         if (!game.getBoard().addBuilding(position, building)) return false;
         game.getPlayer(player.color()).buyBuilding(building.type());
@@ -40,7 +40,7 @@ public class ActionPhase extends AbstractState {
 
         if (!game.getPlayer(player.color()).canAffordRoad()) return false;
 
-        if (!game.getPlayer(player.color()).inventory().hasRoad()) return false;
+        if (!game.getPlayer(player.color()).inventory().hasRoads()) return false;
 
         if (!game.getBoard().addRoad(position, road)) return false;
         game.getPlayer(player.color()).buyRoad();

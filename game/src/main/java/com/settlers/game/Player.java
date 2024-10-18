@@ -23,7 +23,7 @@ public record Player(Color color, Inventory inventory) {
 
     public boolean buyBuilding(Building.Type type) {
         if (!canAffordBuilding(type)) return false;
-        if (!inventory.hasBuilding(type)) return false;
+        if (!inventory.hasBuildings(type)) return false;
 
         inventory.useBuilding(type);
         switch (type) {
@@ -48,7 +48,7 @@ public record Player(Color color, Inventory inventory) {
 
     public boolean buyRoad() {
         if (!canAffordRoad()) return false;
-        if (!inventory.hasRoad()) return false;
+        if (!inventory.hasRoads()) return false;
 
         inventory.useRoad();
         inventory.putResource(Resource.LUMBER, -1);

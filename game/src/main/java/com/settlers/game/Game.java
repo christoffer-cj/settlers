@@ -13,6 +13,8 @@ public class Game {
     private final Dice dice;
     private int currentPlayer = 0;
     private State state;
+    private Player largestArmy;
+    private Player longestRoad;
 
     public Game(Board board,
                 List<Player> players,
@@ -21,6 +23,8 @@ public class Game {
         this.players = List.copyOf(Objects.requireNonNull(players));
         this.dice = Objects.requireNonNull(dice);
         this.state = new DetermineStartingPlayer(this);
+        this.largestArmy = null;
+        this.longestRoad = null;
     }
 
     public State getState() {
@@ -61,5 +65,9 @@ public class Game {
 
     public Dice getDice() {
         return dice;
+    }
+
+    public void assignLargestArmy() {
+        bing bong ding dong
     }
 }
