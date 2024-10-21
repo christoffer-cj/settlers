@@ -11,7 +11,7 @@ import java.util.List;
 
 public class DetermineStartingPlayerTest {
     @Test
-    public void testWhenStartingPlayerDeterminedThenSetupPhaseOneStateAndStartingPlayerStarts() {
+    public void testWhenStartingPlayerDeterminedThenSetupPhaseStateAndStartingPlayerStarts() {
         Board board = Board.builder().build();
         Player redPlayer = Player.create(Color.RED);
         Player whitePlayer = Player.create(Color.WHITE);
@@ -47,7 +47,7 @@ public class DetermineStartingPlayerTest {
     }
 
     @Test
-    public void testWhenStartingPlayerDeterminedInSecondRound_ThenSetupPhaseOneAndStartingPlayerStarts() {
+    public void testWhenStartingPlayerDeterminedInSecondRound_ThenSetupPhaseAndStartingPlayerStarts() {
         Board board = Board.builder().build();
         Player redPlayer = Player.create(Color.RED);
         Player whitePlayer = Player.create(Color.WHITE);
@@ -80,5 +80,26 @@ public class DetermineStartingPlayerTest {
         boolean diceRolled = uut.rollDice(whitePlayer);
 
         Assert.assertFalse(diceRolled);
+    }
+
+    @Test
+    public void testWhenRedAndWhiteRollHighestAndBlueLowest_ThenRedAndWhiteBattleForStartingRound() {
+        Player redPlayer = Player.create(Color.RED);
+        Player whitePlayer = Player.create(Color.WHITE);
+        Player bluePlayer = Player.create(Color.BLUE);
+        Board board = Board.builder().build();
+        Dice dice = new TestingDice(List.of(10, 10, 5, 12, 10));
+        Game game = new Game(board, List.of(redPlayer, whitePlayer, bluePlayer), dice);
+
+        DetermineStartingPlayer uut = new DetermineStartingPlayer(game);
+        game.setState(uut);
+        game.getState().rollDice(redPlayer);
+        game.getState().rollDice(whitePlayer);
+        game.getState().rollDice(bluePlayer);
+        game.getState().rollDice(redPlayer);
+        game.getState().rollDice(whitePlayer);
+
+        Assert.assertTrue(game.getState() instanceof SetupPhase);
+        Assert.assertEquals(redPlayer, game.getCurrentPlayer());
     }
 }

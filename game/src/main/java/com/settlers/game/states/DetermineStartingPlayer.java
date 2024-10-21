@@ -3,15 +3,15 @@ package com.settlers.game.states;
 import com.settlers.game.Game;
 import com.settlers.game.Player;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 public class DetermineStartingPlayer extends AbstractState {
     private final Map<Player, Integer> playerRolls = new HashMap<>();
+    private List<Player> playersInRound;
 
     public DetermineStartingPlayer(Game game) {
         super(game);
+        playersInRound = game.getPlayers();
     }
 
     @Override
@@ -20,15 +20,18 @@ public class DetermineStartingPlayer extends AbstractState {
         int roll = game.getDice().roll();
         playerRolls.put(game.getCurrentPlayer(), roll);
 
-        if (playerRolls.size() != game.getPlayers().size()) {
-            game.nextPlayer();
+        if (playerRolls.size() != playersInRound.size()) {
+            do game.nextPlayer();
+            while (!playersInRound.contains(game.getCurrentPlayer()));
             return true;
         }
 
         Optional<Player> winner = getWinner();
         if (winner.isEmpty()) {
+            playersInRound = findPlayersForRound();
             playerRolls.clear();
-            game.nextPlayer();
+            do game.nextPlayer();
+            while (!playersInRound.contains(game.getCurrentPlayer()));
             return true;
         }
         while (!game.getCurrentPlayer().equals(winner.get())) {
@@ -54,5 +57,17 @@ public class DetermineStartingPlayer extends AbstractState {
                 .orElseThrow();
 
         return Optional.of(winner);
+    }
+
+    private List<Player> findPlayersForRound() {
+        int maxRoll = playerRolls.values().stream().max(Integer::compareTo).orElseThrow();
+        List<Player> playersInNewRound = new ArrayList<>();
+        for (Map.Entry<Player, Integer> entry : playerRolls.entrySet()) {
+            if (entry.getValue() == maxRoll) {
+                playersInNewRound.add(entry.getKey());
+            }
+        }
+
+        return playersInNewRound;
     }
 }

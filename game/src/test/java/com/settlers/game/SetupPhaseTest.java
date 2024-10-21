@@ -48,7 +48,7 @@ public class SetupPhaseTest {
     }
 
     @Test
-    public void testWhenTryingToTwoSettlementFirst_ThenFalseReturned() {
+    public void testWhenTryingToAddTwoSettlementFirst_ThenFalseReturned() {
         Player player = Player.create(Color.RED);
         Dice dice = new RandomDice();
         Tile tile = Tile.builder().build(Resource.LUMBER, 2);

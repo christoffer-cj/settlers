@@ -68,6 +68,18 @@ public class Game {
     }
 
     public void assignLargestArmy() {
-        bing bong ding dong
+        int largestArmy = 0;
+        for (Player player : getPlayers()) {
+            if (player.inventory().usedKnights() > largestArmy) {
+                largestArmy = player.inventory().usedKnights();
+            }
+        }
+        if (largestArmy < 3) return;
+        Player playerWithLargestArmy = null;
+        for (Player player : getPlayers()) {
+            if (player.inventory().usedKnights() == largestArmy) {
+
+            }
+        }
     }
 }
