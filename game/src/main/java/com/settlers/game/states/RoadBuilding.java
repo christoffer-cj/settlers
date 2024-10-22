@@ -27,6 +27,7 @@ public class RoadBuilding extends AbstractState {
 
         if (!game.getBoard().addRoad(position, road)) return false;
         game.getPlayer(player.color()).inventory().useRoad();
+        game.assignLongestRoad();
 
         if (firstRoadAdded) {
             game.setState(previousState);

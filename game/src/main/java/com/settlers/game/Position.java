@@ -213,4 +213,35 @@ public record Position(Coordinate coordinate, Direction direction) {
                             Coordinate.of(coordinate.q(), coordinate.r()-1));
         };
     }
+
+    public boolean isSameEdge(Position other) {
+        if (equals(other)) return true;
+
+        return switch (direction) {
+            case ONE ->
+                other.coordinate.q() == (coordinate.q() + 1) &&
+                other.coordinate.r() == (coordinate.r() - 1) &&
+                other.direction == Direction.FOUR;
+            case TWO ->
+                other.coordinate.q() == (coordinate.q() + 1) &&
+                other.coordinate.r() == (coordinate.r()) &&
+                other.direction == Direction.FIVE;
+            case THREE ->
+                other.coordinate.q() == (coordinate.q()) &&
+                other.coordinate.r() == (coordinate.r() + 1) &&
+                other.direction == Direction.SIX;
+            case FOUR ->
+                other.coordinate.q() == (coordinate.q() - 1) &&
+                other.coordinate.r() == (coordinate.r() + 1) &&
+                other.direction == Direction.ONE;
+            case FIVE ->
+                other.coordinate.q() == (coordinate.q() - 1) &&
+                other.coordinate.r() == (coordinate.r()) &&
+                other.direction == Direction.TWO;
+            case SIX ->
+                other.coordinate.q() == (coordinate.q()) &&
+                other.coordinate.r() == (coordinate.r() - 1) &&
+                other.direction == Direction.THREE;
+        };
+    }
 }

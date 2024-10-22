@@ -151,6 +151,32 @@ public class Board {
         return false;
     }
 
+    public int getLongestRoad(Player player) {
+        int longestRoad = 0;
+        for (Map.Entry<Coordinate, Tile> tileEntry : tiles.entrySet()) {
+            for (Map.Entry<Direction, Road> roadEntry : tileEntry.getValue().roads().entrySet()) {
+                if (!(roadEntry.getValue().color() == player.color())) continue;
+                int roadLength = getLongestRoad(player, Position.of(tileEntry.getKey(), roadEntry.getKey()), new HashSet<>());
+                if (roadLength > longestRoad) longestRoad = roadLength;
+            }
+        }
+        return longestRoad;
+    }
+
+    private int getLongestRoad(Player player, Position position, Set<Position> visited) {
+        visited.add(position);
+        Collection<Position> adjacentPositions = new ArrayList<>(position.getAdjacentEdgesForEdge());
+        visited.forEach(visitedPosition -> adjacentPositions.removeIf(visitedPosition::isSameEdge));
+        for (Position adjacentPosition : adjacentPositions) {
+            Optional<Road> adjacentRoad = getRoad(adjacentPosition);
+            if (adjacentRoad.isEmpty()) continue;
+            if (!(adjacentRoad.get().color() == player.color())) continue;
+            return 1 + getLongestRoad(player, adjacentPosition, visited);
+        }
+
+        return 1;
+    }
+
     private <T> Optional<T> getVertex(Position position, Function<Tile, Map<Direction, T>> mapper) {
         assert position != null;
         assert mapper != null;

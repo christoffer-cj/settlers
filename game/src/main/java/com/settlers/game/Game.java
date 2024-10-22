@@ -6,6 +6,7 @@ import com.settlers.game.states.State;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 public class Game {
     private final Board board;
@@ -70,16 +71,49 @@ public class Game {
     public void assignLargestArmy() {
         int largestArmy = 0;
         for (Player player : getPlayers()) {
-            if (player.inventory().usedKnights() > largestArmy) {
-                largestArmy = player.inventory().usedKnights();
-            }
+            if (player.inventory().usedKnights() > largestArmy) largestArmy = player.inventory().usedKnights();
         }
         if (largestArmy < 3) return;
         Player playerWithLargestArmy = null;
         for (Player player : getPlayers()) {
             if (player.inventory().usedKnights() == largestArmy) {
-
+                if (playerWithLargestArmy == null) {
+                    playerWithLargestArmy = player;
+                } else {
+                    // tie for largest army, original player keeps it
+                    return;
+                }
             }
         }
+        this.largestArmy = playerWithLargestArmy;
+    }
+
+    public void assignLongestRoad() {
+        int longestRoad = 0;
+        for (Player player : getPlayers()) {
+            if (getBoard().getLongestRoad(player) > longestRoad) longestRoad = getBoard().getLongestRoad(player);
+        }
+        if (longestRoad < 5) return;
+        Player playerWithLongestRoad = null;
+        for (Player player : getPlayers()) {
+            if (getBoard().getLongestRoad(player) == longestRoad) {
+                if (playerWithLongestRoad  == null) {
+                    playerWithLongestRoad = player;
+                } else {
+                    // tie for largest army, original player keeps it
+                    return;
+                }
+            }
+        }
+        this.longestRoad = playerWithLongestRoad;
+    }
+
+    public Optional<Player> getWinner() {
+        for (Player player : getPlayers()) {
+            int points = 0;
+
+        }
+
+        return Optional.empty();
     }
 }

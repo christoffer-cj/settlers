@@ -450,4 +450,104 @@ public class BoardTest {
 
         Assert.assertTrue(roadAdded);
     }
+
+    @Test
+    public void testWhenNoRoads_ThenLongestRoadReturnZero() {
+        Board uut = Board.builder().build();
+        int longestRoad = uut.getLongestRoad(Player.create(Color.RED));
+
+        Assert.assertEquals(0, longestRoad);
+    }
+
+    @Test
+    public void testWhenOneRoad_ThenLongestRoadReturnOne() {
+        Road road = Road.builder().build(Color.RED);
+        Tile tile = Tile.builder()
+                .addRoad(Direction.ONE, road)
+                .build(Resource.BRICK, 4);
+        Board uut = Board.builder()
+                .addTile(Coordinate.of(0, 0), tile)
+                .build();
+
+        int longestRoad = uut.getLongestRoad(Player.create(Color.RED));
+
+        Assert.assertEquals(1, longestRoad);
+    }
+
+    @Test
+    public void testWhenRoadIsCircleAroundOneTile_ThenLongestRoadReturnSix() {
+       Tile.Builder tileBuilder = Tile.builder();
+        for (Direction direction : Direction.values()) {
+            Road road = Road.builder().build(Color.RED);
+            tileBuilder.addRoad(direction, road);
+        }
+        Tile tile = tileBuilder.build(Resource.BRICK, 2);
+        Board uut = Board.builder()
+                .addTile(Coordinate.of(0, 0), tile)
+                .build();
+
+        int longestRoad = uut.getLongestRoad(Player.create(Color.RED));
+
+        Assert.assertEquals(6, longestRoad);
+    }
+
+    @Test
+    public void testWhenRoadIsCircleWithOneWrongColor_ThenLongestRoadReturnFive() {
+        Tile.Builder tileBuilder = Tile.builder();
+        for (Direction direction : Direction.values()) {
+            if (direction == Direction.ONE) {
+                Road road = Road.builder().build(Color.BLUE);
+                tileBuilder.addRoad(direction, road);
+                continue;
+            }
+            Road road = Road.builder().build(Color.RED);
+            tileBuilder.addRoad(direction, road);
+        }
+        Tile tile = tileBuilder.build(Resource.BRICK, 2);
+        Board uut = Board.builder()
+                .addTile(Coordinate.of(0, 0), tile)
+                .build();
+
+        int longestRoad = uut.getLongestRoad(Player.create(Color.RED));
+
+        Assert.assertEquals(5, longestRoad);
+    }
+
+    @Test
+    public void testWhenRoadsAreOneSpaceApartOnTile_ThenLongestRoadReturnOne() {
+        Tile tile = Tile.builder()
+                .addRoad(Direction.ONE, Road.builder().build(Color.RED))
+                .addRoad(Direction.THREE, Road.builder().build(Color.RED))
+                .addRoad(Direction.FIVE, Road.builder().build(Color.RED))
+                .build(Resource.BRICK, 9);
+        Board uut = Board.builder()
+                .addTile(Coordinate.of(0, 1), tile)
+                .build();
+
+        int longestRoad = uut.getLongestRoad(Player.create(Color.RED));
+
+        Assert.assertEquals(1, longestRoad);
+    }
+
+    @Test
+    public void testWhenRoadSpansAcrossMultipleTiles_ThenCorrectLengthReturned() {
+        Tile firstTile = Tile.builder()
+                .addRoad(Direction.ONE, Road.builder().build(Color.RED))
+                .build(Resource.BRICK, 6);
+        Tile secondTile = Tile.builder()
+                .addRoad(Direction.SIX, Road.builder().build(Color.RED))
+                .build(Resource.LUMBER, 2);
+        Tile thirdTile = Tile.builder()
+                .addRoad(Direction.FIVE, Road.builder().build(Color.RED))
+                .build(Resource.ORE, 4);
+        Board uut = Board.builder()
+                .addTile(Coordinate.of(0, 0), firstTile)
+                .addTile(Coordinate.of(1, 0), secondTile)
+                .addTile(Coordinate.of(2, -1), thirdTile)
+                .build();
+
+        int longestRoad = uut.getLongestRoad(Player.create(Color.RED));
+
+        Assert.assertEquals(3, longestRoad);
+    }
 }

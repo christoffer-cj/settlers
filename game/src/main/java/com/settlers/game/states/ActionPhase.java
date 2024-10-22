@@ -44,6 +44,7 @@ public class ActionPhase extends AbstractState {
 
         if (!game.getBoard().addRoad(position, road)) return false;
         game.getPlayer(player.color()).buyRoad();
+        game.assignLongestRoad();
 
         return true;
     }
@@ -76,6 +77,7 @@ public class ActionPhase extends AbstractState {
             case YEAR_OF_PLENTY -> game.setState(new YearOfPlenty(game, this));
             case KNIGHT -> game.setState(new MoveRobber(game, this));
         }
+        game.assignLargestArmy();
 
         return true;
     }

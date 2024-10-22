@@ -49,6 +49,7 @@ public class SetupPhase extends AbstractState {
 
         if (!game.getBoard().addRoad(position, road)) return false;
         game.getPlayer(player.color()).inventory().useRoad();
+        game.assignLongestRoad();
 
         if (!settlementPositions.values().stream().allMatch(Objects::nonNull)) {
             if (isFirstRound) {
