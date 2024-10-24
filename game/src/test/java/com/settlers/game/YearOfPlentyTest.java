@@ -1,21 +1,17 @@
 package com.settlers.game;
 
-import com.settlers.game.dice.Dice;
-import com.settlers.game.dice.RandomDice;
 import com.settlers.game.states.ActionPhase;
 import com.settlers.game.states.YearOfPlenty;
 import org.junit.Assert;
 import org.junit.Test;
 
-import java.util.List;
-
 public class YearOfPlentyTest {
     @Test
     public void testWhenUseYearOfPlenty_ThenPlayerReceivesResources() {
-        Board board = Board.builder().build();
         Player player = Player.create(Color.RED);
-        Dice dice = new RandomDice();
-        Game game = new Game(board, List.of(player), dice);
+        Game game = Game.builder()
+                .addPlayer(player)
+                .build();
 
         YearOfPlenty uut = new YearOfPlenty(game, new ActionPhase(game));
         game.setState(uut);

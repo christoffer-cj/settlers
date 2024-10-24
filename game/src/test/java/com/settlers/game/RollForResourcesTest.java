@@ -7,23 +7,24 @@ import com.settlers.game.states.RollForResources;
 import org.junit.Assert;
 import org.junit.Test;
 
-import java.util.List;
-
 public class RollForResourcesTest {
     @Test
     public void testWhenRollForResourcesYieldResourcesForSettlement_ThenPlayerReceivesOneResource() {
         Coordinate coordinate = Coordinate.of(1, 2);
         Direction direction = Direction.THREE;
-        Building settlement = Building.builder().build(Color.WHITE, Building.Type.SETTLEMENT);
+        Building settlement = Building.of(Color.WHITE, Building.Type.SETTLEMENT);
         Tile tile = Tile.builder()
                 .addBuilding(direction, settlement)
                 .build(Resource.ORE, 6);
         Board board = Board.builder()
                 .addTile(coordinate, tile)
                 .build();
-        Dice dice = new TestingDice(List.of(6));
         Player player = Player.create(Color.WHITE);
-        Game game = new Game(board, List.of(player), dice);
+        Game game = Game.builder()
+                .addPlayer(player)
+                .setBoard(board)
+                .setDice(TestingDice.of(6))
+                .build();
 
         RollForResources uut = new RollForResources(game);
         game.setState(uut);
@@ -36,16 +37,19 @@ public class RollForResourcesTest {
     public void testWhenRollForResourcesYieldResourcesForCity_ThenPlayerReceivesTwoResource() {
         Coordinate coordinate = Coordinate.of(1, 2);
         Direction direction = Direction.THREE;
-        Building city = Building.builder().build(Color.WHITE, Building.Type.CITY);
+        Building city = Building.of(Color.WHITE, Building.Type.CITY);
         Tile tile = Tile.builder()
                 .addBuilding(direction, city)
                 .build(Resource.ORE, 6);
         Board board = Board.builder()
                 .addTile(coordinate, tile)
                 .build();
-        Dice dice = new TestingDice(List.of(6));
         Player player = Player.create(Color.WHITE);
-        Game game = new Game(board, List.of(player), dice);
+        Game game = Game.builder()
+                .addPlayer(player)
+                .setBoard(board)
+                .setDice(TestingDice.of(6))
+                .build();
 
         RollForResources uut = new RollForResources(game);
         game.setState(uut);
@@ -58,9 +62,9 @@ public class RollForResourcesTest {
     public void testWhenRollForResourcesYieldResourcesForCityAndSettlement_ThenPlayerReceivesThreeResource() {
         Coordinate coordinate = Coordinate.of(1, 2);
         Direction cityDirection = Direction.THREE;
-        Building city = Building.builder().build(Color.WHITE, Building.Type.CITY);
+        Building city = Building.of(Color.WHITE, Building.Type.CITY);
         Direction settlementDirection = Direction.FIVE;
-        Building settlement = Building.builder().build(Color.WHITE, Building.Type.SETTLEMENT);
+        Building settlement = Building.of(Color.WHITE, Building.Type.SETTLEMENT);
         Tile tile = Tile.builder()
                 .addBuilding(cityDirection, city)
                 .addBuilding(settlementDirection, settlement)
@@ -68,9 +72,12 @@ public class RollForResourcesTest {
         Board board = Board.builder()
                 .addTile(coordinate, tile)
                 .build();
-        Dice dice = new TestingDice(List.of(6));
         Player player = Player.create(Color.WHITE);
-        Game game = new Game(board, List.of(player), dice);
+        Game game = Game.builder()
+                .addPlayer(player)
+                .setBoard(board)
+                .setDice(TestingDice.of(6))
+                .build();
 
         RollForResources uut = new RollForResources(game);
         game.setState(uut);
@@ -83,16 +90,19 @@ public class RollForResourcesTest {
     public void testWhenRollForResourcesYieldResourcesForOtherColor_ThenPlayerReceivesNoResources() {
         Coordinate coordinate = Coordinate.of(1, 2);
         Direction direction = Direction.THREE;
-        Building settlement = Building.builder().build(Color.RED, Building.Type.SETTLEMENT);
+        Building settlement = Building.of(Color.RED, Building.Type.SETTLEMENT);
         Tile tile = Tile.builder()
                 .addBuilding(direction, settlement)
                 .build(Resource.ORE, 6);
         Board board = Board.builder()
                 .addTile(coordinate, tile)
                 .build();
-        Dice dice = new TestingDice(List.of(6));
         Player player = Player.create(Color.WHITE);
-        Game game = new Game(board, List.of(player), dice);
+        Game game = Game.builder()
+                .addPlayer(player)
+                .setBoard(board)
+                .setDice(TestingDice.of(6))
+                .build();
 
         RollForResources uut = new RollForResources(game);
         game.setState(uut);
@@ -106,7 +116,7 @@ public class RollForResourcesTest {
         Coordinate coordinate = Coordinate.of(1, 2);
         Coordinate adjacentCoordinate = Coordinate.of(2, 2);
         Direction direction = Direction.THREE;
-        Building settlement = Building.builder().build(Color.RED, Building.Type.SETTLEMENT);
+        Building settlement = Building.of(Color.RED, Building.Type.SETTLEMENT);
         Tile tile = Tile.builder()
                 .addBuilding(direction, settlement)
                 .build(Resource.ORE, 6);
@@ -115,9 +125,12 @@ public class RollForResourcesTest {
                 .addTile(coordinate, tile)
                 .addTile(adjacentCoordinate, adjacentTile)
                 .build();
-        Dice dice = new TestingDice(List.of(6));
         Player player = Player.create(Color.RED);
-        Game game = new Game(board, List.of(player), dice);
+        Game game = Game.builder()
+                .addPlayer(player)
+                .setBoard(board)
+                .setDice(TestingDice.of(6))
+                .build();
 
         RollForResources uut = new RollForResources(game);
         game.setState(uut);
@@ -132,7 +145,7 @@ public class RollForResourcesTest {
         Coordinate coordinate = Coordinate.of(1, 2);
         Coordinate adjacentCoordinate = Coordinate.of(2, 2);
         Direction direction = Direction.THREE;
-        Building settlement = Building.builder().build(Color.RED, Building.Type.SETTLEMENT);
+        Building settlement = Building.of(Color.RED, Building.Type.SETTLEMENT);
         Tile tile = Tile.builder()
                 .addBuilding(direction, settlement)
                 .build(Resource.ORE, 7);
@@ -141,9 +154,12 @@ public class RollForResourcesTest {
                 .addTile(coordinate, tile)
                 .addTile(adjacentCoordinate, adjacentTile)
                 .build();
-        Dice dice = new TestingDice(List.of(6));
         Player player = Player.create(Color.RED);
-        Game game = new Game(board, List.of(player), dice);
+        Game game = Game.builder()
+                .addPlayer(player)
+                .setBoard(board)
+                .setDice(TestingDice.of(6))
+                .build();
 
         RollForResources uut = new RollForResources(game);
         game.setState(uut);
@@ -157,8 +173,12 @@ public class RollForResourcesTest {
     public void testWhenRollSeven_ThenDiscardResourcesState() {
         Board board = Board.builder().build();
         Player player = Player.create(Color.ORANGE);
-        Dice dice = new TestingDice(List.of(7));
-        Game game = new Game(board, List.of(player), dice);
+        Dice dice = TestingDice.of(7);
+        Game game = Game.builder()
+                .addPlayer(player)
+                .setBoard(board)
+                .setDice(dice)
+                .build();
 
         RollForResources uut = new RollForResources(game);
         game.setState(uut);
@@ -171,8 +191,8 @@ public class RollForResourcesTest {
     public void testWhenTwoPlayersYieldResources_ThenBothPlayersReceiveResources() {
         Coordinate coordinate = Coordinate.of(1, 2);
         Direction whiteDirection = Direction.THREE;
-        Building whiteSettlement = Building.builder().build(Color.WHITE, Building.Type.SETTLEMENT);
-        Building redSettlement = Building.builder().build(Color.RED, Building.Type.SETTLEMENT);
+        Building whiteSettlement = Building.of(Color.WHITE, Building.Type.SETTLEMENT);
+        Building redSettlement = Building.of(Color.RED, Building.Type.SETTLEMENT);
         Direction redDirection = Direction.TWO;
         Tile tile = Tile.builder()
                 .addBuilding(whiteDirection, whiteSettlement)
@@ -181,10 +201,15 @@ public class RollForResourcesTest {
         Board board = Board.builder()
                 .addTile(coordinate, tile)
                 .build();
-        Dice dice = new TestingDice(List.of(6));
+        Dice dice = TestingDice.of(6);
         Player whitePlayer = Player.create(Color.WHITE);
         Player redPlayer = Player.create(Color.RED);
-        Game game = new Game(board, List.of(whitePlayer, redPlayer), dice);
+        Game game = Game.builder()
+                .addPlayer(whitePlayer)
+                .addPlayer(redPlayer)
+                .setBoard(board)
+                .setDice(dice)
+                .build();
 
         RollForResources uut = new RollForResources(game);
         game.setState(uut);
@@ -196,11 +221,14 @@ public class RollForResourcesTest {
 
     @Test
     public void whenRedRollForResources_ThenWhiteCanNotRoll() {
-        Board board = Board.builder().build();
-        Dice dice = new TestingDice(List.of(6));
+        Dice dice = TestingDice.of(6);
         Player whitePlayer = Player.create(Color.WHITE);
         Player redPlayer = Player.create(Color.RED);
-        Game game = new Game(board, List.of(redPlayer, whitePlayer), dice);
+        Game game = Game.builder()
+                .addPlayer(redPlayer)
+                .addPlayer(whitePlayer)
+                .setDice(dice)
+                .build();
 
         RollForResources uut = new RollForResources(game);
         game.setState(uut);
@@ -213,7 +241,7 @@ public class RollForResourcesTest {
     public void testWhenRollForResourceWithRobberOn_ThenNoResourcesReceived() {
         Coordinate coordinate = Coordinate.of(1, 2);
         Direction direction = Direction.THREE;
-        Building settlement = Building.builder().build(Color.WHITE, Building.Type.SETTLEMENT);
+        Building settlement = Building.of(Color.WHITE, Building.Type.SETTLEMENT);
         Tile tile = Tile.builder()
                 .addBuilding(direction, settlement)
                 .build(Resource.ORE, 6);
@@ -221,9 +249,13 @@ public class RollForResourcesTest {
                 .addTile(coordinate, tile)
                 .setRobber(coordinate)
                 .build();
-        Dice dice = new TestingDice(List.of(6));
+        Dice dice = TestingDice.of(6);
         Player player = Player.create(Color.WHITE);
-        Game game = new Game(board, List.of(player), dice);
+        Game game = Game.builder()
+                .addPlayer(player)
+                .setBoard(board)
+                .setDice(dice)
+                .build();
 
         RollForResources uut = new RollForResources(game);
         game.setState(uut);

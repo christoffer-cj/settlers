@@ -1,7 +1,5 @@
 package com.settlers.game;
 
-import com.settlers.game.dice.Dice;
-import com.settlers.game.dice.RandomDice;
 import com.settlers.game.states.DiscardResources;
 import com.settlers.game.states.MoveRobber;
 import org.junit.Assert;
@@ -9,16 +7,15 @@ import org.junit.Test;
 
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class DiscardResourcesTest {
     @Test
     public void testWhenPlayerHas7Resources_ThenPlayerDiscardReturnFalse() {
-        Dice dice = new RandomDice();
-        Board board = Board.builder().build();
         Player player = Player.create(Color.RED);
-        Game game = new Game(board, List.of(player), dice);
+        Game game = Game.builder()
+                .addPlayer(player)
+                .build();
 
         DiscardResources uut = new DiscardResources(game);
         game.setState(uut);
@@ -29,7 +26,6 @@ public class DiscardResourcesTest {
 
     @Test
     public void testWhenPlayerHasTooManyResources_ThenMoveRobberBeforeDiscardReturnFalse() {
-        Dice dice = new RandomDice();
         Coordinate coordinate = Coordinate.of(0, 0);
         Tile tile = Tile.builder().build(Resource.ORE, 8);
         Board board = Board.builder()
@@ -40,7 +36,10 @@ public class DiscardResourcesTest {
                 .addLumber(4)
                 .build();
         Player player = Player.of(Color.RED, superflousInventory);
-        Game game = new Game(board, List.of(player), dice);
+        Game game = Game.builder()
+                .addPlayer(player)
+                .setBoard(board)
+                .build();
 
         DiscardResources uut = new DiscardResources(game);
         game.setState(uut);
@@ -51,15 +50,14 @@ public class DiscardResourcesTest {
 
     @Test
     public void testWhenPlayerHasTooManyResources_ThenDiscardTooFewReturnFalse() {
-        Dice dice = new RandomDice();
-        Board board = Board.builder()
-                .build();
         Inventory superflousInventory = Inventory.builder()
                 .addBrick(5)
                 .addLumber(4)
                 .build();
         Player player = Player.of(Color.RED, superflousInventory);
-        Game game = new Game(board, List.of(player), dice);
+        Game game = Game.builder()
+                .addPlayer(player)
+                .build();
 
         MoveRobber uut = new MoveRobber(game);
         game.setState(uut);
@@ -72,15 +70,14 @@ public class DiscardResourcesTest {
 
     @Test
     public void testWhenPlayerHasTooManyResources_ThenDiscardTooManyReturnFalse() {
-        Dice dice = new RandomDice();
-        Board board = Board.builder()
-                .build();
         Inventory superflousInventory = Inventory.builder()
                 .addBrick(5)
                 .addLumber(4)
                 .build();
         Player player = Player.of(Color.RED, superflousInventory);
-        Game game = new Game(board, List.of(player), dice);
+        Game game = Game.builder()
+                .addPlayer(player)
+                .build();
 
         DiscardResources uut = new DiscardResources(game);
         game.setState(uut);
@@ -94,15 +91,14 @@ public class DiscardResourcesTest {
 
     @Test
     public void testWhenPlayerHasTooManyResources_ThenDiscardMustMatchPlayerInventory() {
-        Dice dice = new RandomDice();
-        Board board = Board.builder()
-                .build();
         Inventory superflousInventory = Inventory.builder()
                 .addBrick(5)
                 .addLumber(4)
                 .build();
         Player player = Player.of(Color.RED, superflousInventory);
-        Game game = new Game(board, List.of(player), dice);
+        Game game = Game.builder()
+                .addPlayer(player)
+                .build();
 
         DiscardResources uut = new DiscardResources(game);
         game.setState(uut);
@@ -116,15 +112,14 @@ public class DiscardResourcesTest {
 
     @Test
     public void testWhenDiscardingCards_ThenPlayerInventoryUpdatedCorrectly() {
-        Dice dice = new RandomDice();
-        Board board = Board.builder()
-                .build();
         Inventory superflousInventory = Inventory.builder()
                 .addBrick(5)
                 .addLumber(4)
                 .build();
         Player player = Player.of(Color.RED, superflousInventory);
-        Game game = new Game(board, List.of(player), dice);
+        Game game = Game.builder()
+                .addPlayer(player)
+                .build();
 
         DiscardResources uut = new DiscardResources(game);
         game.setState(uut);

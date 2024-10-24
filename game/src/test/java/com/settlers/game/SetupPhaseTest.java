@@ -1,30 +1,28 @@
 package com.settlers.game;
 
-import com.settlers.game.dice.Dice;
-import com.settlers.game.dice.RandomDice;
 import com.settlers.game.states.RollForResources;
 import com.settlers.game.states.SetupPhase;
 import com.settlers.game.states.State;
 import org.junit.Assert;
 import org.junit.Test;
 
-import java.util.List;
-
 public class SetupPhaseTest {
     @Test
     public void testWhenTryingToAddRoadFirst_ThenFalseReturned() {
         Player player = Player.create(Color.RED);
-        Dice dice = new RandomDice();
         Tile tile = Tile.builder().build(Resource.LUMBER, 2);
         Coordinate coordinate = Coordinate.of(2, 4);
         Board board = Board.builder()
                 .addTile(coordinate, tile)
                 .build();
-        Game game = new Game(board, List.of(player), dice);
+        Game game = Game.builder()
+                .addPlayer(player)
+                .setBoard(board)
+                .build();
 
         SetupPhase uut = new SetupPhase(game, true);
         game.setState(uut);
-        boolean roadAdded = uut.addRoad(player, Position.of(coordinate, Direction.TWO), Road.builder().build(Color.RED));
+        boolean roadAdded = uut.addRoad(player, Position.of(coordinate, Direction.TWO), Road.of(Color.RED));
 
         Assert.assertFalse(roadAdded);
     }
@@ -32,17 +30,19 @@ public class SetupPhaseTest {
     @Test
     public void testWhenTryingToAddSettlementFirst_ThenTrueReturned() {
         Player player = Player.create(Color.RED);
-        Dice dice = new RandomDice();
         Tile tile = Tile.builder().build(Resource.LUMBER, 2);
         Coordinate coordinate = Coordinate.of(2, 4);
         Board board = Board.builder()
                 .addTile(coordinate, tile)
                 .build();
-        Game game = new Game(board, List.of(player), dice);
+        Game game = Game.builder()
+                .addPlayer(player)
+                .setBoard(board)
+                .build();
 
         SetupPhase uut = new SetupPhase(game, true);
         game.setState(uut);
-        boolean buildingAdded = uut.addBuilding(player, Position.of(coordinate, Direction.TWO), Building.builder().build(Color.RED, Building.Type.SETTLEMENT));
+        boolean buildingAdded = uut.addBuilding(player, Position.of(coordinate, Direction.TWO), Building.of(Color.RED, Building.Type.SETTLEMENT));
 
         Assert.assertTrue(buildingAdded);
     }
@@ -50,18 +50,20 @@ public class SetupPhaseTest {
     @Test
     public void testWhenTryingToAddTwoSettlementFirst_ThenFalseReturned() {
         Player player = Player.create(Color.RED);
-        Dice dice = new RandomDice();
         Tile tile = Tile.builder().build(Resource.LUMBER, 2);
         Coordinate coordinate = Coordinate.of(2, 4);
         Board board = Board.builder()
                 .addTile(coordinate, tile)
                 .build();
-        Game game = new Game(board, List.of(player), dice);
+        Game game = Game.builder()
+                .addPlayer(player)
+                .setBoard(board)
+                .build();
 
         SetupPhase uut = new SetupPhase(game, true);
         game.setState(uut);
-        boolean firstBuildingAdded = uut.addBuilding(player, Position.of(coordinate, Direction.TWO), Building.builder().build(Color.RED, Building.Type.SETTLEMENT));
-        boolean secondBuildingAdded = uut.addBuilding(player, Position.of(coordinate, Direction.FOUR), Building.builder().build(Color.RED, Building.Type.SETTLEMENT));
+        boolean firstBuildingAdded = uut.addBuilding(player, Position.of(coordinate, Direction.TWO), Building.of(Color.RED, Building.Type.SETTLEMENT));
+        boolean secondBuildingAdded = uut.addBuilding(player, Position.of(coordinate, Direction.FOUR), Building.of(Color.RED, Building.Type.SETTLEMENT));
 
         Assert.assertTrue(firstBuildingAdded);
         Assert.assertFalse(secondBuildingAdded);
@@ -70,17 +72,19 @@ public class SetupPhaseTest {
     @Test
     public void testWhenTryingToAddCityFirst_ThenFalseReturned() {
         Player player = Player.create(Color.RED);
-        Dice dice = new RandomDice();
         Tile tile = Tile.builder().build(Resource.LUMBER, 2);
         Coordinate coordinate = Coordinate.of(2, 4);
         Board board = Board.builder()
                 .addTile(coordinate, tile)
                 .build();
-        Game game = new Game(board, List.of(player), dice);
+        Game game = Game.builder()
+                .addPlayer(player)
+                .setBoard(board)
+                .build();
 
         SetupPhase uut = new SetupPhase(game, true);
         game.setState(uut);
-        boolean buildingAdded = uut.addBuilding(player, Position.of(coordinate, Direction.TWO), Building.builder().build(Color.RED, Building.Type.CITY));
+        boolean buildingAdded = uut.addBuilding(player, Position.of(coordinate, Direction.TWO), Building.of(Color.RED, Building.Type.CITY));
 
         Assert.assertFalse(buildingAdded);
     }
@@ -88,18 +92,20 @@ public class SetupPhaseTest {
     @Test
     public void testWhenTryingToAddSettlementFirstThenRoad_ThenTrueReturned() {
         Player player = Player.create(Color.RED);
-        Dice dice = new RandomDice();
         Tile tile = Tile.builder().build(Resource.LUMBER, 2);
         Coordinate coordinate = Coordinate.of(2, 4);
         Board board = Board.builder()
                 .addTile(coordinate, tile)
                 .build();
-        Game game = new Game(board, List.of(player), dice);
+        Game game = Game.builder()
+                .addPlayer(player)
+                .setBoard(board)
+                .build();
 
         SetupPhase uut = new SetupPhase(game, true);
         game.setState(uut);
-        boolean buildingAdded = uut.addBuilding(player, Position.of(coordinate, Direction.TWO), Building.builder().build(Color.RED, Building.Type.SETTLEMENT));
-        boolean roadAdded = uut.addRoad(player, Position.of(coordinate, Direction.TWO), Road.builder().build(Color.RED));
+        boolean buildingAdded = uut.addBuilding(player, Position.of(coordinate, Direction.TWO), Building.of(Color.RED, Building.Type.SETTLEMENT));
+        boolean roadAdded = uut.addRoad(player, Position.of(coordinate, Direction.TWO), Road.of(Color.RED));
 
         Assert.assertTrue(buildingAdded);
         Assert.assertTrue(roadAdded);
@@ -108,18 +114,20 @@ public class SetupPhaseTest {
     @Test
     public void testWhenTryingToAddSettlementFirstThenRoadNotAdjacent_ThenFalseReturned() {
         Player player = Player.create(Color.RED);
-        Dice dice = new RandomDice();
         Tile tile = Tile.builder().build(Resource.LUMBER, 2);
         Coordinate coordinate = Coordinate.of(2, 4);
         Board board = Board.builder()
                 .addTile(coordinate, tile)
                 .build();
-        Game game = new Game(board, List.of(player), dice);
+        Game game = Game.builder()
+                .addPlayer(player)
+                .setBoard(board)
+                .build();
 
         SetupPhase uut = new SetupPhase(game, true);
         game.setState(uut);
-        boolean buildingAdded = uut.addBuilding(player, Position.of(coordinate, Direction.TWO), Building.builder().build(Color.RED, Building.Type.SETTLEMENT));
-        boolean roadAdded = uut.addRoad(player, Position.of(coordinate, Direction.FOUR), Road.builder().build(Color.RED));
+        boolean buildingAdded = uut.addBuilding(player, Position.of(coordinate, Direction.TWO), Building.of(Color.RED, Building.Type.SETTLEMENT));
+        boolean roadAdded = uut.addRoad(player, Position.of(coordinate, Direction.FOUR), Road.of(Color.RED));
 
         Assert.assertTrue(buildingAdded);
         Assert.assertFalse(roadAdded);
@@ -130,18 +138,22 @@ public class SetupPhaseTest {
         Player redPlayer = Player.create(Color.RED);
         Player bluePlayer = Player.create(Color.BLUE);
         Player orangePlayer = Player.create(Color.ORANGE);
-        Dice dice = new RandomDice();
         Tile tile = Tile.builder().build(Resource.LUMBER, 2);
         Coordinate coordinate = Coordinate.of(2, 4);
         Board board = Board.builder()
                 .addTile(coordinate, tile)
                 .build();
-        Game game = new Game(board, List.of(redPlayer, bluePlayer, orangePlayer), dice);
+        Game game = Game.builder()
+                .addPlayer(redPlayer)
+                .addPlayer(bluePlayer)
+                .addPlayer(orangePlayer)
+                .setBoard(board)
+                .build();
 
         SetupPhase uut = new SetupPhase(game, false);
         game.setState(uut);
-        uut.addBuilding(redPlayer, Position.of(coordinate, Direction.TWO), Building.builder().build(Color.RED, Building.Type.SETTLEMENT));
-        uut.addRoad(redPlayer, Position.of(coordinate, Direction.TWO), Road.builder().build(Color.RED));
+        uut.addBuilding(redPlayer, Position.of(coordinate, Direction.TWO), Building.of(Color.RED, Building.Type.SETTLEMENT));
+        uut.addRoad(redPlayer, Position.of(coordinate, Direction.TWO), Road.of(Color.RED));
 
         Assert.assertEquals(orangePlayer, game.getCurrentPlayer());
     }
@@ -149,22 +161,24 @@ public class SetupPhaseTest {
     @Test
     public void testWhenSetupPhaseComplete_ThenRollForResourcesState() {
         Player player = Player.create(Color.RED);
-        Dice dice = new RandomDice();
         Tile tile = Tile.builder().build(Resource.LUMBER, 2);
         Coordinate coordinate = Coordinate.of(2, 4);
         Board board = Board.builder()
                 .addTile(coordinate, tile)
                 .build();
-        Game game = new Game(board, List.of(player), dice);
+        Game game = Game.builder()
+                .addPlayer(player)
+                .setBoard(board)
+                .build();
 
         State uut = new SetupPhase(game, true);
         game.setState(uut);
-        uut.addBuilding(player, Position.of(coordinate, Direction.TWO), Building.builder().build(Color.RED, Building.Type.SETTLEMENT));
-        uut.addRoad(player, Position.of(coordinate, Direction.TWO), Road.builder().build(Color.RED));
+        uut.addBuilding(player, Position.of(coordinate, Direction.TWO), Building.of(Color.RED, Building.Type.SETTLEMENT));
+        uut.addRoad(player, Position.of(coordinate, Direction.TWO), Road.of(Color.RED));
         // state object changed, get from game
         uut = game.getState();
-        uut.addBuilding(player, Position.of(coordinate, Direction.FOUR), Building.builder().build(Color.RED, Building.Type.SETTLEMENT));
-        uut.addRoad(player, Position.of(coordinate, Direction.FOUR), Road.builder().build(Color.RED));
+        uut.addBuilding(player, Position.of(coordinate, Direction.FOUR), Building.of(Color.RED, Building.Type.SETTLEMENT));
+        uut.addRoad(player, Position.of(coordinate, Direction.FOUR), Road.of(Color.RED));
 
         Assert.assertTrue(game.getState() instanceof RollForResources);
     }
@@ -173,21 +187,24 @@ public class SetupPhaseTest {
     public void testWhenFirstPlayerPlaceFirstSettlementAndRoad_ThenFirstPlayerCantPlaceMore() {
         Player redPlayer = Player.create(Color.RED);
         Player bluePlayer = Player.create(Color.BLUE);
-        Dice dice = new RandomDice();
         Tile tile = Tile.builder().build(Resource.LUMBER, 2);
         Coordinate coordinate = Coordinate.of(2, 4);
         Board board = Board.builder()
                 .addTile(coordinate, tile)
                 .build();
-        Game game = new Game(board, List.of(redPlayer, bluePlayer), dice);
+        Game game = Game.builder()
+                .addPlayer(redPlayer)
+                .addPlayer(bluePlayer)
+                .setBoard(board)
+                .build();
 
         SetupPhase uut = new SetupPhase(game, false);
         game.setState(uut);
-        uut.addBuilding(redPlayer, Position.of(coordinate, Direction.TWO), Building.builder().build(Color.RED, Building.Type.SETTLEMENT));
-        uut.addRoad(redPlayer, Position.of(coordinate, Direction.TWO), Road.builder().build(Color.RED));
+        uut.addBuilding(redPlayer, Position.of(coordinate, Direction.TWO), Building.of(Color.RED, Building.Type.SETTLEMENT));
+        uut.addRoad(redPlayer, Position.of(coordinate, Direction.TWO), Road.of(Color.RED));
 
-        boolean buildingAdded = uut.addBuilding(redPlayer, Position.of(coordinate, Direction.TWO), Building.builder().build(Color.RED, Building.Type.SETTLEMENT));
-        boolean roadAdded = uut.addRoad(redPlayer, Position.of(coordinate, Direction.TWO), Road.builder().build(Color.RED));
+        boolean buildingAdded = uut.addBuilding(redPlayer, Position.of(coordinate, Direction.TWO), Building.of(Color.RED, Building.Type.SETTLEMENT));
+        boolean roadAdded = uut.addRoad(redPlayer, Position.of(coordinate, Direction.TWO), Road.of(Color.RED));
 
         Assert.assertFalse(buildingAdded);
         Assert.assertFalse(roadAdded);
@@ -197,19 +214,22 @@ public class SetupPhaseTest {
     public void testWhenRedStarts_BlueCanNotPlaceBuildingOrRoad() {
         Player redPlayer = Player.create(Color.RED);
         Player bluePlayer = Player.create(Color.BLUE);
-        Dice dice = new RandomDice();
         Tile tile = Tile.builder().build(Resource.LUMBER, 2);
         Coordinate coordinate = Coordinate.of(2, 4);
         Board board = Board.builder()
                 .addTile(coordinate, tile)
                 .build();
-        Game game = new Game(board, List.of(redPlayer, bluePlayer), dice);
+        Game game = Game.builder()
+                .addPlayer(redPlayer)
+                .addPlayer(bluePlayer)
+                .setBoard(board)
+                .build();
 
         SetupPhase uut = new SetupPhase(game, false);
         game.setState(uut);
 
-        boolean buildingAdded = uut.addBuilding(bluePlayer, Position.of(coordinate, Direction.TWO), Building.builder().build(Color.RED, Building.Type.SETTLEMENT));
-        boolean roadAdded = uut.addRoad(bluePlayer, Position.of(coordinate, Direction.TWO), Road.builder().build(Color.RED));
+        boolean buildingAdded = uut.addBuilding(bluePlayer, Position.of(coordinate, Direction.TWO), Building.of(Color.RED, Building.Type.SETTLEMENT));
+        boolean roadAdded = uut.addRoad(bluePlayer, Position.of(coordinate, Direction.TWO), Road.of(Color.RED));
 
         Assert.assertFalse(buildingAdded);
         Assert.assertFalse(roadAdded);
@@ -218,7 +238,6 @@ public class SetupPhaseTest {
     @Test
     public void testWhenPlayersFinishedSetup_ThenStartingResourcesAllocated() {
         Player player = Player.create(Color.BLUE);
-        Dice dice = new RandomDice();
         Coordinate lumberCoordinate = Coordinate.of(0,0);
         Tile lumberTile = Tile.builder().build(Resource.LUMBER, 2);
 
@@ -234,12 +253,15 @@ public class SetupPhaseTest {
                 .addTile(brickCoordinate, brickTile)
                 .build();
 
-        Game game = new Game(board, List.of(player), dice);
+        Game game = Game.builder()
+                .addPlayer(player)
+                .setBoard(board)
+                .build();
 
         SetupPhase uut = new SetupPhase(game, false);
         game.setState(uut);
-        uut.addBuilding(player, Position.of(lumberCoordinate, Direction.ONE), Building.builder().build(Color.BLUE, Building.Type.SETTLEMENT));
-        uut.addRoad(player, Position.of(lumberCoordinate, Direction.ONE), Road.builder().build(Color.BLUE));
+        uut.addBuilding(player, Position.of(lumberCoordinate, Direction.ONE), Building.of(Color.BLUE, Building.Type.SETTLEMENT));
+        uut.addRoad(player, Position.of(lumberCoordinate, Direction.ONE), Road.of(Color.BLUE));
 
         Assert.assertEquals(1, player.inventory().getResource(Resource.LUMBER));
         Assert.assertEquals(1, player.inventory().getResource(Resource.ORE));

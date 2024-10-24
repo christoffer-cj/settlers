@@ -1,17 +1,17 @@
 package com.settlers.game;
 
 import com.settlers.game.dice.Dice;
+import com.settlers.game.dice.RandomDice;
 import com.settlers.game.states.DetermineStartingPlayer;
 import com.settlers.game.states.State;
 
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 
 public class Game {
     private final Board board;
     private final List<Player> players;
     private final Dice dice;
+    private final Queue<DevelopmentCard> developmentCards;
     private int currentPlayer = 0;
     private State state;
     private Player largestArmy;
@@ -19,13 +19,19 @@ public class Game {
 
     public Game(Board board,
                 List<Player> players,
-                Dice dice) {
+                Dice dice,
+                Queue<DevelopmentCard> developmentCards) {
         this.board = Objects.requireNonNull(board);
         this.players = List.copyOf(Objects.requireNonNull(players));
         this.dice = Objects.requireNonNull(dice);
+        this.developmentCards = new LinkedList<>(developmentCards);
         this.state = new DetermineStartingPlayer(this);
         this.largestArmy = null;
         this.longestRoad = null;
+    }
+
+    public static Builder builder() {
+        return new Builder();
     }
 
     public State getState() {
@@ -115,5 +121,54 @@ public class Game {
         }
 
         return Optional.empty();
+    }
+
+    public boolean hasDevelopmentCards() {
+        return !developmentCards.isEmpty();
+    }
+
+    public DevelopmentCard takeDevelopmentCard() {
+        if (!hasDevelopmentCards()) {
+            return null;
+        }
+
+        return developmentCards.poll();
+    }
+
+    public static final class Builder {
+        private Board board = Board.builder().build();
+        private List<Player> players = new ArrayList<>();
+        private Dice dice = RandomDice.create();
+        private Queue<DevelopmentCard> developmentCards = new LinkedList<>();
+
+        private Builder() {}
+
+        public Game build() {
+            return new Game(board, players, dice, developmentCards);
+        }
+
+        public Builder setBoard(Board board) {
+            assert board != null;
+            this.board = board;
+            return this;
+        };
+
+        public Builder addPlayer(Player player) {
+            if (players.contains(player)) return this;
+            players.add(player);
+            return this;
+        }
+
+        public Builder setDice(Dice dice) {
+            assert dice != null;
+            this.dice = dice;
+            return this;
+        }
+
+        public Builder setDevelopmentCards(List<DevelopmentCard> developmentCards) {
+            assert developmentCards != null;
+            this.developmentCards.addAll(developmentCards);
+            return this;
+        }
     }
 }

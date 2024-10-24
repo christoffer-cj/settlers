@@ -80,6 +80,10 @@ public class Inventory {
         developmentCards.merge(developmentCard, 1, Integer::sum);
     }
 
+    public int getDevelopmentCard(DevelopmentCard developmentCard) {
+        return developmentCards.getOrDefault(developmentCard, 0);
+    }
+
     public int building(Building.Type type) {
         return switch (type) {
             case SETTLEMENT -> settlements;
@@ -215,6 +219,12 @@ public class Inventory {
         public Builder setRoads(int amount) {
             assert amount >= 0;
             roads = amount;
+            return this;
+        }
+
+        public Builder addDevelopmentCard(DevelopmentCard developmentCard, int amount) {
+            assert amount >= 0;
+            developmentCards.merge(developmentCard, amount, Integer::sum);
             return this;
         }
     }

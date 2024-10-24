@@ -1,7 +1,5 @@
 package com.settlers.game;
 
-import com.settlers.game.dice.Dice;
-import com.settlers.game.dice.RandomDice;
 import com.settlers.game.states.ActionPhase;
 import com.settlers.game.states.RollForResources;
 import org.junit.Assert;
@@ -12,12 +10,14 @@ import java.util.List;
 public class ActionPhaseTest {
     @Test
     public void testWhenOfferMadeOnAnotherPlayersBehalf_ThenReturnFalse() {
-        Dice dice = new RandomDice();
-        Board board = Board.builder().build();
         Player redPlayer = Player.create(Color.RED);
         Player bluePlayer = Player.create(Color.BLUE);
         Player orangePlayer = Player.create(Color.ORANGE);
-        Game game = new Game(board, List.of(redPlayer, bluePlayer, orangePlayer), dice);
+        Game game = Game.builder()
+                .addPlayer(redPlayer)
+                .addPlayer(bluePlayer)
+                .addPlayer(orangePlayer)
+                .build();
 
         ActionPhase uut = new ActionPhase(game);
         game.setState(uut);
@@ -29,12 +29,14 @@ public class ActionPhaseTest {
 
     @Test
     public void testWhenOfferMadeByNotCurrentPlayer_ThenReturnFalse() {
-        Dice dice = new RandomDice();
-        Board board = Board.builder().build();
         Player redPlayer = Player.create(Color.RED);
         Player bluePlayer = Player.create(Color.BLUE);
         Player orangePlayer = Player.create(Color.ORANGE);
-        Game game = new Game(board, List.of(redPlayer, bluePlayer, orangePlayer), dice);
+        Game game = Game.builder()
+                .addPlayer(redPlayer)
+                .addPlayer(bluePlayer)
+                .addPlayer(orangePlayer)
+                .build();
 
         ActionPhase uut = new ActionPhase(game);
         game.setState(uut);
@@ -46,12 +48,14 @@ public class ActionPhaseTest {
 
     @Test
     public void testWhenTryingToTradeWithOneself_ThenReturnFalse() {
-        Dice dice = new RandomDice();
-        Board board = Board.builder().build();
         Player redPlayer = Player.create(Color.RED);
         Player bluePlayer = Player.create(Color.BLUE);
         Player orangePlayer = Player.create(Color.ORANGE);
-        Game game = new Game(board, List.of(redPlayer, bluePlayer, orangePlayer), dice);
+        Game game = Game.builder()
+                .addPlayer(redPlayer)
+                .addPlayer(bluePlayer)
+                .addPlayer(orangePlayer)
+                .build();
 
         ActionPhase uut = new ActionPhase(game);
         game.setState(uut);
@@ -63,15 +67,17 @@ public class ActionPhaseTest {
 
     @Test
     public void testWhenOfferingInvalidOffer_ThenReturnFalse() {
-        Dice dice = new RandomDice();
-        Board board = Board.builder().build();
         Inventory redInventory = Inventory.builder()
                 .addBrick(1)
                 .build();
         Player redPlayer = Player.of(Color.RED, redInventory);
         Player bluePlayer = Player.create(Color.BLUE);
         Player orangePlayer = Player.create(Color.ORANGE);
-        Game game = new Game(board, List.of(redPlayer, bluePlayer, orangePlayer), dice);
+        Game game = Game.builder()
+                .addPlayer(redPlayer)
+                .addPlayer(bluePlayer)
+                .addPlayer(orangePlayer)
+                .build();
 
         ActionPhase uut = new ActionPhase(game);
         game.setState(uut);
@@ -85,8 +91,6 @@ public class ActionPhaseTest {
 
     @Test
     public void testWhenOfferingInvalidReceive_ThenReturnFalse() {
-        Dice dice = new RandomDice();
-        Board board = Board.builder().build();
         Inventory redInventory = Inventory.builder()
                 .addBrick(1)
                 .build();
@@ -96,7 +100,11 @@ public class ActionPhaseTest {
                 .build();
         Player bluePlayer = Player.of(Color.BLUE, blueInventory);
         Player orangePlayer = Player.create(Color.ORANGE);
-        Game game = new Game(board, List.of(redPlayer, bluePlayer, orangePlayer), dice);
+        Game game = Game.builder()
+                .addPlayer(redPlayer)
+                .addPlayer(bluePlayer)
+                .addPlayer(orangePlayer)
+                .build();
 
         ActionPhase uut = new ActionPhase(game);
         game.setState(uut);
@@ -111,8 +119,6 @@ public class ActionPhaseTest {
 
     @Test
     public void testWhenValidTradeOffer_ThenReturnTrue() {
-        Dice dice = new RandomDice();
-        Board board = Board.builder().build();
         Inventory redInventory = Inventory.builder()
                 .addBrick(1)
                 .build();
@@ -122,7 +128,11 @@ public class ActionPhaseTest {
                 .build();
         Player bluePlayer = Player.of(Color.BLUE, blueInventory);
         Player orangePlayer = Player.create(Color.ORANGE);
-        Game game = new Game(board, List.of(redPlayer, bluePlayer, orangePlayer), dice);
+        Game game = Game.builder()
+                .addPlayer(redPlayer)
+                .addPlayer(bluePlayer)
+                .addPlayer(orangePlayer)
+                .build();
 
         ActionPhase uut = new ActionPhase(game);
         game.setState(uut);
@@ -137,8 +147,6 @@ public class ActionPhaseTest {
 
     @Test
     public void testWhenTradeInProgressAndAnotherTradeOffered_ThenReturnFalse() {
-        Dice dice = new RandomDice();
-        Board board = Board.builder().build();
         Inventory redInventory = Inventory.builder()
                 .addBrick(1)
                 .build();
@@ -148,7 +156,11 @@ public class ActionPhaseTest {
                 .build();
         Player bluePlayer = Player.of(Color.BLUE, blueInventory);
         Player orangePlayer = Player.create(Color.ORANGE);
-        Game game = new Game(board, List.of(redPlayer, bluePlayer, orangePlayer), dice);
+        Game game = Game.builder()
+                .addPlayer(redPlayer)
+                .addPlayer(bluePlayer)
+                .addPlayer(orangePlayer)
+                .build();
 
         ActionPhase uut = new ActionPhase(game);
         game.setState(uut);
@@ -165,8 +177,6 @@ public class ActionPhaseTest {
 
     @Test
     public void testWhenTradeOfferAccepted_ThenReturnTrue() {
-        Dice dice = new RandomDice();
-        Board board = Board.builder().build();
         Inventory redInventory = Inventory.builder()
                 .addBrick(1)
                 .build();
@@ -176,7 +186,11 @@ public class ActionPhaseTest {
                 .build();
         Player bluePlayer = Player.of(Color.BLUE, blueInventory);
         Player orangePlayer = Player.create(Color.ORANGE);
-        Game game = new Game(board, List.of(redPlayer, bluePlayer, orangePlayer), dice);
+        Game game = Game.builder()
+                .addPlayer(redPlayer)
+                .addPlayer(bluePlayer)
+                .addPlayer(orangePlayer)
+                .build();
 
         ActionPhase uut = new ActionPhase(game);
         game.setState(uut);
@@ -195,8 +209,6 @@ public class ActionPhaseTest {
 
     @Test
     public void testWhenTradeOfferDeclined_ThenReturnTrue() {
-        Dice dice = new RandomDice();
-        Board board = Board.builder().build();
         Inventory redInventory = Inventory.builder()
                 .addBrick(1)
                 .build();
@@ -206,7 +218,11 @@ public class ActionPhaseTest {
                 .build();
         Player bluePlayer = Player.of(Color.BLUE, blueInventory);
         Player orangePlayer = Player.create(Color.ORANGE);
-        Game game = new Game(board, List.of(redPlayer, bluePlayer, orangePlayer), dice);
+        Game game = Game.builder()
+                .addPlayer(redPlayer)
+                .addPlayer(bluePlayer)
+                .addPlayer(orangePlayer)
+                .build();
 
         ActionPhase uut = new ActionPhase(game);
         game.setState(uut);
@@ -225,8 +241,6 @@ public class ActionPhaseTest {
 
     @Test
     public void testWhenTradeOfferAcceptedByWrongPlayer_ThenReturnFalse() {
-        Dice dice = new RandomDice();
-        Board board = Board.builder().build();
         Inventory redInventory = Inventory.builder()
                 .addBrick(1)
                 .build();
@@ -236,7 +250,11 @@ public class ActionPhaseTest {
                 .build();
         Player bluePlayer = Player.of(Color.BLUE, blueInventory);
         Player orangePlayer = Player.create(Color.ORANGE);
-        Game game = new Game(board, List.of(redPlayer, bluePlayer, orangePlayer), dice);
+        Game game = Game.builder()
+                .addPlayer(redPlayer)
+                .addPlayer(bluePlayer)
+                .addPlayer(orangePlayer)
+                .build();
 
         ActionPhase uut = new ActionPhase(game);
         game.setState(uut);
@@ -253,8 +271,6 @@ public class ActionPhaseTest {
 
     @Test
     public void testWhenTradeOfferDeclinedByWrongPlayer_ThenReturnFalse() {
-        Dice dice = new RandomDice();
-        Board board = Board.builder().build();
         Inventory redInventory = Inventory.builder()
                 .addBrick(1)
                 .build();
@@ -264,7 +280,11 @@ public class ActionPhaseTest {
                 .build();
         Player bluePlayer = Player.of(Color.BLUE, blueInventory);
         Player orangePlayer = Player.create(Color.ORANGE);
-        Game game = new Game(board, List.of(redPlayer, bluePlayer, orangePlayer), dice);
+        Game game = Game.builder()
+                .addPlayer(redPlayer)
+                .addPlayer(bluePlayer)
+                .addPlayer(orangePlayer)
+                .build();
 
         ActionPhase uut = new ActionPhase(game);
         game.setState(uut);
@@ -281,8 +301,6 @@ public class ActionPhaseTest {
 
     @Test
     public void testWhenTradeOfferAcceptedAndSecondTradeOffer_ThenReturnTrue() {
-        Dice dice = new RandomDice();
-        Board board = Board.builder().build();
         Inventory redInventory = Inventory.builder()
                 .addBrick(1)
                 .build();
@@ -292,7 +310,11 @@ public class ActionPhaseTest {
                 .build();
         Player bluePlayer = Player.of(Color.BLUE, blueInventory);
         Player orangePlayer = Player.create(Color.ORANGE);
-        Game game = new Game(board, List.of(redPlayer, bluePlayer, orangePlayer), dice);
+        Game game = Game.builder()
+                .addPlayer(redPlayer)
+                .addPlayer(bluePlayer)
+                .addPlayer(orangePlayer)
+                .build();
 
         ActionPhase uut = new ActionPhase(game);
         game.setState(uut);
@@ -315,8 +337,6 @@ public class ActionPhaseTest {
 
     @Test
     public void testWhenTradeOfferDeclinedAndSecondTradeOffer_ThenReturnTrue() {
-        Dice dice = new RandomDice();
-        Board board = Board.builder().build();
         Inventory redInventory = Inventory.builder()
                 .addBrick(1)
                 .build();
@@ -326,7 +346,11 @@ public class ActionPhaseTest {
                 .build();
         Player bluePlayer = Player.of(Color.BLUE, blueInventory);
         Player orangePlayer = Player.create(Color.ORANGE);
-        Game game = new Game(board, List.of(redPlayer, bluePlayer, orangePlayer), dice);
+        Game game = Game.builder()
+                .addPlayer(redPlayer)
+                .addPlayer(bluePlayer)
+                .addPlayer(orangePlayer)
+                .build();
 
         ActionPhase uut = new ActionPhase(game);
         game.setState(uut);
@@ -351,18 +375,21 @@ public class ActionPhaseTest {
     public void testWhenAddBuildingByNotCurrentPlayer_ThenReturnFalse() {
         Player redPlayer = Player.create(Color.RED);
         Player bluePlayer = Player.create(Color.BLUE);
-        Dice dice = new RandomDice();
         Coordinate coordinate = Coordinate.of(420, 69);
         Tile tile = Tile.builder().build(Resource.LUMBER, 4);
         Board board = Board.builder()
                 .addTile(coordinate, tile)
                 .build();
-        Game game = new Game(board, List.of(redPlayer, bluePlayer), dice);
+        Game game = Game.builder()
+                .addPlayer(redPlayer)
+                .addPlayer(bluePlayer)
+                .setBoard(board)
+                .build();
 
         ActionPhase uut = new ActionPhase(game);
         game.setState(uut);
 
-        boolean buildingPlaced = uut.addBuilding(bluePlayer, Position.of(coordinate, Direction.FIVE), Building.builder().build(Color.BLUE, Building.Type.SETTLEMENT));
+        boolean buildingPlaced = uut.addBuilding(bluePlayer, Position.of(coordinate, Direction.FIVE), Building.of(Color.BLUE, Building.Type.SETTLEMENT));
 
         Assert.assertFalse(buildingPlaced);
     }
@@ -371,18 +398,21 @@ public class ActionPhaseTest {
     public void testWhenAddBuildingOfWrongColor_ThenReturnFalse() {
         Player redPlayer = Player.create(Color.RED);
         Player bluePlayer = Player.create(Color.BLUE);
-        Dice dice = new RandomDice();
         Coordinate coordinate = Coordinate.of(420, 69);
         Tile tile = Tile.builder().build(Resource.LUMBER, 4);
         Board board = Board.builder()
                 .addTile(coordinate, tile)
                 .build();
-        Game game = new Game(board, List.of(redPlayer, bluePlayer), dice);
+        Game game = Game.builder()
+                .addPlayer(redPlayer)
+                .addPlayer(bluePlayer)
+                .setBoard(board)
+                .build();
 
         ActionPhase uut = new ActionPhase(game);
         game.setState(uut);
 
-        boolean buildingPlaced = uut.addBuilding(redPlayer, Position.of(coordinate, Direction.FIVE), Building.builder().build(Color.BLUE, Building.Type.SETTLEMENT));
+        boolean buildingPlaced = uut.addBuilding(redPlayer, Position.of(coordinate, Direction.FIVE), Building.of(Color.BLUE, Building.Type.SETTLEMENT));
 
         Assert.assertFalse(buildingPlaced);
     }
@@ -391,18 +421,21 @@ public class ActionPhaseTest {
     public void testWhenAddCityNotOnSettlement_ThenReturnFalse() {
         Player redPlayer = Player.create(Color.RED);
         Player bluePlayer = Player.create(Color.BLUE);
-        Dice dice = new RandomDice();
         Coordinate coordinate = Coordinate.of(420, 69);
         Tile tile = Tile.builder().build(Resource.LUMBER, 4);
         Board board = Board.builder()
                 .addTile(coordinate, tile)
                 .build();
-        Game game = new Game(board, List.of(redPlayer, bluePlayer), dice);
+        Game game = Game.builder()
+                .addPlayer(redPlayer)
+                .addPlayer(bluePlayer)
+                .setBoard(board)
+                .build();
 
         ActionPhase uut = new ActionPhase(game);
         game.setState(uut);
 
-        boolean buildingPlaced = uut.addBuilding(redPlayer, Position.of(coordinate, Direction.FIVE), Building.builder().build(Color.RED, Building.Type.CITY));
+        boolean buildingPlaced = uut.addBuilding(redPlayer, Position.of(coordinate, Direction.FIVE), Building.of(Color.RED, Building.Type.CITY));
 
         Assert.assertFalse(buildingPlaced);
     }
@@ -415,21 +448,24 @@ public class ActionPhaseTest {
                 .build();
         Player redPlayer = Player.of(Color.RED, redInventory);
         Player bluePlayer = Player.create(Color.BLUE);
-        Dice dice = new RandomDice();
         Coordinate coordinate = Coordinate.of(420, 69);
         Tile tile = Tile.builder()
-                .addRoad(Direction.FIVE, Road.builder().build(Color.RED))
-                .addBuilding(Direction.FIVE, Building.builder().build(Color.RED, Building.Type.SETTLEMENT))
+                .addRoad(Direction.FIVE, Road.of(Color.RED))
+                .addBuilding(Direction.FIVE, Building.of(Color.RED, Building.Type.SETTLEMENT))
                 .build(Resource.LUMBER, 4);
         Board board = Board.builder()
                 .addTile(coordinate, tile)
                 .build();
-        Game game = new Game(board, List.of(redPlayer, bluePlayer), dice);
+        Game game = Game.builder()
+                .addPlayer(redPlayer)
+                .addPlayer(bluePlayer)
+                .setBoard(board)
+                .build();
 
         ActionPhase uut = new ActionPhase(game);
         game.setState(uut);
 
-        boolean buildingPlaced = uut.addBuilding(redPlayer, Position.of(coordinate, Direction.FIVE), Building.builder().build(Color.RED, Building.Type.CITY));
+        boolean buildingPlaced = uut.addBuilding(redPlayer, Position.of(coordinate, Direction.FIVE), Building.of(Color.RED, Building.Type.CITY));
 
         Assert.assertTrue(buildingPlaced);
     }
@@ -444,17 +480,20 @@ public class ActionPhaseTest {
                 .build();
         Player redPlayer = Player.of(Color.RED, redInventory);
         Player bluePlayer = Player.create(Color.BLUE);
-        Dice dice = new RandomDice();
         Coordinate coordinate = Coordinate.of(420, 69);
         Tile tile = Tile.builder().build(Resource.LUMBER, 4);
         Board board = Board.builder()
                 .addTile(coordinate, tile)
                 .build();
-        Game game = new Game(board, List.of(redPlayer, bluePlayer), dice);
+        Game game = Game.builder()
+                .addPlayer(redPlayer)
+                .addPlayer(bluePlayer)
+                .setBoard(board)
+                .build();
 
         ActionPhase uut = new ActionPhase(game);
         game.setState(uut);
-        boolean buildingPlaced = uut.addBuilding(redPlayer, Position.of(coordinate, Direction.FIVE), Building.builder().build(Color.RED, Building.Type.SETTLEMENT));
+        boolean buildingPlaced = uut.addBuilding(redPlayer, Position.of(coordinate, Direction.FIVE), Building.of(Color.RED, Building.Type.SETTLEMENT));
 
         Assert.assertFalse(buildingPlaced);
     }
@@ -469,19 +508,22 @@ public class ActionPhaseTest {
                 .build();
         Player redPlayer = Player.of(Color.RED, redInventory);
         Player bluePlayer = Player.create(Color.BLUE);
-        Dice dice = new RandomDice();
         Coordinate coordinate = Coordinate.of(420, 69);
         Tile tile = Tile.builder()
-                .addRoad(Direction.FIVE, Road.builder().build(Color.RED))
+                .addRoad(Direction.FIVE, Road.of(Color.RED))
                 .build(Resource.LUMBER, 4);
         Board board = Board.builder()
                 .addTile(coordinate, tile)
                 .build();
-        Game game = new Game(board, List.of(redPlayer, bluePlayer), dice);
+        Game game = Game.builder()
+                .addPlayer(redPlayer)
+                .addPlayer(bluePlayer)
+                .setBoard(board)
+                .build();
 
         ActionPhase uut = new ActionPhase(game);
         game.setState(uut);
-        boolean buildingPlaced = uut.addBuilding(redPlayer, Position.of(coordinate, Direction.FIVE), Building.builder().build(Color.RED, Building.Type.SETTLEMENT));
+        boolean buildingPlaced = uut.addBuilding(redPlayer, Position.of(coordinate, Direction.FIVE), Building.of(Color.RED, Building.Type.SETTLEMENT));
 
         Assert.assertTrue(buildingPlaced);
     }
@@ -490,18 +532,21 @@ public class ActionPhaseTest {
     public void testWhenAddRoadByNotCurrentPlayer_ThenReturnFalse() {
         Player redPlayer = Player.create(Color.RED);
         Player bluePlayer = Player.create(Color.BLUE);
-        Dice dice = new RandomDice();
         Coordinate coordinate = Coordinate.of(420, 69);
         Tile tile = Tile.builder().build(Resource.LUMBER, 4);
         Board board = Board.builder()
                 .addTile(coordinate, tile)
                 .build();
-        Game game = new Game(board, List.of(redPlayer, bluePlayer), dice);
+        Game game = Game.builder()
+                .addPlayer(redPlayer)
+                .addPlayer(bluePlayer)
+                .setBoard(board)
+                .build();
 
         ActionPhase uut = new ActionPhase(game);
         game.setState(uut);
 
-        boolean buildingPlaced = uut.addRoad(bluePlayer, Position.of(coordinate, Direction.FIVE), Road.builder().build(Color.BLUE));
+        boolean buildingPlaced = uut.addRoad(bluePlayer, Position.of(coordinate, Direction.FIVE), Road.of(Color.BLUE));
 
         Assert.assertFalse(buildingPlaced);
     }
@@ -510,18 +555,21 @@ public class ActionPhaseTest {
     public void testWhenAddRoadOfWrongColor_ThenReturnFalse() {
         Player redPlayer = Player.create(Color.RED);
         Player bluePlayer = Player.create(Color.BLUE);
-        Dice dice = new RandomDice();
         Coordinate coordinate = Coordinate.of(420, 69);
         Tile tile = Tile.builder().build(Resource.LUMBER, 4);
         Board board = Board.builder()
                 .addTile(coordinate, tile)
                 .build();
-        Game game = new Game(board, List.of(redPlayer, bluePlayer), dice);
+        Game game = Game.builder()
+                .addPlayer(redPlayer)
+                .addPlayer(bluePlayer)
+                .setBoard(board)
+                .build();
 
         ActionPhase uut = new ActionPhase(game);
         game.setState(uut);
 
-        boolean buildingPlaced = uut.addRoad(redPlayer, Position.of(coordinate, Direction.FIVE), Road.builder().build(Color.BLUE));
+        boolean buildingPlaced = uut.addRoad(redPlayer, Position.of(coordinate, Direction.FIVE), Road.of(Color.BLUE));
 
         Assert.assertFalse(buildingPlaced);
     }
@@ -530,9 +578,10 @@ public class ActionPhaseTest {
     public void testWhenEndTurn_ThenNextPlayer() {
         Player redPlayer = Player.create(Color.RED);
         Player bluePlayer = Player.create(Color.BLUE);
-        Dice dice = new RandomDice();
-        Board board = Board.builder().build();
-        Game game = new Game(board, List.of(redPlayer, bluePlayer), dice);
+        Game game = Game.builder()
+                .addPlayer(redPlayer)
+                .addPlayer(bluePlayer)
+                .build();
 
         ActionPhase uut = new ActionPhase(game);
         game.setState(uut);
@@ -546,9 +595,10 @@ public class ActionPhaseTest {
     public void testWhenEndTurnNotByCurrentPlayer_ThenReturnFalse() {
         Player redPlayer = Player.create(Color.RED);
         Player bluePlayer = Player.create(Color.BLUE);
-        Dice dice = new RandomDice();
-        Board board = Board.builder().build();
-        Game game = new Game(board, List.of(redPlayer, bluePlayer), dice);
+        Game game = Game.builder()
+                .addPlayer(redPlayer)
+                .addPlayer(bluePlayer)
+                .build();
 
         ActionPhase uut = new ActionPhase(game);
         game.setState(uut);
@@ -563,9 +613,9 @@ public class ActionPhaseTest {
                 .addBrick(3)
                 .build();
         Player player = Player.of(Color.RED, inventory);
-        Board board = Board.builder().build();
-        Dice dice = new RandomDice();
-        Game game = new Game(board, List.of(player), dice);
+        Game game = Game.builder()
+                .addPlayer(player)
+                .build();
 
         ActionPhase uut = new ActionPhase(game);
         game.setState(uut);
@@ -581,9 +631,9 @@ public class ActionPhaseTest {
                 .addBrick(4)
                 .build();
         Player player = Player.of(Color.RED, inventory);
-        Board board = Board.builder().build();
-        Dice dice = new RandomDice();
-        Game game = new Game(board, List.of(player), dice);
+        Game game = Game.builder()
+                .addPlayer(player)
+                .build();
 
         ActionPhase uut = new ActionPhase(game);
         game.setState(uut);
@@ -603,13 +653,15 @@ public class ActionPhaseTest {
         Player player = Player.of(Color.RED, inventory);
         Tile tile = Tile.builder()
                 .addHarbor(Direction.ONE, Harbor.ANY)
-                .addBuilding(Direction.ONE, Building.builder().build(Color.RED, Building.Type.SETTLEMENT))
+                .addBuilding(Direction.ONE, Building.of(Color.RED, Building.Type.SETTLEMENT))
                 .build(Resource.ORE, 4);
         Board board = Board.builder()
                 .addTile(Coordinate.of(0, 10), tile)
                 .build();
-        Dice dice = new RandomDice();
-        Game game = new Game(board, List.of(player), dice);
+        Game game = Game.builder()
+                .addPlayer(player)
+                .setBoard(board)
+                .build();
 
         ActionPhase uut = new ActionPhase(game);
         game.setState(uut);
@@ -629,13 +681,15 @@ public class ActionPhaseTest {
         Player player = Player.of(Color.RED, inventory);
         Tile tile = Tile.builder()
                 .addHarbor(Direction.ONE, Harbor.BRICK)
-                .addBuilding(Direction.ONE, Building.builder().build(Color.RED, Building.Type.SETTLEMENT))
+                .addBuilding(Direction.ONE, Building.of(Color.RED, Building.Type.SETTLEMENT))
                 .build(Resource.ORE, 4);
         Board board = Board.builder()
                 .addTile(Coordinate.of(0, 10), tile)
                 .build();
-        Dice dice = new RandomDice();
-        Game game = new Game(board, List.of(player), dice);
+        Game game = Game.builder()
+                .addPlayer(player)
+                .setBoard(board)
+                .build();
 
         ActionPhase uut = new ActionPhase(game);
         game.setState(uut);
@@ -655,13 +709,15 @@ public class ActionPhaseTest {
         Player player = Player.of(Color.RED, inventory);
         Tile tile = Tile.builder()
                 .addHarbor(Direction.ONE, Harbor.LUMBER)
-                .addBuilding(Direction.ONE, Building.builder().build(Color.RED, Building.Type.SETTLEMENT))
+                .addBuilding(Direction.ONE, Building.of(Color.RED, Building.Type.SETTLEMENT))
                 .build(Resource.ORE, 4);
         Board board = Board.builder()
                 .addTile(Coordinate.of(0, 10), tile)
                 .build();
-        Dice dice = new RandomDice();
-        Game game = new Game(board, List.of(player), dice);
+        Game game = Game.builder()
+                .addPlayer(player)
+                .setBoard(board)
+                .build();
 
         ActionPhase uut = new ActionPhase(game);
         game.setState(uut);
@@ -679,13 +735,15 @@ public class ActionPhaseTest {
         Player player = Player.of(Color.RED, inventory);
         Tile tile = Tile.builder()
                 .addHarbor(Direction.ONE, Harbor.BRICK)
-                .addBuilding(Direction.ONE, Building.builder().build(Color.BLUE, Building.Type.SETTLEMENT))
+                .addBuilding(Direction.ONE, Building.of(Color.BLUE, Building.Type.SETTLEMENT))
                 .build(Resource.ORE, 4);
         Board board = Board.builder()
                 .addTile(Coordinate.of(0, 10), tile)
                 .build();
-        Dice dice = new RandomDice();
-        Game game = new Game(board, List.of(player), dice);
+        Game game = Game.builder()
+                .addPlayer(player)
+                .setBoard(board)
+                .build();
 
         ActionPhase uut = new ActionPhase(game);
         game.setState(uut);
@@ -693,5 +751,111 @@ public class ActionPhaseTest {
         boolean exchanged = uut.exchange(player, Resource.BRICK, Resource.LUMBER);
 
         Assert.assertFalse(exchanged);
+    }
+
+    @Test
+    public void testWhenPlayerHasInsufficientResources_ThenBuyDevelopmentCardReturnFalse() {
+        Inventory inventory = Inventory.builder()
+                .addOre(2)
+                .addGrain(1)
+                .addLumber(1)
+                .build();
+        Player player = Player.of(Color.RED, inventory);
+        Game game = Game.builder()
+                .addPlayer(player)
+                .setDevelopmentCards(List.of(DevelopmentCard.KNIGHT))
+                .build();
+
+        ActionPhase uut = new ActionPhase(game);
+        game.setState(uut);
+
+        boolean developmentCardBought = uut.buyDevelopmentCard(player);
+
+        Assert.assertFalse(developmentCardBought);
+    }
+
+    @Test
+    public void testWhenGameHasNoMoreDevelopmentCards_ThenBuyDevelopmentCardReturnFalse() {
+        Inventory inventory = Inventory.builder()
+                .addOre(1)
+                .addGrain(1)
+                .addWool(1)
+                .build();
+        Player player = Player.of(Color.WHITE, inventory);
+        Game game = Game.builder()
+                .addPlayer(player)
+                .build();
+
+        ActionPhase uut = new ActionPhase(game);
+
+        boolean developmentCardBought = uut.buyDevelopmentCard(player);
+
+        Assert.assertFalse(developmentCardBought);
+    }
+
+    @Test
+    public void testWhenPlayerCanBuyDevelopmentCard_ThenBuyDevelopmentCardReturnTrue() {
+        Inventory inventory = Inventory.builder()
+                .addOre(1)
+                .addGrain(1)
+                .addWool(1)
+                .build();
+        Player player = Player.of(Color.WHITE, inventory);
+        Game game = Game.builder()
+                .addPlayer(player)
+                .setDevelopmentCards(List.of(DevelopmentCard.KNIGHT))
+                .build();
+
+        ActionPhase uut = new ActionPhase(game);
+
+        boolean developmentCardBought = uut.buyDevelopmentCard(player);
+
+        Assert.assertTrue(developmentCardBought);
+        Assert.assertEquals(1, inventory.getDevelopmentCard(DevelopmentCard.KNIGHT));
+    }
+
+    @Test
+    public void testWhenPlayerUseDevelopmentCardBoughtSameTurn_ThenFalseReturned() {
+        Inventory inventory = Inventory.builder()
+                .addOre(1)
+                .addGrain(1)
+                .addWool(1)
+                .build();
+        Player player = Player.of(Color.WHITE, inventory);
+        Game game = Game.builder()
+                .addPlayer(player)
+                .setDevelopmentCards(List.of(DevelopmentCard.KNIGHT))
+                .build();
+
+        ActionPhase uut = new ActionPhase(game);
+
+        boolean developmentCardBought = uut.buyDevelopmentCard(player);
+        boolean developmentCardUsed = uut.useDevelopmentCard(player, DevelopmentCard.KNIGHT);
+
+        Assert.assertTrue(developmentCardBought);
+        Assert.assertFalse(developmentCardUsed);
+    }
+
+    @Test
+    public void testWhenPlayerUseSameDevelopmentCardBoughtSameTurnButHadOneMore_ThenTrueReturned() {
+        Inventory inventory = Inventory.builder()
+                .addOre(1)
+                .addGrain(1)
+                .addWool(1)
+                .addDevelopmentCard(DevelopmentCard.KNIGHT, 1)
+                .build();
+        Player player = Player.of(Color.WHITE, inventory);
+        Game game = Game.builder()
+                .addPlayer(player)
+                .setDevelopmentCards(List.of(DevelopmentCard.KNIGHT))
+                .build();
+
+        ActionPhase uut = new ActionPhase(game);
+
+        boolean developmentCardBought = uut.buyDevelopmentCard(player);
+        boolean developmentCardUsed = uut.useDevelopmentCard(player, DevelopmentCard.KNIGHT);
+
+        Assert.assertTrue(developmentCardBought);
+        Assert.assertTrue(developmentCardUsed);
     }
 }

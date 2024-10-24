@@ -1,23 +1,21 @@
 package com.settlers.game;
 
-import com.settlers.game.dice.Dice;
 import com.settlers.game.dice.TestingDice;
 import com.settlers.game.states.DetermineStartingPlayer;
 import com.settlers.game.states.SetupPhase;
 import org.junit.Assert;
 import org.junit.Test;
 
-import java.util.List;
-
 public class DetermineStartingPlayerTest {
     @Test
     public void testWhenStartingPlayerDeterminedThenSetupPhaseStateAndStartingPlayerStarts() {
-        Board board = Board.builder().build();
         Player redPlayer = Player.create(Color.RED);
         Player whitePlayer = Player.create(Color.WHITE);
-        List<Player> players = List.of(redPlayer, whitePlayer);
-        Dice dice = new TestingDice(List.of(5, 10));
-        Game game = new Game(board, players, dice);
+        Game game = Game.builder()
+                .addPlayer(redPlayer)
+                .addPlayer(whitePlayer)
+                .setDice(TestingDice.of(6, 10))
+                .build();
 
         DetermineStartingPlayer uut = new DetermineStartingPlayer(game);
         game.setState(uut);
@@ -30,12 +28,13 @@ public class DetermineStartingPlayerTest {
 
     @Test
     public void testWhenStartingPlayerNotFound_ThenDetermineStartingPlayerAgain() {
-        Board board = Board.builder().build();
         Player redPlayer = Player.create(Color.RED);
         Player whitePlayer = Player.create(Color.WHITE);
-        List<Player> players = List.of(redPlayer, whitePlayer);
-        Dice dice = new TestingDice(List.of(10, 10));
-        Game game = new Game(board, players, dice);
+        Game game = Game.builder()
+                .addPlayer(redPlayer)
+                .addPlayer(whitePlayer)
+                .setDice(TestingDice.of(10, 10))
+                .build();
 
         DetermineStartingPlayer uut = new DetermineStartingPlayer(game);
         game.setState(uut);
@@ -48,13 +47,14 @@ public class DetermineStartingPlayerTest {
 
     @Test
     public void testWhenStartingPlayerDeterminedInSecondRound_ThenSetupPhaseAndStartingPlayerStarts() {
-        Board board = Board.builder().build();
         Player redPlayer = Player.create(Color.RED);
         Player whitePlayer = Player.create(Color.WHITE);
-        List<Player> players = List.of(redPlayer, whitePlayer);
-        Dice dice = new TestingDice(List.of(2, 2, 5, 10));
+        Game game = Game.builder()
+                .addPlayer(redPlayer)
+                .addPlayer(whitePlayer)
+                .setDice(TestingDice.of(2, 2, 5, 10))
+                .build();
 
-        Game game = new Game(board, players, dice);
         DetermineStartingPlayer uut = new DetermineStartingPlayer(game);
         game.setState(uut);
         uut.rollDice(redPlayer);
@@ -68,13 +68,14 @@ public class DetermineStartingPlayerTest {
 
     @Test
     public void testWhenRedStarts_ThenWhiteCanNotRollFirst() {
-        Board board = Board.builder().build();
         Player redPlayer = Player.create(Color.RED);
         Player whitePlayer = Player.create(Color.WHITE);
-        List<Player> players = List.of(redPlayer, whitePlayer);
-        Dice dice = new TestingDice(List.of(2));
+        Game game = Game.builder()
+                .addPlayer(redPlayer)
+                .addPlayer(whitePlayer)
+                .setDice(TestingDice.of(2))
+                .build();
 
-        Game game = new Game(board, players, dice);
         DetermineStartingPlayer uut = new DetermineStartingPlayer(game);
         game.setState(uut);
         boolean diceRolled = uut.rollDice(whitePlayer);
@@ -87,9 +88,12 @@ public class DetermineStartingPlayerTest {
         Player redPlayer = Player.create(Color.RED);
         Player whitePlayer = Player.create(Color.WHITE);
         Player bluePlayer = Player.create(Color.BLUE);
-        Board board = Board.builder().build();
-        Dice dice = new TestingDice(List.of(10, 10, 5, 12, 10));
-        Game game = new Game(board, List.of(redPlayer, whitePlayer, bluePlayer), dice);
+        Game game = Game.builder()
+                .addPlayer(redPlayer)
+                .addPlayer(whitePlayer)
+                .addPlayer(bluePlayer)
+                .setDice(TestingDice.of(10, 10, 5, 12, 10))
+                .build();
 
         DetermineStartingPlayer uut = new DetermineStartingPlayer(game);
         game.setState(uut);

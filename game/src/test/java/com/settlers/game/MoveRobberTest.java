@@ -1,18 +1,13 @@
 package com.settlers.game;
 
-import com.settlers.game.dice.Dice;
-import com.settlers.game.dice.RandomDice;
 import com.settlers.game.states.ActionPhase;
 import com.settlers.game.states.MoveRobber;
 import org.junit.Assert;
 import org.junit.Test;
 
-import java.util.List;
-
 public class MoveRobberTest {
     @Test
     public void testWhenMovingRobberToCoordinateNotOnBoard_ThenFalseReturned() {
-        Dice dice = new RandomDice();
         Coordinate coordinate = Coordinate.of(0, 0);
         Tile tile = Tile.builder().build(Resource.ORE, 6);
         Board board = Board.builder()
@@ -22,7 +17,10 @@ public class MoveRobberTest {
                 .addLumber(4)
                 .build();
         Player player = Player.of(Color.RED, inventory);
-        Game game = new Game(board, List.of(player), dice);
+        Game game = Game.builder()
+                .addPlayer(player)
+                .setBoard(board)
+                .build();
 
 
         MoveRobber uut = new MoveRobber(game);
@@ -35,7 +33,6 @@ public class MoveRobberTest {
 
     @Test
     public void testWhenMovingRobberToCoordinateOnBoard_ThenTrueReturned() {
-        Dice dice = new RandomDice();
         Coordinate coordinate = Coordinate.of(0, 0);
         Tile tile = Tile.builder().build(Resource.ORE, 6);
         Board board = Board.builder()
@@ -45,8 +42,10 @@ public class MoveRobberTest {
                 .addLumber(4)
                 .build();
         Player player = Player.of(Color.RED, inventory);
-        Game game = new Game(board, List.of(player), dice);
-
+        Game game = Game.builder()
+                .addPlayer(player)
+                .setBoard(board)
+                .build();
 
         MoveRobber uut = new MoveRobber(game);
         game.setState(uut);
@@ -58,7 +57,6 @@ public class MoveRobberTest {
 
     @Test
     public void testWhenMovingRobberToSameCoordinateOnBoard_ThenFalseReturned() {
-        Dice dice = new RandomDice();
         Coordinate coordinate = Coordinate.of(0, 0);
         Tile tile = Tile.builder().build(Resource.ORE, 6);
         Board board = Board.builder()
@@ -69,8 +67,10 @@ public class MoveRobberTest {
                 .addLumber(4)
                 .build();
         Player player = Player.of(Color.RED, inventory);
-        Game game = new Game(board, List.of(player), dice);
-
+        Game game = Game.builder()
+                .addPlayer(player)
+                .setBoard(board)
+                .build();
 
         MoveRobber uut = new MoveRobber(game);
         game.setState(uut);
@@ -82,13 +82,16 @@ public class MoveRobberTest {
     @Test
     public void testWhenRobberMovedToTileWithNoAdjacentBuildings_ThenNoOneToStealFrom() {
         Player player = Player.create(Color.RED);
-        Dice dice = new RandomDice();
         Coordinate coordinate = Coordinate.of(10, 10);
         Tile tile = Tile.builder().build(Resource.ORE, 4);
         Board board = Board.builder()
                 .addTile(coordinate, tile)
                 .build();
-        Game game = new Game(board, List.of(player), dice);
+        Game game = Game.builder()
+                .addPlayer(player)
+                .setBoard(board)
+                .build();
+
         MoveRobber uut = new MoveRobber(game);
         game.setState(uut);
         uut.moveRobber(player, coordinate);
@@ -100,15 +103,19 @@ public class MoveRobberTest {
     public void testWhenRobberMovedToTileWithAdjacentBuildings_ThenPeopleToStealFrom() {
         Player redPlayer = Player.create(Color.RED);
         Player bluePlayer = Player.create(Color.BLUE);
-        Dice dice = new RandomDice();
         Coordinate coordinate = Coordinate.of(10, 10);
         Tile tile = Tile.builder()
-                .addBuilding(Direction.ONE, Building.builder().build(Color.BLUE, Building.Type.SETTLEMENT))
+                .addBuilding(Direction.ONE, Building.of(Color.BLUE, Building.Type.SETTLEMENT))
                 .build(Resource.ORE, 4);
         Board board = Board.builder()
                 .addTile(coordinate, tile)
                 .build();
-        Game game = new Game(board, List.of(redPlayer, bluePlayer), dice);
+        Game game = Game.builder()
+                .addPlayer(redPlayer)
+                .addPlayer(bluePlayer)
+                .setBoard(board)
+                .build();
+
         MoveRobber uut = new MoveRobber(game);
         game.setState(uut);
         uut.moveRobber(redPlayer, coordinate);
@@ -120,15 +127,19 @@ public class MoveRobberTest {
     public void testWhenStealingFromPlayerWithNoResources_ThenNoInventoryUpdated() {
         Player redPlayer = Player.create(Color.RED);
         Player bluePlayer = Player.create(Color.BLUE);
-        Dice dice = new RandomDice();
         Coordinate coordinate = Coordinate.of(10, 10);
         Tile tile = Tile.builder()
-                .addBuilding(Direction.ONE, Building.builder().build(Color.BLUE, Building.Type.SETTLEMENT))
+                .addBuilding(Direction.ONE, Building.of(Color.BLUE, Building.Type.SETTLEMENT))
                 .build(Resource.ORE, 4);
         Board board = Board.builder()
                 .addTile(coordinate, tile)
                 .build();
-        Game game = new Game(board, List.of(redPlayer, bluePlayer), dice);
+        Game game = Game.builder()
+                .addPlayer(redPlayer)
+                .addPlayer(bluePlayer)
+                .setBoard(board)
+                .build();
+
         MoveRobber uut = new MoveRobber(game);
         game.setState(uut);
         uut.moveRobber(redPlayer, coordinate);
@@ -152,15 +163,19 @@ public class MoveRobberTest {
                 .addBrick(3)
                 .build();
         Player bluePlayer = Player.of(Color.BLUE, blueInventory);
-        Dice dice = new RandomDice();
         Coordinate coordinate = Coordinate.of(10, 10);
         Tile tile = Tile.builder()
-                .addBuilding(Direction.ONE, Building.builder().build(Color.BLUE, Building.Type.SETTLEMENT))
+                .addBuilding(Direction.ONE, Building.of(Color.BLUE, Building.Type.SETTLEMENT))
                 .build(Resource.ORE, 4);
         Board board = Board.builder()
                 .addTile(coordinate, tile)
                 .build();
-        Game game = new Game(board, List.of(redPlayer, bluePlayer), dice);
+        Game game = Game.builder()
+                .addPlayer(redPlayer)
+                .addPlayer(bluePlayer)
+                .setBoard(board)
+                .build();
+
         MoveRobber uut = new MoveRobber(game);
         game.setState(uut);
         uut.moveRobber(redPlayer, coordinate);

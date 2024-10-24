@@ -2,15 +2,22 @@ package com.settlers.game.states;
 
 import com.settlers.game.*;
 
+import java.util.HashMap;
 import java.util.Map;
 
 public class ActionPhase extends AbstractState {
+    private final Map<DevelopmentCard, Integer> developmentCardsBought;
     private Trade tradeInProgress;
     private boolean hasUsedDevelopmentCard = false;
 
     public ActionPhase(Game game) {
         super(game);
+        developmentCardsBought = new HashMap<>();
+        for (DevelopmentCard value : DevelopmentCard.values()) {
+            developmentCardsBought.put(value, 0);
+        }
     }
+
 
     @Override
     public boolean addBuilding(Player player, Position position, Building building) {
@@ -68,6 +75,9 @@ public class ActionPhase extends AbstractState {
         if (!game.getCurrentPlayer().equals(player)) return false;
 
         if (hasUsedDevelopmentCard) return false;
+
+        if (developmentCardsBought.get(developmentCard) == game.getPlayer(player.color()).inventory().getDevelopmentCard(developmentCard))
+            return false;
 
         if (!game.getPlayer(player.color()).inventory().useDevelopmentCard(developmentCard)) return false;
 
@@ -161,6 +171,19 @@ public class ActionPhase extends AbstractState {
         if (!player.equals(tradeInProgress.receivingPlayer())) return false;
 
         tradeInProgress = null;
+
+        return true;
+    }
+
+    @Override
+    public boolean buyDevelopmentCard(Player player) {
+        if (!game.getCurrentPlayer().equals(player)) return false;
+        if (!game.getPlayer(player.color()).canAffordDevelopmentCard()) return false;
+        if (!game.hasDevelopmentCards()) return false;
+
+        DevelopmentCard developmentCard = game.takeDevelopmentCard();
+        game.getPlayer(player.color()).inventory().addDevelopmentCard(developmentCard);
+        developmentCardsBought.merge(developmentCard, 1, Integer::sum);
 
         return true;
     }

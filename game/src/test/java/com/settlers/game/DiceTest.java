@@ -8,7 +8,7 @@ import org.junit.Test;
 public class DiceTest {
     @Test
     public void testDiceRollAlwaysBetween2And12() {
-        Dice uut = new RandomDice();
+        Dice uut = RandomDice.create();
         for (int i = 0; i < 10_000; i++) {
             int roll = uut.roll();
             Assert.assertTrue(2 <= roll && roll <= 12);

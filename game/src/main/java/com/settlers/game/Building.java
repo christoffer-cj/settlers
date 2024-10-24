@@ -6,8 +6,8 @@ public record Building(Color color, Type type) {
         assert type != null;
     }
 
-    public static Builder builder() {
-        return new Builder();
+    public static Building of(Color color, Type type) {
+        return new Building(color, type);
     }
 
     public enum Type {
@@ -22,15 +22,6 @@ public record Building(Color color, Type type) {
         
         public int resources() {
             return resources;
-        }
-    }
-
-    public static final class Builder {
-
-        private Builder() {}
-
-        public Building build(Color color, Type type) {
-            return new Building(color, type);
         }
     }
 }

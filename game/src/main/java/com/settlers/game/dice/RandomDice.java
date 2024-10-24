@@ -5,8 +5,12 @@ import java.util.Random;
 public class RandomDice implements Dice {
     private final Random rng;
 
-    public RandomDice() {
+    private RandomDice() {
         this.rng = new Random();
+    }
+
+    public static RandomDice create() {
+        return new RandomDice();
     }
 
     @Override

@@ -5,15 +5,7 @@ public record Road(Color color) {
         assert color != null;
     }
 
-    public static Builder builder() {
-        return new Builder();
-    }
-
-    public static final class Builder {
-        private Builder() {}
-
-        public Road build(Color color) {
-            return new Road(color);
-        }
+    public static Road of(Color color) {
+        return new Road(color);
     }
 }

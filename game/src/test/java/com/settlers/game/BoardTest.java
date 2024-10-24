@@ -23,7 +23,7 @@ public class BoardTest {
         Coordinate coordinate = Coordinate.of(0, 0);
         Direction direction = Direction.ONE;
         Tile tileWithBuilding = Tile.builder()
-                .addBuilding(direction, Building.builder().build(Color.RED, Building.Type.CITY))
+                .addBuilding(direction, Building.of(Color.RED, Building.Type.CITY))
                 .build(Resource.ORE, 8);
 
         Board uut = Board.builder()
@@ -42,7 +42,7 @@ public class BoardTest {
         Direction direction = Direction.ONE;
         Direction adjacentDirection = Direction.FIVE;
         Tile tileWithBuilding = Tile.builder()
-                .addBuilding(direction, Building.builder().build(Color.RED, Building.Type.CITY))
+                .addBuilding(direction, Building.of(Color.RED, Building.Type.CITY))
                 .build(Resource.ORE, 8);
 
         Tile tileAdjacentToBuilding = Tile.builder().build(Resource.ORE, 8);
@@ -64,7 +64,7 @@ public class BoardTest {
         Direction directionWithBuilding = Direction.ONE;
         Direction directionWithoutBuilding = Direction.THREE;
         Tile tileWithBuilding = Tile.builder()
-                .addBuilding(directionWithBuilding, Building.builder().build(Color.RED, Building.Type.CITY))
+                .addBuilding(directionWithBuilding, Building.of(Color.RED, Building.Type.CITY))
                 .build(Resource.ORE, 8);
         Tile tileWithoutBuilding = Tile.builder().build(Resource.LUMBER, 4);
 
@@ -165,7 +165,7 @@ public class BoardTest {
         Coordinate coordinate = Coordinate.of(0, 0);
         Direction direction = Direction.ONE;
         Tile tileWithRoad = Tile.builder()
-                .addRoad(direction, Road.builder().build(Color.RED))
+                .addRoad(direction, Road.of(Color.RED))
                 .build(Resource.ORE, 8);
 
         Board uut = Board.builder()
@@ -184,7 +184,7 @@ public class BoardTest {
         Direction direction = Direction.ONE;
         Direction adjacentDirection = Direction.FOUR;
         Tile tileWithRoad = Tile.builder()
-                .addRoad(direction, Road.builder().build(Color.RED))
+                .addRoad(direction, Road.of(Color.RED))
                 .build(Resource.ORE, 8);
 
         Tile tileAdjacentToRoad = Tile.builder().build(Resource.ORE, 8);
@@ -206,7 +206,7 @@ public class BoardTest {
         Direction directionWithRoad = Direction.ONE;
         Direction directionWithoutRoad = Direction.THREE;
         Tile tileWithRoad = Tile.builder()
-                .addRoad(directionWithRoad, Road.builder().build(Color.RED))
+                .addRoad(directionWithRoad, Road.of(Color.RED))
                 .build(Resource.ORE, 8);
         Tile tileWithoutRoad = Tile.builder().build(Resource.LUMBER, 4);
 
@@ -230,7 +230,7 @@ public class BoardTest {
                 .addTile(coordinate, tile)
                 .build();
 
-        Road roadToAdd = Road.builder().build(Color.ORANGE);
+        Road roadToAdd = Road.of(Color.ORANGE);
 
         boolean roadAdded = uut.addRoad(Position.of(coordinate, direction), roadToAdd);
 
@@ -241,7 +241,7 @@ public class BoardTest {
     public void whenTileWithRoad_ThenAddRoadReturnsFalse() {
         Coordinate coordinateWithRoad = Coordinate.of(2, 4);
         Direction directionWithRoad = Direction.FIVE;
-        Road road = Road.builder().build(Color.ORANGE);
+        Road road = Road.of(Color.ORANGE);
         Tile tile = Tile.builder()
                 .addRoad(directionWithRoad, road)
                 .build(Resource.ORE, 5);
@@ -250,7 +250,7 @@ public class BoardTest {
                 .addTile(coordinateWithRoad, tile)
                 .build();
 
-        Road roadToAdd = Road.builder().build(Color.BLUE);
+        Road roadToAdd = Road.of(Color.BLUE);
 
         boolean roadAdded = uut.addRoad(Position.of(coordinateWithRoad, directionWithRoad), roadToAdd);
 
@@ -264,7 +264,7 @@ public class BoardTest {
         Direction direction = Direction.ONE;
         Direction adjacentDirection = Direction.FOUR;
         Tile tileWithRoad = Tile.builder()
-                .addRoad(direction, Road.builder().build(Color.RED))
+                .addRoad(direction, Road.of(Color.RED))
                 .build(Resource.ORE, 8);
 
         Tile tileAdjacentToRoad = Tile.builder().build(Resource.ORE, 8);
@@ -274,7 +274,7 @@ public class BoardTest {
                 .addTile(adjacentCoordinate, tileAdjacentToRoad)
                 .build();
 
-        Road roadToAdd = Road.builder().build(Color.WHITE);
+        Road roadToAdd = Road.of(Color.WHITE);
 
         boolean roadAdded = uut.addRoad(Position.of(adjacentCoordinate, adjacentDirection), roadToAdd);
 
@@ -286,7 +286,7 @@ public class BoardTest {
         Coordinate coordinate = Coordinate.of(0, 0);
         Direction direction = Direction.ONE;
         Tile tile = Tile.builder().build(Resource.ORE, 12);
-        Building settlement = Building.builder().build(Color.RED, Building.Type.SETTLEMENT);
+        Building settlement = Building.of(Color.RED, Building.Type.SETTLEMENT);
 
         Board uut = Board.builder()
                 .addTile(coordinate, tile)
@@ -303,7 +303,7 @@ public class BoardTest {
         Coordinate coordinate = Coordinate.of(0, 0);
         Direction direction = Direction.ONE;
         Tile tile = Tile.builder().build(Resource.ORE, 12);
-        Building settlement = Building.builder().build(Color.RED, Building.Type.SETTLEMENT);
+        Building settlement = Building.of(Color.RED, Building.Type.SETTLEMENT);
 
         Board uut = Board.builder()
                 .addTile(coordinate, tile)
@@ -320,9 +320,9 @@ public class BoardTest {
         Coordinate coordinate = Coordinate.of(0, 0);
         Direction direction = Direction.ONE;
         Tile tile = Tile.builder()
-                .addRoad(direction, Road.builder().build(Color.RED))
+                .addRoad(direction, Road.of(Color.RED))
                 .build(Resource.ORE, 12);
-        Building settlement = Building.builder().build(Color.RED, Building.Type.SETTLEMENT);
+        Building settlement = Building.of(Color.RED, Building.Type.SETTLEMENT);
 
         Board uut = Board.builder()
                 .addTile(coordinate, tile)
@@ -339,9 +339,9 @@ public class BoardTest {
         Coordinate coordinate = Coordinate.of(0, 0);
         Direction direction = Direction.ONE;
         Tile tile = Tile.builder()
-                .addRoad(direction, Road.builder().build(Color.BLUE))
+                .addRoad(direction, Road.of(Color.BLUE))
                 .build(Resource.ORE, 12);
-        Building settlement = Building.builder().build(Color.RED, Building.Type.SETTLEMENT);
+        Building settlement = Building.of(Color.RED, Building.Type.SETTLEMENT);
 
         Board uut = Board.builder()
                 .addTile(coordinate, tile)
@@ -359,9 +359,9 @@ public class BoardTest {
         Direction direction = Direction.ONE;
         Direction adjacentDirection = Direction.TWO;
         Tile tile = Tile.builder()
-                .addBuilding(direction, Building.builder().build(Color.ORANGE, Building.Type.SETTLEMENT))
+                .addBuilding(direction, Building.of(Color.ORANGE, Building.Type.SETTLEMENT))
                 .build(Resource.ORE, 12);
-        Building settlement = Building.builder().build(Color.RED, Building.Type.SETTLEMENT);
+        Building settlement = Building.of(Color.RED, Building.Type.SETTLEMENT);
 
         Board uut = Board.builder()
                 .addTile(coordinate, tile)
@@ -378,9 +378,9 @@ public class BoardTest {
         Coordinate coordinate = Coordinate.of(0, 0);
         Direction direction = Direction.ONE;
         Tile tile = Tile.builder()
-                .addRoad(direction, Road.builder().build(Color.RED))
+                .addRoad(direction, Road.of(Color.RED))
                 .build(Resource.ORE, 12);
-        Building settlement = Building.builder().build(Color.RED, Building.Type.CITY);
+        Building settlement = Building.of(Color.RED, Building.Type.CITY);
 
         Board uut = Board.builder()
                 .addTile(coordinate, tile)
@@ -397,10 +397,10 @@ public class BoardTest {
         Coordinate coordinate = Coordinate.of(0, 0);
         Direction direction = Direction.ONE;
         Tile tile = Tile.builder()
-                .addRoad(direction, Road.builder().build(Color.RED))
-                .addBuilding(direction, Building.builder().build(Color.RED, Building.Type.SETTLEMENT))
+                .addRoad(direction, Road.of(Color.RED))
+                .addBuilding(direction, Building.of(Color.RED, Building.Type.SETTLEMENT))
                 .build(Resource.ORE, 12);
-        Building settlement = Building.builder().build(Color.RED, Building.Type.CITY);
+        Building settlement = Building.of(Color.RED, Building.Type.CITY);
 
         Board uut = Board.builder()
                 .addTile(coordinate, tile)
@@ -417,10 +417,10 @@ public class BoardTest {
         Coordinate coordinate = Coordinate.of(0, 0);
         Direction direction = Direction.ONE;
         Tile tile = Tile.builder()
-                .addRoad(direction, Road.builder().build(Color.RED))
-                .addBuilding(direction, Building.builder().build(Color.BLUE, Building.Type.SETTLEMENT))
+                .addRoad(direction, Road.of(Color.RED))
+                .addBuilding(direction, Building.of(Color.BLUE, Building.Type.SETTLEMENT))
                 .build(Resource.ORE, 12);
-        Building settlement = Building.builder().build(Color.RED, Building.Type.CITY);
+        Building settlement = Building.of(Color.RED, Building.Type.CITY);
 
         Board uut = Board.builder()
                 .addTile(coordinate, tile)
@@ -438,9 +438,9 @@ public class BoardTest {
         Direction direction = Direction.ONE;
         Direction adjacentDirection = Direction.TWO;
         Tile tile = Tile.builder()
-                .addRoad(direction, Road.builder().build(Color.WHITE))
+                .addRoad(direction, Road.of(Color.WHITE))
                 .build(Resource.LUMBER, 4);
-        Road adjacentRoad = Road.builder().build(Color.WHITE);
+        Road adjacentRoad = Road.of(Color.WHITE);
 
         Board uut = Board.builder()
                 .addTile(coordinate, tile)
@@ -461,7 +461,7 @@ public class BoardTest {
 
     @Test
     public void testWhenOneRoad_ThenLongestRoadReturnOne() {
-        Road road = Road.builder().build(Color.RED);
+        Road road = Road.of(Color.RED);
         Tile tile = Tile.builder()
                 .addRoad(Direction.ONE, road)
                 .build(Resource.BRICK, 4);
@@ -478,7 +478,7 @@ public class BoardTest {
     public void testWhenRoadIsCircleAroundOneTile_ThenLongestRoadReturnSix() {
        Tile.Builder tileBuilder = Tile.builder();
         for (Direction direction : Direction.values()) {
-            Road road = Road.builder().build(Color.RED);
+            Road road = Road.of(Color.RED);
             tileBuilder.addRoad(direction, road);
         }
         Tile tile = tileBuilder.build(Resource.BRICK, 2);
@@ -496,11 +496,11 @@ public class BoardTest {
         Tile.Builder tileBuilder = Tile.builder();
         for (Direction direction : Direction.values()) {
             if (direction == Direction.ONE) {
-                Road road = Road.builder().build(Color.BLUE);
+                Road road = Road.of(Color.BLUE);
                 tileBuilder.addRoad(direction, road);
                 continue;
             }
-            Road road = Road.builder().build(Color.RED);
+            Road road = Road.of(Color.RED);
             tileBuilder.addRoad(direction, road);
         }
         Tile tile = tileBuilder.build(Resource.BRICK, 2);
@@ -516,9 +516,9 @@ public class BoardTest {
     @Test
     public void testWhenRoadsAreOneSpaceApartOnTile_ThenLongestRoadReturnOne() {
         Tile tile = Tile.builder()
-                .addRoad(Direction.ONE, Road.builder().build(Color.RED))
-                .addRoad(Direction.THREE, Road.builder().build(Color.RED))
-                .addRoad(Direction.FIVE, Road.builder().build(Color.RED))
+                .addRoad(Direction.ONE, Road.of(Color.RED))
+                .addRoad(Direction.THREE, Road.of(Color.RED))
+                .addRoad(Direction.FIVE, Road.of(Color.RED))
                 .build(Resource.BRICK, 9);
         Board uut = Board.builder()
                 .addTile(Coordinate.of(0, 1), tile)
@@ -532,13 +532,13 @@ public class BoardTest {
     @Test
     public void testWhenRoadSpansAcrossMultipleTiles_ThenCorrectLengthReturned() {
         Tile firstTile = Tile.builder()
-                .addRoad(Direction.ONE, Road.builder().build(Color.RED))
+                .addRoad(Direction.ONE, Road.of(Color.RED))
                 .build(Resource.BRICK, 6);
         Tile secondTile = Tile.builder()
-                .addRoad(Direction.SIX, Road.builder().build(Color.RED))
+                .addRoad(Direction.SIX, Road.of(Color.RED))
                 .build(Resource.LUMBER, 2);
         Tile thirdTile = Tile.builder()
-                .addRoad(Direction.FIVE, Road.builder().build(Color.RED))
+                .addRoad(Direction.FIVE, Road.of(Color.RED))
                 .build(Resource.ORE, 4);
         Board uut = Board.builder()
                 .addTile(Coordinate.of(0, 0), firstTile)
