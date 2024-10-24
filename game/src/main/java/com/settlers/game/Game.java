@@ -115,12 +115,25 @@ public class Game {
     }
 
     public Optional<Player> getWinner() {
+        Collection<Player> winners = new ArrayList<>();
         for (Player player : getPlayers()) {
             int points = 0;
-
+            points += player.inventory().victoryPoints();
+            if (player == largestArmy) points += 2;
+            if (player == longestRoad) points += 2;
+            points += getBoard().getBuildings(player.color())
+                    .stream()
+                    .map(Building::type)
+                    .map(Building.Type::resources)
+                    .reduce(0, Integer::sum);
+            if (points >= 10) winners.add(player);
         }
 
-        return Optional.empty();
+        if (winners.contains(getCurrentPlayer())) {
+            return Optional.of(getCurrentPlayer());
+        } else {
+            return Optional.empty();
+        }
     }
 
     public boolean hasDevelopmentCards() {

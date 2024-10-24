@@ -117,6 +117,18 @@ public class Board {
         return Collections.unmodifiableCollection(buildings);
     }
 
+    public Collection<Building> getBuildings(Color color) {
+        Collection<Building> buildings = new ArrayList<>();
+        for (Tile tile : tiles.values()) {
+            for (Building building : tile.buildings().values()) {
+                if (building == null) continue;
+                if (building.color() == color) buildings.add(building);
+            }
+        }
+
+        return buildings;
+    }
+
     public Optional<Tile> getTile(Coordinate coordinate) {
         return Optional.ofNullable(tiles.get(coordinate));
     }

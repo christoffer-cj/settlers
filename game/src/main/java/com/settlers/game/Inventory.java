@@ -128,6 +128,10 @@ public class Inventory {
         return usedKnights;
     }
 
+    public int victoryPoints() {
+        return developmentCards.get(DevelopmentCard.VICTORY_POINT);
+    }
+
     public static Builder builder() {
         return new Builder();
     }

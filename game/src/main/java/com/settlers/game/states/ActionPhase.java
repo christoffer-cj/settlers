@@ -34,6 +34,10 @@ public class ActionPhase extends AbstractState {
         if (!game.getBoard().addBuilding(position, building)) return false;
         game.getPlayer(player.color()).buyBuilding(building.type());
 
+        if (game.getWinner().isPresent()) {
+            game.setState(new WinnerState(game, game.getWinner().get()));
+        }
+
         return true;
     }
 
@@ -52,6 +56,10 @@ public class ActionPhase extends AbstractState {
         if (!game.getBoard().addRoad(position, road)) return false;
         game.getPlayer(player.color()).buyRoad();
         game.assignLongestRoad();
+
+        if (game.getWinner().isPresent()) {
+            game.setState(new WinnerState(game, game.getWinner().get()));
+        }
 
         return true;
     }
@@ -88,6 +96,10 @@ public class ActionPhase extends AbstractState {
             case KNIGHT -> game.setState(new MoveRobber(game, this));
         }
         game.assignLargestArmy();
+
+        if (game.getWinner().isPresent()) {
+            game.setState(new WinnerState(game, game.getWinner().get()));
+        }
 
         return true;
     }
@@ -181,6 +193,7 @@ public class ActionPhase extends AbstractState {
         if (!game.getPlayer(player.color()).canAffordDevelopmentCard()) return false;
         if (!game.hasDevelopmentCards()) return false;
 
+        game.getPlayer(player.color()).buyDevelopmentCard();
         DevelopmentCard developmentCard = game.takeDevelopmentCard();
         game.getPlayer(player.color()).inventory().addDevelopmentCard(developmentCard);
         developmentCardsBought.merge(developmentCard, 1, Integer::sum);

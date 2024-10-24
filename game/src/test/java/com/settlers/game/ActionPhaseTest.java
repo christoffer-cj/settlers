@@ -812,6 +812,9 @@ public class ActionPhaseTest {
 
         Assert.assertTrue(developmentCardBought);
         Assert.assertEquals(1, inventory.getDevelopmentCard(DevelopmentCard.KNIGHT));
+        Assert.assertEquals(0, inventory.getResource(Resource.ORE));
+        Assert.assertEquals(0, inventory.getResource(Resource.GRAIN));
+        Assert.assertEquals(0, inventory.getResource(Resource.WOOL));
     }
 
     @Test
