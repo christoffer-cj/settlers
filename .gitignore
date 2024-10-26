@@ -3,3 +3,9 @@
 /.idea
 **.iml
 **/target
+/gimp
+/client/node_modules
+/client/.pnp
+/client.pnp.js
+/client/coverage
+/client/build
